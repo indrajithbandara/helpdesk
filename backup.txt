@@ -1,0 +1,29 @@
+//SAVE INPUT ONLY:
+/**
+var saved_data = JSON.stringify(getInputData(tags_only, input_only));
+addRequest(saved_data, function(response, error, body){
+	if(response.statusCode == 200){
+		var status = $.parseJSON(body).operation.result.status, message = $.parseJSON(body).operation.result.message;
+		bootbox.alert(status + ":" + message, function(){
+			$window.location.href = '#!/main';	
+		})
+	}else{
+		bootbox.alert("Error: " + error);
+
+		$scope.db.insert('request', {"input": saved_data, "code": error}).then(function(results) {
+		  	console.log(results.insertId);
+		});
+	}
+});
+**/
+
+//const TAGS_ONLY = {
+    //"technician name": "technicianName",
+    //"": "customerType",
+    //"student id number (if faculty, put n/a)": "studentNumber",
+    //"customer name": "customerName",
+    //"description": "description",
+    //"how were the device problem(s) or general question(s) resolved?": "solution",
+    //"subject": "ticketNumber",
+    //"category": "category"
+//};

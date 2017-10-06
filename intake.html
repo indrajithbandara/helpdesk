@@ -1,0 +1,269 @@
+<!--INTAKE-->
+<div class="container" id="intakeLy" ng-controller="intakeController">
+    <div class="row text-center">
+        <h3>Device Intake Form - {{ semester }}</h3>
+    </div>
+
+     <div class="row alert alert-danger" role="alert">
+        I HEREBY authorize work to be performed upon my device. FVTC and its students may perform work on the listed device for the purposes of testing or inspection, at my risk. It is also understood that other adjustments or checks can be made to my device, while it is in the FVTC Student IT-Computer Support Center, in order to aid the students in their educational process. FVTC will not be held responsible for loss or damage to devices, software, hardware, or personal data; in case of fire, theft, accident, or any other cause beyond our control. I understand that the work will be performed by students in a learning environment and that there is NO WARRANTY expressed or implied on this device. If after ten forms of contact (email or phone messages), from the FVTC Student IT-Computer Support Center to you regarding your device being ready ready for pick up, and you have not contacted us; or if the device has been deemed abandoned after one month of no responses or contact from the owner, the device will be forfeited over to the FVTC lost and found department.
+    </div>
+
+    <div class="row alert alert-danger" role="alert">
+        <span class="asp">*</span> Required
+    </div>
+    
+    <div class="form-group">
+        <!--FORM-->
+        <form id="intake" name="intake" ng-submit="save(intake)" novalidate>
+            <div class="form-group">
+                <label for="agree">I have read and agree to the above statement. Clicking this box is the same as signing the document (Digital Signature).<span class="asp"> *</span></label>
+                <!---HA-->
+                <br/>
+                <label class="radio-inline">
+                  <input type="radio" ng-model="agree" name="agree" id="agreeNo" value="no" ng-checked="true"> No
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" ng-model="agree" name="agree" id="agreeYes" value="yes"> Yes
+                </label>
+                <!---HA-->
+            </div>
+            
+        <div id="contentIntake" ng-show="intake.agree.$modelValue == 'yes'">
+            <h4>Previous Ticket Number: <span class="text-info">{{ lastSeq }}</span></h4>
+
+            <div class="form-group">
+                <label for="technician" ng-model="technician">Technician <span class="asp">*</span></label>
+                <select name="technician" ng-model="technician" ng-options="technician.username as technician.username for technician in technicians" class="form-control" id="technician">
+                </select>
+            </div>
+
+            <div ng-class="{'has-error' : !checkTicket(intake.ticketNumber) || (intake.ticketNumber.$invalid && !intake.ticketNumber.$pristine), 'form-group': true}">    
+                <label for="ticketNumber">Ticket Number <span class="asp">*</span></label>
+                <input type="text" class="form-control" id="ticketNumber" ng-model="ticketNumber" name="ticketNumber" pattern="\d{3}\-[A-Z]" required>
+                <div class="text-danger" ng-show="intake.ticketNumber.$invalid && !intake.ticketNumber.$pristine">Ticket Number is required with format (999-D).</div>
+                <div class="text-danger" ng-show="!checkTicket(intake.ticketNumber)">This ticket number is already used</div>
+            </div>
+
+            <div class="form-group">
+                <label for="customer">Select a customer <span class="asp">*</span></label>
+                <select name="customer" ng-options="customer as customer.name for customer in customers" ng-model="customer" id="customer" class="form-control" required="">
+                </select>
+                <br>
+                 <div>
+                    <a href="#!/add_customer" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Add customer</a> 
+                 </div>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Select a category <span class="asp">*</span></label>
+                <select name="category" ng-options="option.value as option.name for option in categories" ng-model="category" id="category" class="form-control">
+                </select>
+            </div>
+
+            <div ng-class="{'has-error' : intake.bestTime.$invalid && !intake.bestTime.$pristine, 'form-group': true}">
+                <label for="bestTime">When and how is the best way to contact you? <span class="asp">*</span></label>    
+                <input type="text" class="form-control" id="bestTime" name="bestTime" ng-model="bestTime" required>
+                <div class="text-danger" ng-show="intake.bestTime.$invalid && !intake.bestTime.$pristine">Best Time is required.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="withWarranty">Is the device under warranty? <span class="asp">*</span></label>
+                <!---HA-->
+                <br/>
+                <label class="radio-inline">
+                  <input type="radio" ng-model="withWarranty" name="withWarranty" id="withWarrantyNo" value="no" ng-checked="true"> No
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" ng-model="withWarranty" name="withWarranty" id="withWarrantyYes" value="yes"> Yes
+                </label>
+                <!---HA-->
+            </div>
+
+            <div ng-class="{'has-error' : intake.lastTimeBackup.$invalid && !intake.lastTimeBackup.$pristine, 'form-group': true}">
+                <label for="lastTimeBackup" >When is the last time you backed up all of your important files on the device? <span class="asp">*</span></label>
+                
+                <input type="text" ng-model="lastTimeBackup" class="form-control" id="lastTimeBackup" name="lastTimeBackup" required>
+                <div class="text-danger" ng-show="intake.lastTimeBackup.$invalid && !intake.lastTimeBackup.$pristine">Information about last time of backup is required.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="operatingSystem">Operating System <span class="asp">*</span></label>
+                <select name="operatingSystem" ng-options="os.value as os.name for os in osOptions" ng-model="operatingSystem" id="operatingSystem" class="form-control" required>
+                </select>
+            </div>
+
+            <div>
+                <label for="passwordDevice">Device's Password</label>
+            </div>
+
+            <div class="input-group">
+                <input type="password" ng-model="passwordDevice" class="form-control" id="passwordDevice" name="passwordDevice">
+                <span class="input-group-btn">
+                    <button class="btn btn-default see_password" type="button"><span class="glyphicon glyphicon-eye-open"></span></button>
+                </span>
+            </div>
+
+            <br/>
+
+            <div ng-class="{'has-error' : intake.howOldIsDevice.$invalid && !intake.howOldIsDevice.$pristine, 'form-group': true}">
+                <label for="howOldIsDevice">How old is the device? <span class="asp">*</span></label>
+                <input type="text" ng-model="howOldIsDevice" class="form-control" id="howOldIsDevice" name="howOldIsDevice" required>
+                <div class="text-danger" ng-show="intake.howOldIsDevice.$invalid && !intake.howOldIsDevice.$pristine">Age of the computer is required.</div>
+            </div>
+
+            <div ng-class="{'has-error' : intake.brandName.$invalid && !intake.brandName.$pristine, 'form-group': true}">
+                <label for="brandName">Device Manufacturer Brand Name <span class="asp">*</span></label>
+                <input type="text" ng-model="brandName" class="form-control" id="brandName" name="brandName" required>
+                <div class="text-danger" ng-show="intake.brandName.$invalid && !intake.brandName.$pristine">Device Manufacturer Brand Name is required.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="colorDevice">Color of the Device <span class="asp">*</span></label>
+                <select name="colorDevice" ng-options="color.value as color.name for color in colorOptions" ng-model="colorDevice" id="colorDevice" class="form-control" required>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="modelNumber">Model Number of the Device</label>
+                <input type="text" ng-model="modelNumber" class="form-control" id="modelNumber" name="modelNumber" >
+            </div>
+
+            <div ng-class="{'has-error' : withCharger == 'no' && !intake.withCharger.$pristine, 'form-group': true}">
+                <label for="withCharger">Is the charger included with the device? <span class="asp">*</span></label>
+                <!---HA-->
+                <br/>
+                <label class="radio-inline">
+                  <input type="radio" ng-model="withCharger" name="withCharger" id="withChargerNo" value="no"> No
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" ng-model="withCharger" ng-checked="true" name="withCharger" id="withChargerYes" value="yes"> Yes
+                </label>
+                <!---HA-->
+                <div class="text-danger" ng-show="withCharger == 'no' && !intake.withCharger.$pristine">The charger must be included</div>
+            </div>
+
+            <div class="form-group">
+                <label for="wantOffice">Would you like Microsoft Office 365 installed on the device? <span class="asp">*</span></label>
+                <!---HA-->
+                <br/>
+                <label class="radio-inline">
+                  <input type="radio" ng-checked="true" ng-model="wantOffice" name="wantOffice" id="wantOfficeNo" value="no"> No
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" ng-model="wantOffice" name="wantOffice" id="wantOfficeYes" value="yes"> Yes
+                </label>
+                <!---HA-->
+            </div>
+            
+            <div ng-show="intake.wantOffice.$modelValue == 'yes'">
+                <div>
+                    <label for="blackboardPassword">What is your Blackboard password, if you would like Microsoft Office 365 installed?</label>
+                </div>
+
+                <div ng-class="{'has-error' : intake.blackboardPassword.$invalid && !intake.blackboardPassword.$pristine, 'input-group': true}">
+                    <input type="password" class="form-control" id="blackboardPassword" ng-model="blackboardPassword" name="blackboardPassword" ng-required="wantOffice == 'yes'">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default see_password" type="button"><span class="glyphicon glyphicon-eye-open"></span></button>
+                    </span>
+                </div>
+
+                <div class="text-danger" ng-show="intake.blackboardPassword.$invalid && !intake.blackboardPassword.$pristine">Blackboard Password is required.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="wantAntivirus">Would you like a free antivirus program installed on the device? <span class="asp">*</span></label>
+                <!---HA-->
+                <br/>
+                <label class="radio-inline">
+                  <input type="radio" ng-checked="true" ng-model="wantAntivirus" name="wantAntivirus" id="wantAntivirusNo" value="no"> No
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" ng-model="wantAntivirus" name="wantAntivirus" id="wantAntivirusYes" value="yes"> Yes
+                </label>
+                <!---HA-->
+            </div>
+            
+            <div class="form-group" ng-show="operatingSystem == osOptions[8].value || operatingSystem == osOptions[9].value || operatingSystem == osOptions[10].value">
+                <label for="wantUpgrade">Would you like your operating system upgraded to Windows 10, if possible? <span class="asp">*</span></label>
+                <!---HA-->
+                <br/>
+                <label class="radio-inline">
+                  <input type="radio" ng-model="wantUpgrade" ng-checked="true" name="wantUpgrade" id="wantUpgradeNo" value="no"> No
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" ng-model="wantUpgrade" name="wantUpgrade" id="wantUpgradeYes" value="yes"> Yes
+                </label>
+                <!---HA-->
+            </div>
+
+            <div class="form-group">
+                <label for="moreHelp">Is there anything that you would like to be educated or trained on related to the device? <span class="asp">*</span></label>
+                <textarea id="moreHelp" name="moreHelp" rows="5" ng-model="moreHelp" class="form-control"></textarea>
+            </div>
+
+            <div ng-class="{'has-error' : intake.description.$invalid && !intake.description.$pristine, 'form-group': true}">
+                <label for="description">Description of the Device Problem(s) or General Question(s) <span class="asp">*</span></label>
+                <textarea class="form-control" id="description" name="description" ng-model="description" rows="5" required></textarea>
+                <div class="text-danger" ng-show="intake.description.$invalid && !intake.description.$pristine">Description is required.</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <button ng-disabled="intake.$invalid && !checkTicket(intake.ticketNumber)" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-ok" aria-hidden="true" ></span>&nbsp;Save</button>
+
+                    <a class="btn btn-primary" href="#!/main"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true" ></span>&nbsp;Go Back</a>
+                </div>
+            </div>
+
+        </div>
+            <a class="btn btn-primary" href="#!/main" ng-show="agree == 'no'"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true" ></span>&nbsp;Go Back</a>
+        </form>
+        <!--END FORM-->
+    </div>
+    <!---->
+</div>
+
+<script type="text/javascript">
+    //Intake
+    $('#alternativePhone').mask('(000)000-0000');
+    $('#phoneNumber').mask('(000)000-0000');
+    $('#ticketNumber').mask('000-S');
+
+    //Intake
+    $('#withCharger').change(function(){
+        if($(this).val() == 'no'){
+            bootbox.alert({title: 'Error', message: 'The charger MUST be included!'});
+        }
+    });
+
+    $('#wantOffice').change(function(){
+        if($(this).val() == 'yes'){
+            $('#blackboardPassword').val('');
+            $('#blackboardPassword').prop("readonly", false);
+            $('#blackboardPassword').attr('required', 'required');
+        }else{
+            $("#blackboardPassword").val('');
+            $('#blackboardPassword').prop("readonly", true);
+            $('#blackboardPassword').removeAttr('required');
+        }
+    });
+
+    $("#operatingSystem").change(function(){
+        //console.log(//);
+        if(!($(this).find(":selected").text() == "Windows 7" || $(this).find(":selected").text() == "Windows 8" || $(this).find(":selected").text() == "Windows 8.1")){
+            $("#wantUpgrade").val('no');
+            console.log($("#wantUpgrade").val());
+        }
+    });
+
+    // PASSWORD OPERATIONS:
+    $(".see_password").mouseleave(function(event) {
+        /* Act on the event */
+        var val = $(this).parent().parent().find('input').attr('type', 'password');
+    });
+
+    $(".see_password").click(function(event) {
+        /* Act on the event */
+        var val = $(this).parent().parent().find('input').attr('type', 'text');
+    });
+</script>

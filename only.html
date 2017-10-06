@@ -1,0 +1,57 @@
+<div id="onlyLy" ng-controller="onlyController" class="left aligned">
+    <div class="row">
+        <h3>Only G113 Support/Service Provided Form - {{ semester }}<span class="title"></span></h3>
+    </div>
+
+    <div class="row alert alert-danger" role="alert">
+        <span class="asp">*</span> Required
+    </div>
+
+    <form class="ui form" name="only" ng-submit="save(only)" novalidate>
+        <h4>Previous Ticket Number: <span class="text-info">{{ lastSeq }}</span></h4>
+        
+        <div class="field" ng-class="{'has-error' : !checkTicket(only.ticketNumber.$viewValue) || (only.ticketNumber.$invalid && !only.ticketNumber.$pristine), 'form-group': true}">
+            <label for="ticketNumber">Ticket Number <span class="asp">*</span></label>
+            <input class="form-control" type="text" id="ticketNumber" name="ticketNumber" ng-model="ticketNumber" pattern="\d{3}\-[A-Z]" required>
+            <div class="text-danger" ng-show="only.ticketNumber.$invalid && !only.ticketNumber.$pristine">Ticket Number is required with format (999-D).</div>
+            <div class="text-danger" ng-show="!checkTicket(only.ticketNumber.$viewValue)">This ticket number is already used</div>   
+        </div>
+        
+        <div class="field">
+            <label for="category">Select a category <span class="asp">*</span></label>
+            <select name="category" ng-model="category" ng-options="option.value as option.name for option in categories" id="category">
+            </select>
+        </div>
+
+        <div class="field">
+            <label for="technician">Technician <span class="asp">*</span></label>
+            <select name="technician" ng-model="technician" ng-options="technician.username as technician.username for technician in technicians" id="technician">
+            </select>
+        </div>
+
+        <div class="field">
+            <label for="customer" >Customer <span class="asp">*</span></label>
+            <select name="customer" ng-model="customer" ng-options="customer as customer.name for customer in customers" id="customer" required>
+            </select>
+            <br>
+            <div>
+            <a href="#!/add_customer" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Add customer</a> 
+            </div>
+        </div>
+
+        <div class="field">
+                <label for="description">Description of the Device Problem(s) or General Question(s) <span class="asp">*</span></label>
+                <textarea class="form-control" id="description" name="description" ng-model="description" rows="5" required></textarea>
+                <div class="text-danger" ng-show="only.description.$invalid && !only.description.$pristine">Description is required.</div>
+        </div>
+
+        <div class="field">
+                <label for="solution">How were the device problem(s) or general question(s) resolved? <span class="asp">*</span></label>
+                <textarea class="form-control" id="solution" name="solution" rows="5" ng-model="solution" required></textarea>
+                <div class="text-danger" ng-show="only.solution.$invalid && !only.solution.$pristine">Solution is required.</div>
+        </div>
+        
+        <button class="ui button" type="submit" ng-disabled="only.$invalid || !checkTicket(only.ticketNumber)">Submit</button>
+        <a class="ui button" type="button" href="#!/main">Go Back</a>
+    </form>
+</div>

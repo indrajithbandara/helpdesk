@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="scotchApp">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Help Desk Forms</title>
+      
+      <link rel="stylesheet" type="text/css" href="res/semantic-ui/semantic.min.css">
+      <link rel="stylesheet" type="text/css" href="node_modules/noty/lib/noty.css">
+      <!-- Insert this line above script imports  -->
+      <script type="text/javascript">if(typeof module === 'object') {window.module = module; module = undefined;}</script>
+      <!--LIBRARIES-->
+      <script type="text/javascript" src="node_modules/lockr/lockr.min.js" ></script>
+      <script type="text/javascript" src="node_modules/blueimp-md5/js/md5.min.js"></script>
+      <script type="text/javascript" src="node_modules/printj/dist/printj.min.js"></script>
+      <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+
+      <script type="text/javascript" src="node_modules/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
+      <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+      <script type="text/javascript" src="node_modules/angular-route/angular-route.min.js"></script>
+      <script type="text/javascript" src="node_modules/noty/lib/noty.min.js"></script>
+      
+      <script type="text/javascript" src="data.js"></script>
+      <script type="text/javascript" src="app.js"></script>
+      <script type="text/javascript" src="db.js"></script>
+      <script type="text/javascript" src="ui.js"></script>
+
+      <script type="text/javascript" src="scripts/bundle.js"></script>
+      <script type="text/javascript" src="scripts/defiant.min.js"></script>
+
+      <script type="text/javascript" src="scripts/index.js"></script>
+      
+      <!-- Insert this line after script imports -->
+      <script type="text/javascript">if (window.module) module = window.module;</script>
+      <!--END SCRIPTS-->
+      <!-- define angular controller -->
+      <style type="text/css">
+        body {
+          background-color: #DADADA;
+        }
+
+        body > .grid {
+            height: 100%;
+        }
+
+        .image {
+          margin-top: -100px;
+        }
+
+        .column {
+          max-width: 450px;
+        }
+      </style>
+  </head>
+  <body ng-controller="loginController">
+  <div class="ui middle aligned center aligned grid" id="loginLy">
+    <div class="column">
+      <h2 class="ui teal image header">
+        <img src="res/icon.png" class="image">
+        <div class="content">
+          Log-in to your account
+        </div>
+      </h2>
+      <form class="ui large form" name="login" ng-submit="sendLogin()" novalidate>
+        <div class="ui stacked segment">
+          <div class="field">
+            <div class="ui left icon input">
+              <i class="user icon"></i>
+              <input ng-model="user.username" type="text" id="username" name="username" placeholder="Username">
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui left icon input">
+              <i class="lock icon"></i>
+              <input type="password" ng-model="user.password" name="password" placeholder="Password">
+            </div>
+          </div>
+
+          <div>
+              <button class="ui fluid large teal button">Login</button>
+          </div>
+          <!--<div class="ui fluid large teal submit button">Login</div>-->
+        </div>
+
+        <div class="ui error message"></div>
+
+      </form>
+
+      <div class="ui message">
+        Forgot your password? <a href="#">Click here</a>
+      </div>
+    </div>
+  </div>
+  </body>
+</html>

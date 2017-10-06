@@ -1,0 +1,20 @@
+{
+  "name": "help-desk",
+  "description": "Help Desk Project",
+  "main": "main.js",
+  "authors": [
+    "Daniel da Silva Farias <ddanielsilva661@gmail.com>"
+  ],
+  "license": "BSD-3-Clause",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-fancy-modal": "^0.1.4"
+  }
+}
