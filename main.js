@@ -1,3 +1,10 @@
+/*
+mainWindow = new BrowserWindow({
+    width: 1000,
+    height: 750,
+    icon: path.join(__dirname, '/res/icon.png')
+})
+*/
 const electron = require('electron')
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
@@ -7,11 +14,8 @@ const url = require('url')
 let mainWindow
 
 function createWindow() {
-    mainWindow = new BrowserWindow({
-        width: 1000,
-        height: 750,
-        icon: path.join(__dirname, '/res/icon.png')
-    })
+    mainWindow = new BrowserWindow({icon: path.join(__dirname, '/res/icon.png')})
+    
 
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'index.html'),
@@ -19,12 +23,11 @@ function createWindow() {
         slashes: true
     }))
 
+    
     mainWindow.webContents.openDevTools()
+    mainWindow.on('close', function () {mainWindow = null})
     //mainWindow.setMenu(null)
-
-    mainWindow.on('close', function () {
-        mainWindow = null
-    })
+    mainWindow.maximize()
 }
 
 const shouldQuit = app.makeSingleInstance((commandLine, workingDirectory) => {
@@ -43,13 +46,11 @@ if (shouldQuit) {
 app.on('ready', createWindow)
 
 app.on('window-all-closed', function () {
-    if (process.platform !== 'darwin') {
+    if (process.platform !== 'darwin')
         app.quit()
-    }
 })
 
 app.on('activate', function () {
-    if (mainWindow === null) {
+    if (mainWindow === null)
         createWindow()
-    }
 })
