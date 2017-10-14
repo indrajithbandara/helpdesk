@@ -26,7 +26,7 @@ function createWindow() {
     
     mainWindow.webContents.openDevTools()
     mainWindow.on('close', function () {mainWindow = null})
-    //mainWindow.setMenu(null)
+    mainWindow.setMenu(null)
     mainWindow.maximize()
 }
 

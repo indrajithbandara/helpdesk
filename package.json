@@ -4,14 +4,14 @@
   "main": "main.js",
   "description": "Help Desk Project",
   "license": "BSD-3-Clause",
+  "repository": "https://github.com/danieldsf/helpdesk.git",
   "dependencies": {
     "browserify": "^14.1.0",
     "electron-single-instance": "0.0.2",
-    "firebase-admin": "^5.0.1",
     "remote": "^0.2.6",
     "request": "^2.81.0"
   },
   "devDependencies": {
-    "electron": "^1.6.2"
+    "electron": "^1.8.1"
   }
 }

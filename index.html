@@ -7,7 +7,8 @@
       
       <link rel="stylesheet" type="text/css" href="res/scripts/semantic.min.css">
       <link rel="stylesheet" type="text/css" href="res/scripts/noty.css">
-      
+      <link rel="stylesheet" type="text/css" href="res/scripts/custom/login.css">
+
       <!-- Insert this line above script imports  -->
       <script type="text/javascript">if(typeof module === 'object') {window.module = module; module = undefined;}</script>
       <!--LIBRARIES-->
@@ -19,38 +20,21 @@
       <script type="text/javascript" src="res/scripts/angular.min.js"></script>
       <script type="text/javascript" src="res/scripts/angular-route.min.js"></script>
       <script type="text/javascript" src="res/scripts/noty.min.js"></script>
+      <script type="text/javascript" src="res/scripts/semantic.min.js"></script>
       
-      <script type="text/javascript" src="data.js"></script>
-      <script type="text/javascript" src="app.js"></script>
-      <script type="text/javascript" src="db.js"></script>
-      <script type="text/javascript" src="ui.js"></script>
+      <script type="text/javascript" src="res/scripts/custom/data.js"></script>
+      <script type="text/javascript" src="res/scripts/custom/app.js"></script>
+      <script type="text/javascript" src="res/scripts/custom/db.js"></script>
+      <script type="text/javascript" src="res/scripts/custom/ui.js"></script>
 
       <script type="text/javascript" src="res/scripts/bundle.js"></script>
       <script type="text/javascript" src="res/scripts/defiant.min.js"></script>
 
-      <script type="text/javascript" src="scripts/index.js"></script>
-      
+      <script type="text/javascript" src="res/scripts/custom/index.js"></script>
       <!-- Insert this line after script imports -->
       <script type="text/javascript">if (window.module) module = window.module;</script>
       <!--END SCRIPTS-->
       <!-- define angular controller -->
-      <style type="text/css">
-        body {
-          background-color: #DADADA;
-        }
-
-        body > .grid {
-            height: 100%;
-        }
-
-        .image {
-          margin-top: -100px;
-        }
-
-        .column {
-          max-width: 450px;
-        }
-      </style>
   </head>
   <body ng-controller="loginController">
   <div class="ui middle aligned center aligned grid" id="loginLy">
@@ -81,9 +65,7 @@
           </div>
           <!--<div class="ui fluid large teal submit button">Login</div>-->
         </div>
-
         <div class="ui error message"></div>
-
       </form>
 
       <div class="ui message">
