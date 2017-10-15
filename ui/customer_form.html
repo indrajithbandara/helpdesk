@@ -1,0 +1,55 @@
+<div ng-controller="customerCtrl">
+    <div class="row centered">
+        <h3>Customers - {{ semester }}</h3>
+        <span class="req">*</span> Required    
+    </div>
+
+    <br>
+
+    <!--FORM-->
+    <form class="ui form" name="data" ng-submit="save(customer)" novalidate>
+        <h4 class="ui dividing header">Add a new customer</h4>
+
+        <div class="field">
+            <label for="name">Customer Name <span class="req">*</span></label>
+            <input type="text" class="form-control" id="name" name="name" ng-model="customer.name" required>
+        </div>
+        <div class="grouped fields">
+            <label for="studentType">Student or Faculty <span class="req">*</span></label>
+            
+            <div class="field">
+                <div class="ui radio checkbox">
+                <input type="radio" name="studentType" ng-model="customer.studentType" id="studentTypeFaculty" value="faculty">
+                <label>Faculty</label>
+                </div>
+            </div>
+            
+            <div class="field">
+                <div class="ui radio checkbox">
+                <input type="radio" name="studentType" ng-model="customer.studentType" id="studentTypeStudent" value="student" ng-checked="true"> 
+                <label>Student</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="field">
+            <label for="studentNumber">Student ID number (if Faculty, put N/A) <span class="asp">*</span></label>
+            <input class="form-control" ng-model="customer.studentNumber" ng-value="customer.studentType == 'faculty' ? 'N/A' : ''" type="text" id="studentNumber" name="studentNumber" ng-readonly="customer.studentType == 'faculty'" ng-pattern="customer.studentType == 'faculty' ? regexFaculty : regexStudent" required>
+        </div>
+        
+        {{ customer.studentNumber }}
+
+        <div class="field">
+            <label for="phoneNumber">Phone number <span class="req">*</span></label>
+            <input type="text" class="form-control" pattern="\([0-9]{3}\)[0-9]{3}-[0-9]{4}" id="phoneNumber" name="phoneNumber" ng-model="customer.phoneNumber" required>
+        </div>
+        
+        <div class="field">
+            <label for="emailAddress">Email address <span class="req">*</span></label>
+            <input type="email" class="form-control" id="emailAddress" name="emailAddress" ng-model="customer.emailAddress" required>
+        </div>
+                                
+        <button class="ui primary button" type="submit" ng-disabled="data.$invalid">Submit</button>
+        <a class="ui danger button" ng-click="back()">Go Back</a>
+    </form>
+</div>

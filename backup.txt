@@ -17,6 +17,34 @@ addRequest(saved_data, function(response, error, body){
 });
 **/
 
+<!--
+        <a  class="btn btn-danger btn-lg"><i class="glyphicon glyphicon-remove-sign"></i> Bugs</a>
+        <a  class="btn btn-danger btn-lg"><i class="glyphicon glyphicon-remove-sign"></i> About</a>
+        <a  class="btn btn-success btn-lg"><i class="glyphicon glyphicon-thumbs-up"></i> </a>
+        <a  class="btn btn-info btn-lg"><i class="glyphicon glyphicon-wrench"></i> Stored Requests</a>
+        <a class="btn btn-info btn-lg"><i class="glyphicon glyphicon-wrench"></i> Customers</a>
+        -->
+
+		
+      <!--</div>-->
+
+	  
+    <!--<div class="ui attached stackable menu">-->
+      <!--<div class="ui container">-->
+
+	  <!--
+    <div class="field">
+        
+        
+        <label class="radio-inline">
+            <input type="radio"  ng-change="change(studentType)" 
+        </label>
+        <label class="radio-inline">
+            <input type="radio" ng-model="customer.studentType.tipo" ng-change="change(studentType)" name="studentType" id="studentTypeFaculty" value="faculty"> Faculty
+        </label>
+    </div>
+    -->
+
 //const TAGS_ONLY = {
     //"technician name": "technicianName",
     //"": "customerType",

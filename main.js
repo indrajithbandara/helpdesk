@@ -1,10 +1,3 @@
-/*
-mainWindow = new BrowserWindow({
-    width: 1000,
-    height: 750,
-    icon: path.join(__dirname, '/res/icon.png')
-})
-*/
 const electron = require('electron')
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
@@ -16,17 +9,15 @@ let mainWindow
 function createWindow() {
     mainWindow = new BrowserWindow({icon: path.join(__dirname, '/res/icon.png')})
     
-
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'index.html'),
         protocol: 'file',
         slashes: true
     }))
 
-    
     mainWindow.webContents.openDevTools()
     mainWindow.on('close', function () {mainWindow = null})
-    mainWindow.setMenu(null)
+    //mainWindow.setMenu(null)
     mainWindow.maximize()
 }
 

@@ -1,6 +1,30 @@
-function goBack(){
-	window.history.back();
-}
+const API_KEY = 'key-6dfcdfcdd1f344c7b10ea6dcb8076cb1';
+const DOMAIN = 'sandboxd0b16b8e00474a1aa88b2c1c5d38e426.mailgun.org';
+
+//Load the request module
+let request = require('request');
+let mailgun = require('mailgun-js')({ apiKey: API_KEY, domain: DOMAIN });
+
+function sendEmail(to, subject, content){
+    let email = {
+        from: 'FVTC <email@samples.mailgun.org>',
+        to: 'ddanielsilva661@gmail.com',
+        subject: 'Hello',
+        text: 'Testing some Mailgun awesomeness!'
+    };
+
+    mailgun.messages().send(email, function (error, body) {
+        //
+        
+        //
+        Lockr.sadd('logs', body);
+    });
+};
+
+/*
+*/
+
+
 
 function filterOnly(input){
     var data = {
@@ -108,11 +132,7 @@ function simplePost(URL, input_data, callBack){
     });
 }
 //
-$('#ticketNumber').mask('000000000');
-
-function isOnline(){
-    return navigator.onLine;
-}
+//$('#ticketNumber').mask('000000000');
 
 function coreEmail(type, message){
     var db = admin.database();
@@ -175,7 +195,7 @@ function checkLastSeq(){
             if(requests == undefined){
                 setLastSeq();   
             }else{
-                setRequests(requests);
+                Lockr.set('requests',requests);
                 setLastSeq();
             }
         }
@@ -193,7 +213,8 @@ function checkTechnicians(){
             var a = $.parseJSON(body);
             var requests = a.operation.details;
             if(requests != undefined){
-                setTechnicians(requests);
+                //setTechnicians(requests);
+                Lockr.set('technicians',requests);
             }
         }
     });
@@ -210,7 +231,8 @@ function checkRequests(){
             var a = $.parseJSON(body);
             var requests = a.operation.details;
             if(requests != undefined){
-                setRequests(requests);
+                Lockr.set('requests',requests);
+                //setRequests(requests);
             }
         }
     });
@@ -248,8 +270,4 @@ function getNextSeq(list){
         return PRINTJ.sprintf("%03d-%s", next, last[4]);
     }else
         return "001-L";
-}
-
-function capitalize(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
 }
