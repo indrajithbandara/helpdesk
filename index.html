@@ -23,18 +23,18 @@
           <div class="field">
             <div class="ui left icon input">
               <i class="user icon"></i>
-              <input ng-model="user.username" type="text" id="username" name="username" placeholder="Username">
+              <input ng-model="user.username" type="text" id="username" name="username" placeholder="Username" required>
             </div>
           </div>
           <div class="field">
             <div class="ui left icon input">
               <i class="lock icon"></i>
-              <input ng-model="user.password" type="password" name="password" placeholder="Password">
+              <input ng-model="user.password" type="password" name="password" placeholder="Password" required>
             </div>
           </div>
 
           <div>
-              <button class="ui fluid large teal button">Login</button>
+              <button class="ui fluid large teal button" type="submit" ng-disabled="login.$invalid">Login</button>
           </div>
           <!--<div class="ui fluid large teal submit button">Login</div>-->
         </div>
@@ -72,7 +72,7 @@
   <script type="text/javascript" src="res/scripts/semantic.min.js"></script>
   <script type="text/javascript" src="res/scripts/printj.min.js"></script>
   <script type="text/javascript" src="res/scripts/custom/dbSQL.js"></script>
-  <!--<script type="text/javascript" src="res/scripts/lockr.min.js" ></script>-->
+  <script type="text/javascript" src="res/scripts/lockr.min.js" ></script>
   <!--<script type="text/javascript" src="res/scripts/custom/db.js"></script>-->
   <!--<script type="text/javascript" src="res/scripts/custom/app.js"></script>-->
   <!--<script type="text/javascript" src="res/scripts/custom/ui.js"></script>-->

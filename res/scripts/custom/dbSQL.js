@@ -18,8 +18,6 @@ db.transaction(function (tx) {
     });
 });
 
-    
-
 function transactionSQL(sql, jsonOBJ, callBack){
     //
     function errorHandler(tx, error){

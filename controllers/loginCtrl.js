@@ -33,7 +33,7 @@ loginApp.controller('loginCtrl', function($scope, $window) {
         transactionSQL('SELECT * FROM users WHERE username = ? AND password = ?', [$scope.user.username, md5($scope.user.password)], 
             function(results){
                 if(results.rows.length > 0){
-                    localStorage.session = results.rows[0];
+                    Lockr.set('session', results.rows[0]);
                     $window.location.href = 'ui/default.html';        
                 }else{
                     new Noty({

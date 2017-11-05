@@ -37,17 +37,17 @@
             </div>
 
             <div class="field">
-                <label for="phoneNumber">Phone number <span class="req">*</span></label>
+                <label for="phone">Phone number <span class="req">*</span></label>
                 <input type="text" class="form-control" pattern="\([0-9]{3}\)[0-9]{3}-[0-9]{4}" id="phone" name="phone" ng-model="customer.phone" required>
             </div>
             
             <div class="field">
-                <label for="emailAddress">Email address <span class="req">*</span></label>
+                <label for="email">Email address <span class="req">*</span></label>
                 <input type="email" class="form-control" id="email" name="email" ng-model="customer.email" required>
             </div>
 
             <div class="ui center aligned container">
-                <button class="ui primary button" type="submit" ng-disabled="data.$invalid">Submit</button>
+                <button class="ui primary button" type="submit" ng-disabled="isSameEmail(customer.email) || isSameNumber(customer.studentNumber) || data.$invalid">Submit</button>
                 <a class="ui danger button" onclick="goBack()">Go Back</a>    
             </div>        
         </form>

@@ -1,8 +1,48 @@
-Validation for customers:
+DOING:
 
-Unique e-mail...
-Uniquer studentNumber...
 
+
+Regra para recuperar senha:
+    - Gravar no Firebase/MailGun
+
+Regra para Usuario:
+    - Se for usuario corrente, nao mudar status proprio:
+    (Change password View)
+        - Se for usuario comum, pode apenas mudar senha;
+        - Se for usuario administrador pode apenas mudar senha propria;
+    - Se for administrador pode mudar outras senhas e role
+    - Se for administrador pode deletar apenas outros
+
+Regra para Release:
+    - Fechar requisicao depois de colher dados:
+    - Gravar feedback em logs:
+    - Gerar grafico com opinioes => Se for administrador pode ver:
+    - Se nao tem internet, nao tem como inserir
+
+Regra para Intake:
+    - Se nao tiver internet:
+        - Grava, mas com ticket que pode estar errado:
+    - Pode ser editavel
+
+Regra para Only
+    - Se nao tiver internet:
+        - Grava, mas com ticket que pode estar errado:
+    - Pode ser editavel
+
+
+Regra para stored requests:
+    - Pode editar
+    - Pode enviar
+    - Se for Administrador, pode excluir
+
+DONE:
+Regra de negocio para Customers:
+    - Nao pode repetir studentNumber se ele nao for N/A
+    - Nao pode deletar email
+    - Se for administrador pode deletar customer
+
+Regra para Usuario:
+    - Se for aministrador pode deletar usuario
 
 
 /*

@@ -1,0 +1,51 @@
+<div class="ui text container">
+    <div ng-controller="userFormCtrl">
+        <div class="ui center aligned container">
+            <h3>Users - {{ semester }}</h3>
+            <span class="req">*</span> Required    
+        </div>
+        <br>
+        <!--FORM-->
+        <form class="ui form" name="data" ng-submit="save()" novalidate>
+            <h4 class="ui dividing header">Add a new user</h4>
+
+            <div class="field">
+                <label for="username">Username <span class="req">*</span></label>
+                <input type="text" class="form-control" id="username" name="username" ng-model="user.username" required>
+            </div>
+
+            <div class="grouped fields">
+                <label for="role">Role <span class="req">*</span></label>
+                
+                <div class="field">
+                    <div class="ui radio checkbox">
+                    <input type="radio" name="role" ng-model="user.role" value="admin" id="typeAdmin">
+                    <label>Administrator</label>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <div class="ui radio checkbox">
+                    <input type="radio" name="role" ng-model="user.role" value="user" id="typeUser"> 
+                    <label>User</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="password">Password <span class="req">*</span></label>
+                <input type="password" ng-value="user.password = user.code" class="form-control" id="password" name="password" ng-model="user.password" required>
+            </div>
+            
+            <div class="field">
+                <label for="confirm_password">Confirm password <span class="req">*</span></label>
+                <input type="password" ng-value="user.confirm_password = user.code" class="form-control" id="confirm_password" name="confirm_password" ng-model="user.confirm_password" required>
+            </div>
+
+            <div class="ui center aligned container">
+                <button class="ui primary button" type="submit" ng-disabled="data.$invalid">Submit</button>
+                <a class="ui danger button" onclick="goBack()">Go Back</a>    
+            </div>        
+        </form>
+    </div>
+</div>
