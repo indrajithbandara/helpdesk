@@ -1,25 +1,32 @@
-<div id="settingLy" class="container" ng-controller="settingsController">
-    <div class="row text-center">
-        <div class="col-md-12">
-            <img class="new" src="res/logo.png">
-            <h3 class="text-center">Settings - {{ semester }}</h3>
+<div class="ui text container">
+    <div ng-controller="settingsCtrl">
+        <div class="ui center aligned container">
+            <h3>Settings - {{ semester }}</h3>
         </div>
-    </div>
-    
-    <div class="row">
+        <br>
         <!--FORM-->
-        <form name="setting" ng-submit="save()" novalidate>
-            <div ng-class="{'has-error' : setting.semester.$invalid && !setting.semester.$pristine, 'form-group': true}">
-                <label for="semester">Semester / Year</label><span class="ast"> *</span>
-                <input ng-model="semester" type="text" class="form-control" name="semester" id="semester" pattern="([a-zA-Z]*\s\d{4})" required>    
-                <div class="text-danger" ng-show="setting.semester.$invalid && !setting.semester.$pristine">Semester is required in the format (season year).</div>
+        <form class="ui form" name="frmSettings" ng-submit="save(settings)" novalidate>
+            <h4 class="ui dividing header">Edit settings</h4>
+
+            <div class="field">
+                <label for="semester">Semester / Year&nbsp;<span class="req">*</span></label>
+                <input ng-model="settings.semester" type="text" class="form-control" name="semester" id="semester" pattern="([a-zA-Z]*\s\d{4})" required>
             </div>
-            
-            <div class="text-center">
-                <button class="btn btn-primary" type="submit" ng-disabled="setting.$invalid"><span class="glyphicon glyphicon-ok" aria-hidden="true" ></span>&nbsp;Save</button>
-                <a class="btn btn-primary" data-target="settingLy" href="#!/main"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true" ></span>&nbsp;Go Back</a>  
+
+            <div class="field">
+                <label for="semester">Ip&nbsp;<span class="req">*</span></label>
+                <input ng-model="settings.ip" type="text" class="form-control" name="ip" id="ip" pattern="" required>
             </div>
-            
+
+            <div class="field">
+                <label for="semester">API Key&nbsp;<span class="req">*</span></label>
+                <input ng-model="settings.key" type="text" class="form-control" name="key" id="key" pattern="" required>
+            </div>
+
+            <div class="ui center aligned container">
+                <button class="ui primary button" type="submit" ng-disabled="frmSettings.$invalid"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;Save</button>
+                <a class="ui danger button" onclick="goBack()">Go Back</a>
+            </div>
         </form>
     </div>
 </div>

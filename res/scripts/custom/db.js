@@ -1,102 +1,67 @@
-Lockr.prefix = 'tb';
-//Lockr.flush();
+Lockr.prefix = '';
 
-let tables = [
-    {table: 'users',
-        data: [
-            {id: 1, username: 'admin',  email: 'ddanielsilva661@gmail.com', code: 'admin', password: md5('admin'), role: 'admin'},
-            {id: 2, username: 'erik',   email: 'cetokaiba2009@hotmail.com', code: 'erik',  password: md5('erik'),  role: 'user'}, 
-        ],}, 
-    {table: 'settings',
-        data: {semester: 'Spring 2017', ip: 'localhost:8080', key: '51A25649-5E6D-4CA2-BFD6-4A52DB6E4652'},}, 
-    {table: 'requests',
-        data: [],},
-    {table: 'storedRequests',
-        data: [],},
-    {table: 'session',
-        data: {},},
-    {table: 'customers',
-        data: [],},
-    {table: 'lastSeq',
-        data: 1,},
-    {table: 'technicians',
-        data: [],},
-    {table: 'releases',
-        data: [],},
-    {table: 'logs',
-        data: [],
-    }
-];
-
-function initDB(){
-    var data_default = null;
-    for(var i = 0; i < tables.length; i++){
-        data_default = Lockr.get(tables[i].table);
-        if(data_default === undefined)
-            Lockr.set(tables[i].table, tables[i].data);    
-    }
+if(Lockr.get('settings') == undefined){
+    Lockr.set('settings', {semester: 'Spring 2017', ip: 'localhost:8080', key: '51A25649-5E6D-4CA2-BFD6-4A52DB6E4652'});
 }
 
+if(Lockr.get('lastSeq') == undefined){
+    Lockr.set('lastSeq', 1);
+}
+
+const tables = ['requests', 'storedRequests', 'session', 'technicians', 'releases'];
+
+for(var i = 0; i < tables.length; i++){
+    if(Lockr.get(tables[i]) === undefined)
+        Lockr.set(tables[i],[]);
+}
+//
 function setLastSeq(){
-    var index = Lockr.get('requests') != undefined ? Lockr.get('requests').length - 1 : -1;
-    var input = index == -1 ? '1' : Lockr.get('requests')[index];
-    Lockr.set('lastSeq', input); 
+    var index = Lockr.get('request') != undefined ? Lockr.get('request').length - 1 : -1;
+    var input = index == -1 ? '1' : Lockr.get('request')[index];
+    Lockr.set('request', input); 
 }
 //########################################################SQL
 //Users and Customers and Requests:
 function insertSQL(table, data){
-    var oldData = Lockr.get(table);
-    var newIndex = 1;
-    
-    if(oldData.length > 0)
-        newIndex = oldData[oldData.length - 1].id + 1; //ultim id + 1
-    
-    data.id = newIndex;
-    oldData.push(data);
-    Lockr.set(table, oldData);       
+    let temp = localStorage[table];
+    temp.push(data);
+    localStorage[table] = temp;     
 }
 
 function updateSQL(table, index, data){
-    var oldData = Lockr.get(table);
-    oldData[index] = data;
-    Lockr.set(table, oldData);
+    let temp = localStorage[table];
+    temp[index] = data;
+    localStorage[table] = temp;
 }
 
 function deleteSQL(table, index){
-    var oldData = Lockr.get(table);
-    if(index == oldData.length - 1){ //last
-        oldData.splice(-1, 1);    
+    let temp = localStorage[table];
+    if(index == temp.length - 1){ //last
+        temp.splice(-1, 1);    
     }else if(index == 0){ // first
-        oldData.shift();
+        temp.shift();
     }else{
         newData = [];
-        for (var i = 0; i < oldData.length; i++) {
+        for (var i = 0; i < temp.length; i++) {
             if(i != index){
-                newData.push(oldData[i])
+                newData.push(temp[i])
             }
         }
-        oldData = newData;  
+        temp = newData;  
     }
-    Lockr.set(table, oldData);    
+    localStorage[table] = temp;    
 }
-//########################################################SQL
-initDB();
-
 //Consts:
 //const TECHNICIAN_KEY = "51A25649-5E6D-4CA2-BFD6-4A52DB6E4652"; //HOME
-
-const TECHNICIAN_KEY = Lockr.get('settings').key;
-
-//HOME
-const BASE_REQUEST = "http://"+Lockr.get('settings').ip+"/sdpapi/request"; //HOME
-const BASE_REQUESTER = "http://"+Lockr.get('settings').ip+"/sdpapi/requester"; //HOME
-
+const TECHNICIAN_KEY = localStorage.settings.key;
+const IP = localStorage.settings.ip;
+const BASE_REQUEST = "http://"+IP+"/sdpapi/request"; //HOME
+const BASE_REQUESTER = "http://"+IP+"/sdpapi/requester"; //HOME
 //const BASE_REQUEST = "http://localhost:8080/sdpapi/request"; //HOME
 //const BASE_REQUESTER = "http://localhost:8080/sdpapi/requester"; //HOME
 
 //const TECHNICIAN_KEY = "A848D148-6475-41E2-97DA-10E72B0ED804"; //FVTC
 //const BASE_REQUEST = "http://10.4.132.81:8080/sdpapi/request"; //FVTC
-
 const OPERATIONS = ["ADD_REQUEST", "EDIT_REQUEST", "CLOSE_REQUEST", "GET_REQUESTS", "GET_ALL"];
 const FORMAT = "json";
 

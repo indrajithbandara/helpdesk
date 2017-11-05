@@ -6,24 +6,28 @@ let request = require('request');
 let mailgun = require('mailgun-js')({ apiKey: API_KEY, domain: DOMAIN });
 
 function sendEmail(to, subject, content){
+    //
     let email = {
-        from: 'FVTC <email@samples.mailgun.org>',
+        from: 'FVTC <helpdesk@fvtc.edu>',
         to: 'ddanielsilva661@gmail.com',
-        subject: 'Hello',
-        text: 'Testing some Mailgun awesomeness!'
+        subject: subject,
+        text: content
     };
 
     mailgun.messages().send(email, function (error, body) {
+        const booleanCheck = (error === undefined && body.message === "Queued. Thank you.");
+        var message = booleanCheck ? "Message sent to your e-mail!" : "Error: " + body.message + " / " + error; 
+
+        new Noty({
+            text: message,
+			type: 'success',
+			timeout: 3000,
+        }).on('onClose', function() {
+            Lockr.sadd('logs', body);
+		}).show();
         //
-        
-        //
-        Lockr.sadd('logs', body);
     });
 };
-
-/*
-*/
-
 
 
 function filterOnly(input){
@@ -131,8 +135,6 @@ function simplePost(URL, input_data, callBack){
         callBack(response, error, body);
     });
 }
-//
-//$('#ticketNumber').mask('000000000');
 
 function coreEmail(type, message){
     var db = admin.database();
@@ -157,28 +159,6 @@ function makeConfirm(text, ok, cancel){
           })
         ]
     }).show();
-}
-
-function sendEmail(title, type){
-    
-    /*
-    $.confirm({
-        title: title,
-        content: 'url:modals/email.html',
-        buttons: {
-            ok: function(){
-                var result = this.$content.find('#message').val();
-                if(result.trim()){
-                    coreEmail(type, result);
-                }else{
-                    $.alert('Message cannot be empty');
-                }
-            },
-            close: function(){
-            }
-        },
-        columnClass: 'medium',
-    });*/
 }
 
 function checkLastSeq(){
@@ -247,7 +227,6 @@ function checkHttpStatus(error, response, body){
     return 1
 }
 
-
 function getLastSequence(list){
     if(list == undefined || list == null || list.length == 0){
         //alert("HEHEH");
@@ -270,4 +249,8 @@ function getNextSeq(list){
         return PRINTJ.sprintf("%03d-%s", next, last[4]);
     }else
         return "001-L";
+}
+
+function goBack(){
+    window.history.back();
 }

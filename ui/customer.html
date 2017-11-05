@@ -1,37 +1,43 @@
-<div ng-controller="customerCtrl">
-    <div class="row centered">
-        <h3 class="centered">Customers - {{ semester }}</h3>
-    </div>
+<div  class="ui column grid centered">
+    <div ng-controller="customerCtrl">
+        <div class="row">
+            <h3>Customers - {{ semester }}</h3>
+        </div>
+            <table class="ui celled table bordered">
+                <thead>
+                    <tr>
+                        <td>Id</td>    
+                        <td>Name</td>    
+                        <td>E-mail</td>    
+                        <td>Phone</td>    
+                        <td>Customer Type</td>    
+                        <td>Student Number</td>    
+                        <td>Actions</td>    
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-show="customers.length == 0">
+                        <td colspan="7" class="text-center">No customers</td>
+                    </tr>
+                    <tr ng-if="x" ng-repeat="x in customers">
+                        <td>{{ x.id }}</td>
+                        <td>{{ x.name }}</td>
+                        <td>{{ x.email }}</td>
+                        <td>{{ x.phone }}</td>
+                        <td>{{ x.type | capitalize }}</td>
+                        <td>{{ x.studentNumber }}</td>
+                        <td>
+                            <a class="ui primary button" href="#!/edit_customer/{{ x.id }}">&nbsp;Edit</a>
+                            &nbsp;
+                            <a class="ui primary button" ng-show="session.role == 'admin'" ng-click="delete(x.id)" ></span>&nbsp;Delete</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-    <table class="ui celled table">
-        <thead>
-            <tr>
-                <td>Name</td>    
-                <td>E-mail</td>    
-                <td>Phone</td>    
-                <td>Customer Type</td>    
-                <td>Student Number</td>    
-                <td>Actions</td>    
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-show="customers.length == 0">
-                <td colspan="6" class="text-center">No customers</td>
-            </tr>
-            <tr ng-if="x" ng-repeat="x in customers track by $index">
-                <td>{{ x.name }}</td>
-                <td>{{ x.emailAddress }}</td>
-                <td>{{ x.phoneNumber }}</td>
-                <td>{{ capitalize(x.studentType) }}</td>
-                <td>{{ x.studentNumber }}</td>
-                <td>
-                    <a class="ui primary button" href="#!/edit_customer/{{ $index }}">&nbsp;Edit</a>
-                    &nbsp;
-                    <a class="ui primary button" ng-show="session.role == 'admin'" ng-click="delete($index)" ></span>&nbsp;Delete</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <a class="ui primary button" href="#!/add_customer">&nbsp;Add  Customer</a>
-    <a class="ui button" href="#!/main">&nbsp;Go Back</a>
+        <div class="row">
+            <a class="ui primary button" href="#!/add_customer">&nbsp;Add  Customer</a>
+            <a class="ui button" onclick="goBack()">&nbsp;Go Back</a>
+        </div>
+    </div>
 </div>

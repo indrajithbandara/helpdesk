@@ -4,32 +4,9 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <title>Help Desk Forms</title>
-      
       <link rel="stylesheet" type="text/css" href="res/scripts/semantic.min.css">
       <link rel="stylesheet" type="text/css" href="res/scripts/noty.css">
       <link rel="stylesheet" type="text/css" href="res/scripts/custom/login.css">
-
-      <!-- Insert this line above script imports  -->
-      <script type="text/javascript">if(typeof module === 'object') {window.module = module; module = undefined;}</script>
-      <!--LIBRARIES-->
-      <script type="text/javascript" src="res/scripts/lockr.min.js" ></script>
-      <script type="text/javascript" src="res/scripts/md5.min.js"></script>
-      <script type="text/javascript" src="res/scripts/jquery.min.js"></script>
-      <script type="text/javascript" src="res/scripts/angular.min.js"></script>
-      <script type="text/javascript" src="res/scripts/noty.min.js"></script>
-      <script type="text/javascript" src="res/scripts/semantic.min.js"></script>
-      
-      <script type="text/javascript" src="res/scripts/custom/data.js"></script>
-      <script type="text/javascript" src="res/scripts/custom/app.js"></script>
-      <script type="text/javascript" src="res/scripts/custom/db.js"></script>
-      <script type="text/javascript" src="res/scripts/custom/ui.js"></script>
-
-      <script type="text/javascript" src="res/scripts/bundle.js"></script>
-      <script type="text/javascript" src="res/scripts/defiant.min.js"></script>
-      <script type="text/javascript" src="controllers/loginCtrl.js"></script>
-      <!-- Insert this line after script imports -->
-      <script type="text/javascript">if (window.module) module = window.module;</script>
-      <!--END SCRIPTS-->
       <!-- define angular controller -->
   </head>
   <body ng-controller="loginCtrl">
@@ -41,7 +18,7 @@
           Log-in to your account
         </div>
       </h2>
-      <form class="ui large form" name="login" ng-submit="tryLogin(user)" novalidate>
+      <form class="ui large form" name="login" ng-submit="tryLogin()" novalidate>
         <div class="ui stacked segment">
           <div class="field">
             <div class="ui left icon input">
@@ -65,11 +42,46 @@
       </form>
 
       <div class="ui message">
-        Forgot your password? <a href="#" ng-click="recoverPassword(123)">Click here</a>
+        Forgot your password? <a href="#" ng-click="openRecoverPassword()">Click here</a>
       </div>
     </div>
   </div>
 
-  
+  <div class="ui modal" id="recover_email">
+    <div class="header">Recover E-mail</div>
+    <div class="content">
+      <h4 class="ui dividing header">Type your username below</h4>
+
+      <form class="ui form" name="data" ng-submit="sendPassword()">
+        <div class="field">
+          <label>Username</label>
+          <input type="text" name="username" placeholder="Username" ng-model="username" required>
+        </div>
+        <button class="ui button" type="submit" ng-disabled="data.$invalid">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Insert this line above script imports  -->
+  <script type="text/javascript">if(typeof module === 'object') {window.module = module; module = undefined;}</script>
+  <!--LIBRARIES-->
+  <script type="text/javascript" src="res/scripts/md5.min.js"></script>
+  <script type="text/javascript" src="res/scripts/jquery.min.js"></script>
+  <script type="text/javascript" src="res/scripts/angular.min.js"></script>
+  <script type="text/javascript" src="res/scripts/noty.min.js"></script>
+  <script type="text/javascript" src="res/scripts/semantic.min.js"></script>
+  <script type="text/javascript" src="res/scripts/printj.min.js"></script>
+  <script type="text/javascript" src="res/scripts/custom/dbSQL.js"></script>
+  <!--<script type="text/javascript" src="res/scripts/lockr.min.js" ></script>-->
+  <!--<script type="text/javascript" src="res/scripts/custom/db.js"></script>-->
+  <!--<script type="text/javascript" src="res/scripts/custom/app.js"></script>-->
+  <!--<script type="text/javascript" src="res/scripts/custom/ui.js"></script>-->
+  <script type="text/javascript" src="res/scripts/bundle.js"></script>
+  <script type="text/javascript" src="res/scripts/defiant.min.js"></script>
+  <script type="text/javascript" src="controllers/loginCtrl.js"></script>
+  <!-- Insert this line after script imports -->
+  <script type="text/javascript">if (window.module) module = window.module;</script>
+  <!--END SCRIPTS-->
+
   </body>
 </html>
