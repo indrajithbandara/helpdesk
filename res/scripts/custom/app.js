@@ -1,34 +1,8 @@
 const API_KEY = 'key-6dfcdfcdd1f344c7b10ea6dcb8076cb1';
 const DOMAIN = 'sandboxd0b16b8e00474a1aa88b2c1c5d38e426.mailgun.org';
-
 //Load the request module
 let request = require('request');
 let mailgun = require('mailgun-js')({ apiKey: API_KEY, domain: DOMAIN });
-
-function sendEmail(to, subject, content){
-    //
-    let email = {
-        from: 'FVTC <helpdesk@fvtc.edu>',
-        to: 'ddanielsilva661@gmail.com',
-        subject: subject,
-        text: content
-    };
-
-    mailgun.messages().send(email, function (error, body) {
-        const booleanCheck = (error === undefined && body.message === "Queued. Thank you.");
-        var message = booleanCheck ? "Message sent to your e-mail!" : "Error: " + body.message + " / " + error; 
-
-        new Noty({
-            text: message,
-			type: 'success',
-			timeout: 3000,
-        }).on('onClose', function() {
-            Lockr.sadd('logs', body);
-		}).show();
-        //
-    });
-};
-
 
 function filterOnly(input){
     var data = {
@@ -46,12 +20,12 @@ function filterOnly(input){
     data.operation.details.category = input.category.$viewValue;
     data.operation.details.description = input.description.$viewValue;
     data.operation.details.solution = input.solution.$viewValue;
-    data.operation.details.technician = input.technician.$viewValue;
-    data.operation.details.requester = input.technician.$viewValue;
+    data.operation.details.technician = input.technician.$viewValue.username;
+    data.operation.details.requester = input.technician.$viewValue.username;
     data.operation.details.subject = input.ticketNumber.$viewValue;
     data.operation.details.SUBJECT = input.ticketNumber.$viewValue; 
     data.operation.details["ticket number"] = input.ticketNumber.$viewValue;
-    data.operation.details["student or faculty"] = input.customer.$viewValue.studentType;
+    data.operation.details["student or faculty"] = input.customer.$viewValue.type;
     data.operation.details["student id number (if faculty, put n/a)"] = input.customer.$viewValue.studentNumber;
     data.operation.details["customer name"] = input.customer.$viewValue.name;
 
@@ -126,7 +100,6 @@ function getRequest(URL, input_data, operation_name, callBack){
     });
 }
 
-//
 function simplePost(URL, input_data, callBack){
     request.post({
         url:    URL,
@@ -136,121 +109,89 @@ function simplePost(URL, input_data, callBack){
     });
 }
 
-function coreEmail(type, message){
-    var db = admin.database();
-    var ref = db.ref("/messages");
-    ref.push({type: type, message: message}, function(error) {
-      if (error) {
-        console.log("Data could not be saved." + error);
-      } else {
-        console.log("Data saved successfully.");
-      }
-    });
-}
-
-function makeConfirm(text, ok, cancel){
-    var n = new Noty({
-        text: 'Do you want to continue? <input id="example" type="text">',
-        buttons: [
-          Noty.button(ok.text, 'btn btn-success', ok.callback, {id: 'button1', 'data-status': 'ok'}),
-          Noty.button(cancel, 'btn btn-error', function () {
-              console.log('button 2 clicked');
-              n.close();
-          })
-        ]
-    }).show();
-}
-
-function checkLastSeq(){
-    getRequests(function(error, response, body){
-        var feedback = checkHttpStatus(error, response, body);
-        if(feedback == -1){
-            console.log('No connection');
-        }else if(feedback == 0){
-            console.log('Error: ' + body);
-        }else{
-            var a = $.parseJSON(body);
-            var requests = a.operation.details;
-            
-            if(requests == undefined){
-                setLastSeq();   
-            }else{
-                Lockr.set('requests',requests);
-                setLastSeq();
-            }
-        }
-    });
-}
-
-function checkTechnicians(){
-    getRequesters(function(error, response, body){
-        var feedback = checkHttpStatus(error, response, body);
-        if(feedback == -1){
-            console.log('No connection');
-        }else if(feedback == 0){
-            console.log('Error: ' + body);
-        }else{
-            var a = $.parseJSON(body);
-            var requests = a.operation.details;
-            if(requests != undefined){
-                //setTechnicians(requests);
-                Lockr.set('technicians',requests);
-            }
-        }
-    });
-}
-
-function checkRequests(){
-    getRequests(function(error, response, body){
-        var feedback = checkHttpStatus(error, response, body);
-        if(feedback == -1){
-            console.log('No connection');
-        }else if(feedback == 0){
-            console.log('Error: ' + body);
-        }else{
-            var a = $.parseJSON(body);
-            var requests = a.operation.details;
-            if(requests != undefined){
-                Lockr.set('requests',requests);
-                //setRequests(requests);
-            }
-        }
-    });
-}
-
 function checkHttpStatus(error, response, body){
     if(error == undefined){
         return -1; // No Internet
-    }else if(error.statusCode != 200){
-        return 0;
     }
-    return 1
+    return (error.statusCode != 200) ? 0 : 1;
+}
+
+function checkData(entity){
+    //
+    var callBack = function(error, response, body){
+        var feedback = checkHttpStatus(error, response, body);
+
+        if(feedback == -1){
+            console.log('No connection');
+        }else if(feedback == 0){
+            console.log('Error: ' + body);
+        }else{
+            var a = $.parseJSON(body);
+            var requests = a.operation.details;
+            if(requests != undefined){
+                Lockr.set(entity, requests);
+                console.log(requests);
+            }
+        }
+    }
+    //
+    if(entity == 'technicians'){
+        getRequesters(callBack);    
+    }else if(entity == 'requests'){
+        getRequests(callBack);
+    }
+}
+
+function checkTechnicians(){
+    checkData('technicians');
+}
+
+function checkRequests(){
+    checkData('requests');
+}
+
+function checkLastSeq(){
+    checkRequests();
+    setLastSeq();
 }
 
 function getLastSequence(list){
-    if(list == undefined || list == null || list.length == 0){
-        //alert("HEHEH");
+
+    if(list == undefined || list == null || list.length == 0 || list[0].SUBJECT === undefined){
         return "000-L";
     }else{
-        var last = list[0].SUBJECT;
+
+        let last = list[0].SUBJECT;
+        
         console.log(last);
-        if(parseInt(last) != undefined){
+        
+        if(parseInt(last) !== undefined && last[4] !== undefined){
             var next = parseInt(last);
             return PRINTJ.sprintf("%03d-%s", next, last[4]);
-        }else
-            return "000-L";
+        }
+
+            
+        return "000-L";
     }
 }
 
 function getNextSeq(list){
     var last = getLastSequence(list);
+    
     if(parseInt(last) != undefined){
         var next = parseInt(last) + 1;
         return PRINTJ.sprintf("%03d-%s", next, last[4]);
-    }else
-        return "001-L";
+    }
+    
+    return "001-L";
 }
 
 function goBack(){
     window.history.back();
 }
+
+const CALLBACK_GO_BACK = {
+    onClose: function() {
+        goBack();
+    },
+};

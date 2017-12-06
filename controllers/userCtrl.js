@@ -25,6 +25,7 @@ angApp.controller('userCtrl', function($scope, $window){
                 text: 'User deleted successfully!',
                 type: 'success',
                 timeout: 1000,
+                callbacks: CALLBACK_GO_BACK,
             }).show();   
         });
     };
@@ -33,7 +34,10 @@ angApp.controller('userCtrl', function($scope, $window){
 angApp.controller('userFormCtrl', function($scope, $window, $routeParams){
     //
     $scope.semester = Lockr.get('settings').semester;
-
+    $scope.session = Lockr.get('session');
+    $scope.usernames = []
+    $scope.oldName = '';
+    
     transactionSQL('SELECT * FROM users', [], function(results){
         if(results.rows.length > 0){                
             $scope.users = [];
@@ -44,7 +48,13 @@ angApp.controller('userFormCtrl', function($scope, $window, $routeParams){
 
             if($routeParams.id != undefined){
                 $scope.user = $scope.users.filter(user => user.id == $routeParams.id)[0];
+                $scope.user.password = $scope.user.confirm_password = $scope.user.code;
+
+                $scope.oldName = $scope.users.filter(user => user.id == $routeParams.id)[0].username;
             }
+
+            $scope.usernames = $scope.users.filter(user => user.id != $routeParams.id).map(user => user.username);
+            console.log($scope.usernames);
             
             $scope.$apply();
         }
@@ -56,6 +66,7 @@ angApp.controller('userFormCtrl', function($scope, $window, $routeParams){
         let SQL = "INSERT INTO users (username, role, password, code) VALUES (?,?,?,?)";
         if($routeParams.id != undefined){
             SQL = "UPDATE users SET username = ?, role = ?, password = ?, code = ? WHERE id = " + $routeParams.id;
+            
         }
 
         transactionSQL(SQL, 
@@ -66,7 +77,16 @@ angApp.controller('userFormCtrl', function($scope, $window, $routeParams){
                     text: 'User data saved successfully!',
                     type: 'success',
                     timeout: 1000,
+                    callbacks: CALLBACK_GO_BACK,
                 }).show();   
         });
     };
+
+    $scope.isSameUsername = function(username){
+        return $scope.usernames.includes(username);
+    }
+
+    $scope.areDiferent = function(password, confirmation){
+        return password !== confirmation;
+    }    
 });

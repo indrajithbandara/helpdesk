@@ -14,11 +14,15 @@ function createWindow() {
         protocol: 'file',
         slashes: true
     }))
-
-    mainWindow.webContents.openDevTools()
-    mainWindow.on('close', function () {mainWindow = null})
-    //mainWindow.setMenu(null)
+    
     mainWindow.maximize()
+    mainWindow.on('close', function () {mainWindow = null})
+
+    //Comment:
+    mainWindow.webContents.openDevTools()
+    
+    //Uncomment:
+    //mainWindow.setMenu(null)
 }
 
 const shouldQuit = app.makeSingleInstance((commandLine, workingDirectory) => {

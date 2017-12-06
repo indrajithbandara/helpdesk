@@ -53,9 +53,9 @@ function deleteSQL(table, index){
 }
 //Consts:
 //const TECHNICIAN_KEY = "51A25649-5E6D-4CA2-BFD6-4A52DB6E4652"; //HOME
-const TECHNICIAN_KEY = localStorage.settings.key;
-const IP = localStorage.settings.ip;
-const BASE_REQUEST = "http://"+IP+"/sdpapi/request"; //HOME
+const TECHNICIAN_KEY = Lockr.get('settings').key;
+const IP             = Lockr.get('settings').ip;
+const BASE_REQUEST   = "http://"+IP+"/sdpapi/request"; //HOME
 const BASE_REQUESTER = "http://"+IP+"/sdpapi/requester"; //HOME
 //const BASE_REQUEST = "http://localhost:8080/sdpapi/request"; //HOME
 //const BASE_REQUESTER = "http://localhost:8080/sdpapi/requester"; //HOME

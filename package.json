@@ -6,6 +6,7 @@
   "license": "BSD-3-Clause",
   "repository": "https://github.com/danieldsf/helpdesk.git",
   "dependencies": {
+    "axios": "^0.17.0",
     "browserify": "^14.1.0",
     "electron-single-instance": "0.0.2",
     "mailgun-js": "^0.13.1",

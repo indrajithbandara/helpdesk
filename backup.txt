@@ -1,17 +1,14 @@
 DOING:
 
+Regra para Email:
+    - Feedback:
+    - Recover password:
+        - Gravar no Firebase/MailGun => E-mail do Help Desk
 
-
-Regra para recuperar senha:
-    - Gravar no Firebase/MailGun
-
-Regra para Usuario:
-    - Se for usuario corrente, nao mudar status proprio:
-    (Change password View)
-        - Se for usuario comum, pode apenas mudar senha;
-        - Se for usuario administrador pode apenas mudar senha propria;
-    - Se for administrador pode mudar outras senhas e role
-    - Se for administrador pode deletar apenas outros
+Regra para Only
+    - Se nao tiver internet:
+        - Grava, mas com ticket que pode estar errado:
+    - Pode ser editavel
 
 Regra para Release:
     - Fechar requisicao depois de colher dados:
@@ -23,12 +20,6 @@ Regra para Intake:
     - Se nao tiver internet:
         - Grava, mas com ticket que pode estar errado:
     - Pode ser editavel
-
-Regra para Only
-    - Se nao tiver internet:
-        - Grava, mas com ticket que pode estar errado:
-    - Pode ser editavel
-
 
 Regra para stored requests:
     - Pode editar
@@ -43,7 +34,12 @@ Regra de negocio para Customers:
 
 Regra para Usuario:
     - Se for aministrador pode deletar usuario
-
+    - Se for usuario corrente, nao mudar status proprio:
+    (Change password View)
+        - Se for usuario comum, pode apenas mudar senha;
+        - Se for usuario administrador pode apenas mudar senha propria;
+    - Se for administrador pode mudar outras senhas e role
+    - Se for administrador pode deletar apenas outros
 
 /*
     
@@ -461,3 +457,124 @@ addRequest(saved_data, function(response, error, body){
     //"subject": "ticketNumber",
     //"category": "category"
 //};
+
+
+
+
+
+/*
+    else if(error.statusCode != 200){
+        return 0;
+    }
+    return 1
+    */
+/*
+    getRequests(function(error, response, body){
+        var feedback = checkHttpStatus(error, response, body);
+        if(feedback == -1){
+            console.log('No connection');
+        }else if(feedback == 0){
+            console.log('Error: ' + body);
+        }else{
+            var a = $.parseJSON(body);
+            var requests = a.operation.details;
+            
+            if(requests == undefined){
+                setLastSeq();   
+            }else{
+                Lockr.set('requests',requests);
+                setLastSeq();
+            }
+        }
+    });
+    */
+
+
+/*
+    getRequesters(function(error, response, body){
+        var feedback = checkHttpStatus(error, response, body);
+
+        if(feedback == -1){
+            console.log('No connection');
+        }else if(feedback == 0){
+            console.log('Error: ' + body);
+        }else{
+            var a = $.parseJSON(body);
+            var requests = a.operation.details;
+            if(requests != undefined){
+                Lockr.set('technicians',requests);
+            }
+        }
+    });
+*/
+
+
+    /*
+    getRequests(function(error, response, body){
+        var feedback = checkHttpStatus(error, response, body);
+
+        if(feedback == -1){
+            console.log('No connection');
+        }else if(feedback == 0){
+            console.log('Error: ' + body);
+        }else{
+            var a = $.parseJSON(body);
+            var requests = a.operation.details;
+            if(requests != undefined){
+                Lockr.set('requests',requests);
+            }
+        }
+    });
+    */
+
+
+/*
+
+function sendEmail(to, subject, content){
+    //
+    let email = {
+        from: 'FVTC <helpdesk@fvtc.edu>',
+        to: 'ddanielsilva661@gmail.com',
+        subject: subject,
+        text: content
+    };
+
+    mailgun.messages().send(email, function (error, body) {
+        const booleanCheck = (error === undefined && body.message === "Queued. Thank you.");
+        var message = booleanCheck ? "Message sent to your e-mail!" : "Error: " + body.message + " / " + error; 
+
+        new Noty({
+            text: message,
+            type: 'success',
+            timeout: 3000,
+        }).on('onClose', function() {
+            Lockr.sadd('logs', body);
+        }).show();
+        //
+    });
+};
+
+function coreEmail(type, message){
+    var db = admin.database();
+    var ref = db.ref("/messages");
+    ref.push({type: type, message: message}, function(error) {
+      if (error) {
+        console.log("Data could not be saved." + error);
+      } else {
+        console.log("Data saved successfully.");
+      }
+    });
+}
+function makeConfirm(text, ok, cancel){
+    var n = new Noty({
+        text: 'Do you want to continue? <input id="example" type="text">',
+        buttons: [
+          Noty.button(ok.text, 'btn btn-success', ok.callback, {id: 'button1', 'data-status': 'ok'}),
+          Noty.button(cancel, 'btn btn-error', function () {
+              console.log('button 2 clicked');
+              n.close();
+          })
+        ]
+    }).show();
+}
+*/

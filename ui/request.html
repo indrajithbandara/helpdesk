@@ -13,10 +13,10 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-show="requests.length == 0">
+            <tr ng-show="storedRequests.length == 0">
               <td colspan="3" class="text-center">No requests</td>
             </tr>
-            <tr ng-repeat="x in requests">
+            <tr ng-repeat="x in storedRequests">
               <td>{{ x.input }}</td>
               <td>{{ x.code }}</td>
               <td>

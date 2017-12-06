@@ -74,21 +74,21 @@ angApp.controller('menuCtrl', function($scope, $window, $http) {
 });
 
 angApp.controller('mainCtrl', function($scope, $window) {
+	//
 	$scope.semester = Lockr.get('settings').semester;
-	/*
+	checkTechnicians();
+	checkRequests();	
+	//
+});
+
+/*
 	$scope.$on('$viewContentLoaded', function() {
 		
 		//Colocar Load bar
 		checkTechnicians();
 		checkRequests();
 
-		let booleanCheck = false;
-		//$scope.settings = Lockr.get('settings');
-				
-		$scope.session  = localStorage.session;		
 		
-		$scope.lastSeq      = getLastSequence($scope.requests);
-		$scope.ticketNumber = getNextSeq($scope.requests);
 		
 		$scope.satisfactionLevel = SATISFACTION;
 		$scope.satisfaction = $scope.satisfactionLevel[1].value;
@@ -160,9 +160,4 @@ angApp.controller('mainCtrl', function($scope, $window) {
 	//Helpers:
 	$scope.isLogged = localStorage.session != {};
 	$scope.isOnline = navigator.onLine;
-
-	$scope.capitalize = function(string) {
-		
-	};
 	*/
-});

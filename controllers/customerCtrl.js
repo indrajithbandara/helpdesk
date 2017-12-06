@@ -23,6 +23,7 @@ angApp.controller('customerCtrl', function($scope, $window) {
                 text: 'Customer deleted successfully!',
                 type: 'success',
                 timeout: 1000,
+                callbacks: CALLBACK_GO_BACK,
             }).show();   
         });
     }; 
@@ -71,7 +72,9 @@ angApp.controller('customerFormCtrl', function($scope, $window, $routeParams) {
                     text: 'Customer data saved successfully!',
                     type: 'success',
                     timeout: 1000,
-                }).show();   
+                }).on('onClose', function() {
+                    goBack();
+                }).show(); 
         });
     };
 
