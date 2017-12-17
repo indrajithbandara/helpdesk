@@ -13,6 +13,7 @@
                 <label for="name">Customer Name <span class="req">*</span></label>
                 <input type="text" class="form-control" id="name" name="name" ng-model="customer.name" required>
             </div>
+            
             <div class="grouped fields">
                 <label for="studentType">Student or Faculty <span class="req">*</span></label>
                 
@@ -30,11 +31,6 @@
                     </div>
                 </div>
             </div>
-            
-            <div class="field">
-                <label for="studentNumber">Student ID number (if Faculty, put N/A) <span class="asp">*</span></label>
-                <input class="form-control" ng-model="customer.studentNumber" ng-value="customer.type == 'faculty' ? 'N/A' : ''" type="text" id="studentNumber" name="studentNumber" ng-readonly="customer.type == 'faculty'" ng-pattern="customer.type == 'faculty' ? regexFaculty : regexStudent" required>
-            </div>
 
             <div class="field">
                 <label for="phone">Phone number <span class="req">*</span></label>
@@ -47,7 +43,7 @@
             </div>
 
             <div class="ui center aligned container">
-                <button class="ui primary button" type="submit" ng-disabled="isSameEmail(customer.email) || isSameNumber(customer.studentNumber) || data.$invalid">Submit</button>
+                <button class="ui primary button" type="submit" ng-disabled="data.$invalid || !customer.type">Submit</button>
                 <a class="ui danger button" onclick="goBack()">Go Back</a>    
             </div>        
         </form>

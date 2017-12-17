@@ -53,10 +53,19 @@ function deleteSQL(table, index){
 }
 //Consts:
 //const TECHNICIAN_KEY = "51A25649-5E6D-4CA2-BFD6-4A52DB6E4652"; //HOME
-const TECHNICIAN_KEY = Lockr.get('settings').key;
-const IP             = Lockr.get('settings').ip;
-const BASE_REQUEST   = "http://"+IP+"/sdpapi/request"; //HOME
-const BASE_REQUESTER = "http://"+IP+"/sdpapi/requester"; //HOME
+var TECHNICIAN_KEY = Lockr.get('settings').key;
+var IP             = Lockr.get('settings').ip;
+var BASE_REQUEST   = "http://"+IP+"/sdpapi/request"; //HOME
+var BASE_REQUESTER = "http://"+IP+"/sdpapi/requester"; //HOME
+
+function changeSettings(){
+    TECHNICIAN_KEY = Lockr.get('settings').key;
+    IP             = Lockr.get('settings').ip;
+    BASE_REQUEST   = "http://"+IP+"/sdpapi/request"; //HOME
+    BASE_REQUESTER = "http://"+IP+"/sdpapi/requester"; //HOME    
+}
+
+changeSettings();
 //const BASE_REQUEST = "http://localhost:8080/sdpapi/request"; //HOME
 //const BASE_REQUESTER = "http://localhost:8080/sdpapi/requester"; //HOME
 
@@ -87,6 +96,14 @@ const CATS = [
     { name: 'Wi-fi', value: 'Wi-fi' }
 ];
 
+const DEVICE_TYPES = [
+        { name: 'Desktop', value: 'Desktop' }, 
+        { name: 'Laptop', value: 'Laptop' },
+        { name: 'Mobile Device', value: 'Mobile Device' }, 
+        { name: 'Other', value: 'Other' },
+];
+
+/*
 const COLORS = [
         { name: 'Black', value: 'Black' }, 
         { name: 'Blue', value: 'Blue' },
@@ -118,6 +135,7 @@ const OS = [
         { name: 'Windows Vista', value: 'Windows Vista' },
         { name: 'Windows XP', value: 'Windows XP' }
 ];  
+*/
 
 const BASE_GET = {
     "operation": {
@@ -133,6 +151,7 @@ const BASE_GET = {
     }
 };
 
+/*
 const BASE_CLOSE = {
     "operation": {
         "details": {
@@ -141,6 +160,7 @@ const BASE_CLOSE = {
         }
     }
 }
+*/
 
 const INPUT_INTAKE = {
     "operation": {
@@ -188,10 +208,11 @@ const TAGS_INTAKE = {
         "subject": "ticketNumber",
         "category": "category"
 };
-
+/*
 const SATISFACTION = [
         { name: 'Very Satisfied', value: 'Very Satisfied' }, 
         { name: 'Satisfied', value: 'Satisfied' },
         { name: 'Unsatisfied', value: 'Unsatisfied' }, 
         { name: 'Very Unsatisfied', value: 'Very Unsatisfied' },
 ];
+*/

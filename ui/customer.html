@@ -11,8 +11,7 @@
                     <td>Name</td>    
                     <td>E-mail</td>    
                     <td>Phone</td>    
-                    <td>Customer Type</td>    
-                    <td>Student Number</td>    
+                    <td>Customer Type</td>   
                     <td>Actions</td>    
                 </tr>
             </thead>
@@ -26,7 +25,6 @@
                     <td>{{ x.email }}</td>
                     <td>{{ x.phone }}</td>
                     <td>{{ x.type | capitalize }}</td>
-                    <td>{{ x.studentNumber }}</td>
                     <td>
                         <a class="ui primary button" href="#!/edit_customer/{{ x.id }}">&nbsp;Edit</a>
                         &nbsp;

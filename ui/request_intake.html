@@ -15,7 +15,7 @@
         
         <div class="form-group">
             <!--FORM-->
-            <form class="ui form" name="intake" ng-submit="save(intake)" novalidate>
+            <form class="ui form" name="intake" ng-submit="save()" novalidate>
                 <div class="form-group">
                     <label for="agree">I have read and agree to the above statement. Clicking this box is the same as signing the document (Digital Signature).<span class="asp"> *</span></label>
                     <!---HA-->
@@ -230,7 +230,7 @@
     //Intake
     $('#alternativePhone').mask('(000)000-0000');
     $('#phoneNumber').mask('(000)000-0000');
-    $('#ticketNumber').mask('000-S');
+    $('#ticketNumber').mask('000');
 
     //Intake
     $('#withCharger').change(function(){

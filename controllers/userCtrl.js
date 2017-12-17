@@ -17,7 +17,7 @@ angApp.controller('userCtrl', function($scope, $window){
 
     //delete TODO..
     $scope.delete = function(id){
-        let SQL = "DELETE FROM users WHERE id = ?";
+        let SQL = "DELETE FROM users WHERE id = ? AND username != 'admin'";
 
         transactionSQL(SQL, [id], function(results){
             //

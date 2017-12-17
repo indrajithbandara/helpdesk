@@ -4,61 +4,18 @@ const DOMAIN = 'sandboxd0b16b8e00474a1aa88b2c1c5d38e426.mailgun.org';
 let request = require('request');
 let mailgun = require('mailgun-js')({ apiKey: API_KEY, domain: DOMAIN });
 
-function filterOnly(input){
-    var data = {
-        "operation": {
-            "details" : {
-                //"requester" : "administrator",
-                "requesttemplate" : "Only G113 Support/Service Provided",
-                "priority": "Low",
-                "level": "Tier 1",
-                "status": "closed",
-            },
-        },
-    };
-
-    data.operation.details.category = input.category.$viewValue;
-    data.operation.details.description = input.description.$viewValue;
-    data.operation.details.solution = input.solution.$viewValue;
-    data.operation.details.technician = input.technician.$viewValue.username;
-    data.operation.details.requester = input.technician.$viewValue.username;
-    data.operation.details.subject = input.ticketNumber.$viewValue;
-    data.operation.details.SUBJECT = input.ticketNumber.$viewValue; 
-    data.operation.details["ticket number"] = input.ticketNumber.$viewValue;
-    data.operation.details["student or faculty"] = input.customer.$viewValue.type;
-    data.operation.details["student id number (if faculty, put n/a)"] = input.customer.$viewValue.studentNumber;
-    data.operation.details["customer name"] = input.customer.$viewValue.name;
-
-    return data;
-}
-
-function filterIntake(input){
-    var data = {
-        "operation": {
-            "details" : {
-                //"requester" : "administrator",
-                "requesttemplate" : "Only G113 Support/Service Provided",
-                "priority": "Low",
-                "level": "Tier 1",
-                "status": "closed",
-            },
-        },
-    };
-
-    data.operation.details.category = input.category.$viewValue;
-    data.operation.details.description = input.description.$viewValue;
-    data.operation.details.solution = input.solution.$viewValue;
-    data.operation.details.technician = input.technician.$viewValue;
-    data.operation.details.requester = input.technician.$viewValue;
-    data.operation.details.subject = input.ticketNumber.$viewValue;
-    data.operation.details.SUBJECT = input.ticketNumber.$viewValue; 
-    data.operation.details["ticket number"] = input.ticketNumber.$viewValue;
-    data.operation.details["student or faculty"] = input.customer.$viewValue.studentType;
-    data.operation.details["student id number (if faculty, put n/a)"] = input.customer.$viewValue.studentNumber;
-    data.operation.details["customer name"] = input.customer.$viewValue.name;
-
-    return data;
-}
+//
+//data.operation.details.category = input.category.$viewValue;
+//data.operation.details.description = 
+//data.operation.details.solution = input.solution.$viewValue;
+//data.operation.details.technician = input.technician.$viewValue.username;
+//data.operation.details.requester = input.technician.$viewValue.username;
+//data.operation.details.subject = input.ticketNumber.$viewValue;
+//data.operation.details.SUBJECT = input.ticketNumber.$viewValue; 
+//data.operation.details["student or faculty"] = input.customer.$viewValue.type;
+//data.operation.details["student id number (if faculty, put n/a)"] = input.customer.$viewValue.studentNumber;
+//data.operation.details["customer name"] = input.customer.$viewValue.name;
+//return data;
 
 function addRequest(input, callBack){
     postRequest(BASE_REQUEST, input, OPERATIONS[0], callBack);
@@ -156,34 +113,34 @@ function checkLastSeq(){
 }
 
 function getLastSequence(list){
+    var output = "000";
 
-    if(list == undefined || list == null || list.length == 0 || list[0].SUBJECT === undefined){
-        return "000-L";
-    }else{
-
+    if(!(list == undefined || list == null || list.length == 0 || list[0].SUBJECT === undefined)){
         let last = list[0].SUBJECT;
         
-        console.log(last);
-        
-        if(parseInt(last) !== undefined && last[4] !== undefined){
+        if(parseInt(last) !== undefined){
             var next = parseInt(last);
-            return PRINTJ.sprintf("%03d-%s", next, last[4]);
+            output = PRINTJ.sprintf("%03d", next);
         }
-
-            
-        return "000-L";
     }
+
+    return output;
 }
+
+//return "000";
+//}else{
+//console.log(last);
 
 function getNextSeq(list){
     var last = getLastSequence(list);
-    
+    var output = "001";
+
     if(parseInt(last) != undefined){
         var next = parseInt(last) + 1;
-        return PRINTJ.sprintf("%03d-%s", next, last[4]);
+        output = PRINTJ.sprintf("%03d", next);
     }
     
-    return "001-L";
+    return output;
 }
 
 function goBack(){
@@ -195,3 +152,16 @@ const CALLBACK_GO_BACK = {
         goBack();
     },
 };
+
+/*
+angApp.controller('releaseCtrl', function($scope, $window, $http) {
+    //
+    $scope.semester = Lockr.get('settings').semester;
+    /*
+    if($scope.requests == undefined || $scope.requests.length == 0){
+        $('#no_requests').modal('show');
+        $window.location.href = '#!/main';
+    }
+    
+});
+*/
