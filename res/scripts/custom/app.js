@@ -1,21 +1,9 @@
 const API_KEY = 'key-6dfcdfcdd1f344c7b10ea6dcb8076cb1';
 const DOMAIN = 'sandboxd0b16b8e00474a1aa88b2c1c5d38e426.mailgun.org';
+
 //Load the request module
 let request = require('request');
 let mailgun = require('mailgun-js')({ apiKey: API_KEY, domain: DOMAIN });
-
-//
-//data.operation.details.category = input.category.$viewValue;
-//data.operation.details.description = 
-//data.operation.details.solution = input.solution.$viewValue;
-//data.operation.details.technician = input.technician.$viewValue.username;
-//data.operation.details.requester = input.technician.$viewValue.username;
-//data.operation.details.subject = input.ticketNumber.$viewValue;
-//data.operation.details.SUBJECT = input.ticketNumber.$viewValue; 
-//data.operation.details["student or faculty"] = input.customer.$viewValue.type;
-//data.operation.details["student id number (if faculty, put n/a)"] = input.customer.$viewValue.studentNumber;
-//data.operation.details["customer name"] = input.customer.$viewValue.name;
-//return data;
 
 function addRequest(input, callBack){
     postRequest(BASE_REQUEST, input, OPERATIONS[0], callBack);
@@ -127,10 +115,6 @@ function getLastSequence(list){
     return output;
 }
 
-//return "000";
-//}else{
-//console.log(last);
-
 function getNextSeq(list){
     var last = getLastSequence(list);
     var output = "001";
@@ -152,16 +136,3 @@ const CALLBACK_GO_BACK = {
         goBack();
     },
 };
-
-/*
-angApp.controller('releaseCtrl', function($scope, $window, $http) {
-    //
-    $scope.semester = Lockr.get('settings').semester;
-    /*
-    if($scope.requests == undefined || $scope.requests.length == 0){
-        $('#no_requests').modal('show');
-        $window.location.href = '#!/main';
-    }
-    
-});
-*/

@@ -5,6 +5,7 @@ angApp.controller('settingsCtrl', function($scope, $window) {
 	//
 	$scope.save = function(x){
 		Lockr.set('settings', x);
+		changeSettings();
 		//
 		new Noty({
             text: 'Settings updated successfully!',
