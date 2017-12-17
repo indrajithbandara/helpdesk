@@ -1,11 +1,9 @@
 
 angApp.controller('settingsCtrl', function($scope, $window) {
-	$scope.semester = Lockr.get('settings').semester;
 	$scope.settings = Lockr.get('settings');
-	//
-	$scope.save = function(x){
-		Lockr.set('settings', x);
-		changeSettings();
+	
+	$scope.save = function(){
+		Lockr.set('settings', $scope.settings);
 		//
 		new Noty({
             text: 'Settings updated successfully!',

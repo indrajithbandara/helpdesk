@@ -1,3 +1,4 @@
+
 DOING:
 
 Regra para Email:
@@ -1090,3 +1091,347 @@ const TAGS_INTAKE = {
 
 
 <!--<div class="ui fluid large teal submit button">Login</div>-->
+
+
+/*
+    $scope.$on('$viewContentLoaded', function() {
+        
+        //Colocar Load bar
+        checkTechnicians();
+        checkRequests();
+
+        
+        
+        $scope.satisfactionLevel = SATISFACTION;
+        $scope.satisfaction = $scope.satisfactionLevel[1].value;
+        $scope.categories = CATS;
+        $scope.category = $scope.categories[0].value;
+        $scope.colorOptions = COLORS;
+        $scope.colorDevice = $scope.colorOptions[0].value;
+        $scope.osOptions = OS;
+        $scope.operatingSystem = $scope.osOptions[7].value;
+        
+        //Check customers:
+        $scope.technicians = localStorage.technicians;
+        $scope.requests = localStorage.requests;
+
+        
+
+        booleanCheck = ($scope.technicians != undefined && $scope.technicians.length > 0);
+        $scope.technician = booleanCheck ? $scope.technicians[0] : {};
+        //Check Requests:
+        booleanCheck = ($scope.requests != undefined && $scope.requests.length > 0);
+        $scope.request = booleanCheck ? $scope.requests[0] : {};
+        
+    });
+    */
+    
+    /*
+
+    $scope.saveEntity = function(x, entity){
+        Lockr.sadd(entity, x);
+        //
+        new Noty({
+            text: entity + ' saved successfully!',
+            type: 'success',
+            timeout: 3000,
+        }).on('onClose', function() {
+            $scope.back();
+        }).show();
+    };
+
+    $scope.editEntity = function(id, x, entity){
+        updateSQL(entity, id, x);
+        //
+        new Noty({
+            text: entity + ' updated successfully!',
+            type: 'success',
+            timeout: 3000,
+        }).on('onClose', function() {
+            $scope.back();
+        }).show();
+    };
+
+    $scope.deleteEntity = function(id, entity){
+        deleteSQL(entity, id);
+        //
+        new Noty({
+            text: entity + ' deleted successfully!',
+            type: 'success',
+            timeout: 3000,
+        }).on('onClose', function() {
+            //$scope.back();
+            location.reload();
+        }).show();
+    };
+
+    $scope.viewEntity = function(id){
+
+    };
+
+    //Helpers:
+    $scope.isLogged = localStorage.session != {};
+    $scope.isOnline = navigator.onLine;
+    */
+
+/*
+    $scope.feedback = function(){
+        $('#feedback').modal("setting", {
+            onHide: function () {
+                $scope.message = "";
+            }
+        }).modal('show');
+    };
+
+    $scope.sendFeedback = function(){
+        alert($scope.message);
+    }
+    */
+
+
+//Consts:
+//const TECHNICIAN_KEY = "51A25649-5E6D-4CA2-BFD6-4A52DB6E4652"; //HOME
+//var TECHNICIAN_KEY = Lockr.get('settings').key;
+//var IP             = Lockr.get('settings').ip;
+/*
+var BASE_REQUEST   = "http://"+IP+"/sdpapi/request"; //HOME
+var BASE_REQUESTER = "http://"+IP+"/sdpapi/requester"; //HOME
+
+function changeSettings(){
+    //TECHNICIAN_KEY = Lockr.get('settings').key;
+    IP             = Lockr.get('settings').ip;
+    BASE_REQUEST   = "http://"+Lockr.get('settings').ip+"/sdpapi/request"; //HOME
+    BASE_REQUESTER = "http://"+Lockr.get('settings').ip+"/sdpapi/requester"; //HOME    
+}
+*/
+//changeSettings();
+//tx.executeSql('INSERT INTO users (id, username, code, password, role) VALUES (?,?,?,?,?)', [2,"erik", "erik", md5("erik"), "user"]);
+
+
+
+/**/
+/*
+function checkTechnicians(){
+    checkData('technicians');
+}
+
+function checkRequests(){
+    checkData('requests');
+}
+
+function checkLastSeq(){
+    checkRequests();
+    setLastSeq();
+}
+*/
+
+
+/*
+const INPUT_INTAKE = {
+    "operation": {
+        "details" : {
+            "requester" : "administrator",
+            "requesttemplate" : "Default Request",
+            "priority": "Low",
+            "level": "Tier 1",
+            "status": "open",
+        },
+    },
+};
+*/
+
+/*
+                new Noty({
+                    text: 'Customer data saved successfully!',
+                    type: 'success',
+                    timeout: 1000,
+                }).on('onClose', function() {
+                    $scope.fetch();
+                    goBack();
+                }).show(); 
+                */
+
+/*
+    let filteredData = filterOnly(data);
+    console.log(filteredData);
+    
+    addRequest(JSON.stringify(filteredData), function(response, error, body){    
+        if(response && response.statusCode == 200){
+            let status = $.parseJSON(body).operation.result.status, message = $.parseJSON(body).operation.result.message;
+            new Noty({
+                text: status + ": " + message,
+                type: 'success',
+                timeout: 1000,
+                callbacks: CALLBACK_GO_BACK,
+            }).show(); 
+        }else{
+            new Noty({
+                text: "Error: " + error,
+                type: 'error',
+                timeout: 1000,
+                callbacks: CALLBACK_GO_BACK,
+            }).show(); 
+            code = error.statusCode ? error.statusCode : -1;
+            Lockr.sadd('storedRequests', {input: JSON.stringify(filteredData), code: code});
+        }
+    });
+    */
+
+/*
+        let filteredData = filterOnly(data);
+        console.log(filteredData);
+        
+        addRequest(JSON.stringify(filteredData), function(response, error, body){    
+            if(response && response.statusCode == 200){
+                let status = $.parseJSON(body).operation.result.status, message = $.parseJSON(body).operation.result.message;
+                new Noty({
+                    text: status + ": " + message,
+                    type: 'success',
+                    timeout: 1000,
+                    callbacks: CALLBACK_GO_BACK,
+                }).show(); 
+            }else{
+                new Noty({
+                    text: "Error: " + error,
+                    type: 'error',
+                    timeout: 1000,
+                    callbacks: CALLBACK_GO_BACK,
+                }).show(); 
+                code = error.statusCode ? error.statusCode : -1;
+                Lockr.sadd('storedRequests', {input: JSON.stringify(filteredData), code: code});
+            }
+        });
+        */
+
+
+//var message = "Hello World!";
+//$('#modal.content').html(text);
+//$('#modal').modal('show');
+
+//checkData('technicians');
+//basicPostRequest(URL, input, operation_name, callBackOk, callBackError);
+//postRequest(getBaseRequest(), JSON.stringify(BASE_GET), OPERATIONS[3], callBack);
+
+//checkData('requests');
+//postRequest(getBaseRequest(), BASE_GET, OPERATIONS[3], callBack);
+//this.checkLastSeq = function(){
+//    checkRequests();
+//    setLastSeq();
+//},
+
+/*
+function getRequests(callBack){
+    //basicPostRequest(URL, input, operation_name, callBackOk, callBackError);
+    postRequest(getBaseRequest(), JSON.stringify(BASE_GET), OPERATIONS[3], callBack);
+}
+
+
+function getRequesters(callBack){
+    postRequest(getBaseRequester(), INPUT_REQUESTERS, OPERATIONS[4], callBack);
+}
+
+//
+function addRequest(input, callBack){
+    postRequest(getBaseRequest(), input, OPERATIONS[0], callBack);
+}
+
+function closeRequest(x, callBack){
+    postRequest(getBaseRequest()+"/"+x, BASE_CLOSE, OPERATIONS[2], callBack);    
+}
+
+function postRequest(URL, input_data, operation_name, callBack){
+    request.post({
+        url:    URL,
+        form:   {
+            format: "json", TECHNICIAN_KEY: Lockr.get('settings').key,
+            INPUT_DATA: JSON.stringify(input_data), OPERATION_NAME: operation_name
+        }
+    }, function(error, response, body){
+        callBack(response, error, body);
+    });
+}
+
+function getRequest(URL, input_data, operation_name, callBack){
+    request.get({
+        url:    URL,
+        form:   {
+            format: "json", TECHNICIAN_KEY: Lockr.get('settings').key,
+            INPUT_DATA: JSON.stringify(input_data), OPERATION_NAME: operation_name
+        }
+    }, function(error, response, body){
+        callBack(response, error, body);
+    });
+}
+/*
+function simplePost(URL, input_data, callBack){
+    request.post({
+        url:    URL,
+        form:  input_data
+    }, function(error, response, body){
+        callBack(response, error, body);
+    });
+}
+*/
+/*
+function checkHttpStatus(error, response, body){
+    if(error == undefined){
+        return -1; // No Internet
+    }
+
+    return (error.statusCode != 200) ? 0 : 1;
+}
+
+function checkData(entity){
+    //
+    var callBack = function(error, response, body){
+        var feedback = checkHttpStatus(error, response, body);
+
+        if(feedback == -1){
+            console.log('No connection');
+        }else if(feedback == 0){
+            console.log('Error: ' + body);
+        }else{
+            var a = $.parseJSON(body);
+            var requests = a.operation.details;
+            if(requests != undefined){
+                Lockr.set(entity, requests);
+                console.log(requests);
+            }
+        }
+    }
+    //
+    if(entity == 'technicians'){
+        getRequesters(callBack);    
+    }else if(entity == 'requests'){
+        getRequests(callBack);
+    }
+}
+/
+
+function getLastSequence(list){
+    var output = "000";
+
+    if(!(list == undefined || list == null || list.length == 0 || list[0].SUBJECT === undefined)){
+        let last = list[0].SUBJECT;
+        
+        if(parseInt(last) !== undefined){
+            var next = parseInt(last);
+            output = PRINTJ.sprintf("%03d", next);
+        }
+    }
+
+    return output;
+}
+
+function getNextSeq(list){
+    var last = getLastSequence(list);
+    var output = "001";
+
+    if(parseInt(last) != undefined){
+        var next = parseInt(last) + 1;
+        output = PRINTJ.sprintf("%03d", next);
+    }
+    
+    return output;
+}
+*/

@@ -5,7 +5,7 @@
         </div>
         <br>
         <!--FORM-->
-        <form class="ui form" name="frmSettings" ng-submit="save(settings)" novalidate>
+        <form class="ui form" name="data" ng-submit="save()" novalidate>
             <h4 class="ui dividing header">Edit settings</h4>
 
             <div class="field">
@@ -24,7 +24,7 @@
             </div>
 
             <div class="ui center aligned container">
-                <button class="ui primary button" type="submit" ng-disabled="frmSettings.$invalid"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;Save</button>
+                <button class="ui primary button" type="submit" ng-disabled="data.$invalid"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;Save</button>
                 <a class="ui danger button" onclick="goBack()">Go Back</a>
             </div>
         </form>

@@ -22,7 +22,7 @@ function createWindow() {
     mainWindow.webContents.openDevTools()
     
     //Uncomment:
-    mainWindow.setMenu(null)
+    //mainWindow.setMenu(null)
 }
 
 const shouldQuit = app.makeSingleInstance((commandLine, workingDirectory) => {

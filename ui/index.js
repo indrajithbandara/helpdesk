@@ -1,5 +1,6 @@
 const angApp = angular.module('angApp', ['ngRoute']);
-
+let rp = require('request-promise');
+const OPERATIONS = ["ADD_REQUEST", "EDIT_REQUEST", "CLOSE_REQUEST", "GET_REQUESTS", "GET_ALL"];
 // configure our routes
 angApp.config(function($routeProvider) {
 	$routeProvider
@@ -42,6 +43,75 @@ angApp.config(function($routeProvider) {
 	.otherwise({redirectTo:'/'});
 });
 
+angApp.service('requestUtils', function() {
+	this.checkTechnicians = function(flag){
+	    const INPUT_REQUESTERS = {
+            "operation": {
+                "details": {}
+            }
+        };
+
+        //Show loading thing:
+        basicPostRequest(getBaseRequester(), INPUT_REQUESTERS, OPERATIONS[4], function(technicians){
+            Lockr.set('technicians', technicians.operation.details);
+            baseMessage("List of technicians syncronized with Mannage Engine", 'success', 2000, function(){});
+        }, function(error){
+            //Show error
+            baseMessage(error.message, 'error', 2000, function(){  });
+        });
+	}
+
+	this.checkRequests = function(flag){
+        const BASE_GET = {
+            "operation": {
+                "details": {
+                    "from": "0",
+                    "limit": "0",
+                    "filterby": "All_Requests",
+                    "name": "GET_REQUESTS",
+                    "OPERATION_NAME" : "GET_REQUESTS",
+                },
+                "name": "GET_REQUESTS",
+                "OPERATION_NAME" : "GET_REQUESTS",
+            }
+        };
+
+        //Show loading thing:
+        basicPostRequest(getBaseRequest(), BASE_GET, OPERATIONS[3], function(requests){
+            Lockr.set('requests', requests.operation.details);
+            baseMessage("List of requests syncronized with Mannage Engine", 'success', 2000, function(){});
+        }, function(error){
+            console.log(error);
+            baseMessage(error.message, 'error', 2000, function(){});
+        });
+	}
+	
+    this.getLastSeq = function(list){
+        var output = "000";
+        if(!(list == undefined || list == null || list.length == 0 || list[0].SUBJECT === undefined)){
+            let last = list[0].SUBJECT;
+            
+            if(parseInt(last) !== undefined){
+                var next = parseInt(last);
+                output = PRINTJ.sprintf("%03d", next);
+            }
+        }
+
+        return output;
+    }
+    this.getNextSeq = function(list){
+        var last = this.getLastSeq(list);
+        var output = "001";
+
+        if(parseInt(last) != undefined){
+            var next = parseInt(last) + 1;
+            output = PRINTJ.sprintf("%03d", next);
+        }
+
+        return output;
+    }
+});
+
 angApp.filter('capitalize', function() {
     return function(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
@@ -49,115 +119,78 @@ angApp.filter('capitalize', function() {
 });
 
 angApp.controller('menuCtrl', function($scope, $window, $http) {
-	//
 	$scope.logout = function(){
 		Lockr.set('session', {});
 		window.location.href = '../index.html';
 	};
 	
-	$scope.feedback = function(){
-		$('#feedback').modal("setting", {
-            onHide: function () {
-                $scope.message = "";
-            }
-        }).modal('show');
-	};
-
-	$scope.sendFeedback = function(){
-		alert($scope.message);
-	}
-	
 	$scope.about = function(){
 		$('#about').modal('show');
 	};
-	//
 });
 
-angApp.controller('mainCtrl', function($scope, $window) {
-	//
+angApp.controller('mainCtrl', function($scope, $window, requestUtils) {
 	$scope.semester = Lockr.get('settings').semester;
-	checkTechnicians();
-	checkRequests();	
-	//
+	requestUtils.checkTechnicians($scope.loadedTechnicians);
+	requestUtils.checkRequests($scope.loadedRequests);
 });
 
-/*
-	$scope.$on('$viewContentLoaded', function() {
-		
-		//Colocar Load bar
-		checkTechnicians();
-		checkRequests();
+function basicPostRequest(URL, input, operation_name, callBackOk, callBackError){
+    let options = {
+        method: 'POST',
+        uri: URL,
+        timeout: 10000,
+        form: {
+            format: "json", 
+            TECHNICIAN_KEY: Lockr.get('settings').key,
+            INPUT_DATA: JSON.stringify(input), 
+            OPERATION_NAME: operation_name,
+        },
+        json: true,
+    };
+    
+    // Automatically stringifies the body to JSON
+    rp(options)
+    .then(function (parsedBody) {
+        // POST succeeded...
+        console.log(parsedBody);
+        callBackOk(parsedBody);
+    })
+    .catch(function (err) {
+        // POST failed...
+        console.log(err);
+        callBackError(err);
+    });
+}
 
-		
-		
-		$scope.satisfactionLevel = SATISFACTION;
-		$scope.satisfaction = $scope.satisfactionLevel[1].value;
-		$scope.categories = CATS;
-		$scope.category = $scope.categories[0].value;
-		$scope.colorOptions = COLORS;
-		$scope.colorDevice = $scope.colorOptions[0].value;
-		$scope.osOptions = OS;
-		$scope.operatingSystem = $scope.osOptions[7].value;
-		
-		//Check customers:
-		$scope.technicians = localStorage.technicians;
-		$scope.requests = localStorage.requests;
+function getBaseRequest(){
+    return PRINTJ.sprintf("http://%s/sdpapi/request", Lockr.get('settings').ip);
+}
 
-		
+function getBaseRequester(){
+    return PRINTJ.sprintf("http://%s/sdpapi/requester", Lockr.get('settings').ip);
+}
 
-		booleanCheck = ($scope.technicians != undefined && $scope.technicians.length > 0);
-		$scope.technician = booleanCheck ? $scope.technicians[0] : {};
-		//Check Requests:
-		booleanCheck = ($scope.requests != undefined && $scope.requests.length > 0);
-		$scope.request = booleanCheck ? $scope.requests[0] : {};
-		
-	});
-	*/
-	
-	/*
+function goBack(){
+    window.history.back();
+}
 
-	$scope.saveEntity = function(x, entity){
-		Lockr.sadd(entity, x);
-		//
-		new Noty({
-            text: entity + ' saved successfully!',
-			type: 'success',
-			timeout: 3000,
-		}).on('onClose', function() {
-			$scope.back();
-		}).show();
-	};
+function goToMain(){
+    window.location.href = "#!/";
+}
 
-	$scope.editEntity = function(id, x, entity){
-		updateSQL(entity, id, x);
-		//
-		new Noty({
-            text: entity + ' updated successfully!',
-			type: 'success',
-			timeout: 3000,
-		}).on('onClose', function() {
-			$scope.back();
-		}).show();
-	};
-
-	$scope.deleteEntity = function(id, entity){
-		deleteSQL(entity, id);
-		//
-		new Noty({
-            text: entity + ' deleted successfully!',
-			type: 'success',
-			timeout: 3000,
-		}).on('onClose', function() {
-			//$scope.back();
-			location.reload();
-		}).show();
-	};
-
-	$scope.viewEntity = function(id){
-
-	};
-
-	//Helpers:
-	$scope.isLogged = localStorage.session != {};
-	$scope.isOnline = navigator.onLine;
-	*/
+// basemessage('Customer deleted successfully!', 'success', 1000, goBack);
+function baseMessage(text, type, time, callBack){
+    //
+    new Noty({
+        text: text,
+        type: type,
+        timeout: time,
+        callbacks: {
+            onClose: function() {
+                    callBack();
+            }
+        },
+    }).show();   
+    //
+}

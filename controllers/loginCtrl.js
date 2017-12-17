@@ -20,11 +20,7 @@ loginApp.controller('loginCtrl', function($scope, $window) {
                 //SEND E-mail Here:
                 //sendEmail(users[i].email, "Password recovery", bodyMessage);
             }else{
-                new Noty({
-                    text: 'Username not found!',
-                    type: 'error',
-                    timeout: 3000,
-                }).show();    
+                baseMessage('Username not found!', 'error', 3000, function(){});    
             }
         });
     };
@@ -36,11 +32,7 @@ loginApp.controller('loginCtrl', function($scope, $window) {
                     Lockr.set('session', results.rows[0]);
                     $window.location.href = 'ui/default.html';        
                 }else{
-                    new Noty({
-                        text: 'Wrong username or password',
-                        type: 'error',
-                    }).show();
-                    $("#username").focus();
+                    baseMessage('Wrong username or password!', 'error', 3000, function(){$("#username").focus();});
                 }
         });
     };

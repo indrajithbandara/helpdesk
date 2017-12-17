@@ -20,13 +20,7 @@ angApp.controller('userCtrl', function($scope, $window){
         let SQL = "DELETE FROM users WHERE id = ? AND username != 'admin'";
 
         transactionSQL(SQL, [id], function(results){
-            //
-            new Noty({
-                text: 'User deleted successfully!',
-                type: 'success',
-                timeout: 1000,
-                callbacks: CALLBACK_GO_BACK,
-            }).show();   
+            baseMessage('User data deleted successfully!', 'success', 2000, goBack);
         });
     };
 });
@@ -72,13 +66,7 @@ angApp.controller('userFormCtrl', function($scope, $window, $routeParams){
         transactionSQL(SQL, 
             [$scope.user.username, $scope.user.role, md5($scope.user.password), $scope.user.password], 
             function(results){
-                //
-                new Noty({
-                    text: 'User data saved successfully!',
-                    type: 'success',
-                    timeout: 1000,
-                    callbacks: CALLBACK_GO_BACK,
-                }).show();   
+                baseMessage('User data saved successfully!', 'success', 2000, goBack);
         });
     };
 

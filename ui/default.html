@@ -19,19 +19,16 @@
       <script type="text/javascript" src="../res/scripts/jquery.mask.min.js"></script>
       <script type="text/javascript" src="../res/scripts/angular.min.js"></script>
       <script type="text/javascript" src="../res/scripts/angular-route.min.js"></script>
-      <script type="text/javascript" src="../res/scripts/angular-messages.min.js"></script>
       <script type="text/javascript" src="../res/scripts/noty.min.js"></script>
       <script type="text/javascript" src="../res/scripts/semantic.min.js"></script>
       
+      <!--<script type="text/javascript" src="../res/scripts/custom/dbSQL.js"></script>
+      <script type="text/javascript" src="../res/scripts/custom/app.js"></script>-->
       <script type="text/javascript" src="../res/scripts/custom/db.js"></script>
-      <script type="text/javascript" src="../res/scripts/custom/dbSQL.js"></script>
-      <script type="text/javascript" src="../res/scripts/custom/app.js"></script>
-      <script type="text/javascript" src="../res/scripts/custom/ui.js"></script>
-      
       <script type="text/javascript" src="../res/scripts/bundle.js"></script>
       <script type="text/javascript" src="../res/scripts/defiant.min.js"></script>
-
       <script type="text/javascript" src="index.js"></script>
+
       <script type="text/javascript" src="../controllers/customerCtrl.js"></script>
       <script type="text/javascript" src="../controllers/requestCtrl.js"></script>
       <script type="text/javascript" src="../controllers/settingCtrl.js"></script>
@@ -71,8 +68,8 @@
               About
             <i class="dropdown icon"></i>
             <div class="menu">
-              <!--<a class="item" href="#!/settings"><i class="settings icon"></i> Settings</a>
-              <a class="item" ng-click="feedback()"><i class="edit icon"></i> Bugs / Suggestions</a>-->
+              <a class="item" href="#!/settings"><i class="settings icon"></i> Settings</a>
+              <!--<a class="item" ng-click="feedback()"><i class="edit icon"></i> Bugs / Suggestions</a>-->
               <a class="item" ng-click="about()"><i class="globe icon"></i> About</a>
             </div>
           </div>
@@ -94,26 +91,8 @@
         </div>
       </div>
 
-      <!--MODAL BUGS-->
-      <div class="ui modal" id="feedback">
-        <div class="header">Send a feedback(bugs/suggestions or anything else)</div>
-        <div class="content">
-          <h4 class="ui dividing header">Type your comment bellow</h4>
-
-          <form class="ui form" name="data" ng-submit="sendFeedback()">
-            <div class="field">
-              <label>Message</label>
-              <textarea name="message" ng-model="message" required></textarea>
-            </div>
-            <button class="ui button" type="submit" ng-disabled="data.$invalid">Submit</button>
-          </form>
-        </div>
-      </div>
       <!--MENU-->
       <div class="ui text container">
-        <!--<div class="ui right aligned container">
-          Status <span class="{{ isOnline ? 'suc' : 'req' }}">{{ isOnline ? 'Online' : 'Offline' }}</span>
-        </div>-->
         <div class="ui center aligned container" style="margin-top: 5%;margin-bottom: 5%;">
             <img class="new" src="../res/logo.png">
         </div>

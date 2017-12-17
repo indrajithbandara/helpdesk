@@ -19,19 +19,15 @@ angApp.controller('customerCtrl', function($scope, $window) {
     $scope.delete = function(id){
         let SQL = "DELETE FROM customers WHERE id = ?";
         transactionSQL(SQL, [id], function(results){
-            new Noty({
-                text: 'Customer deleted successfully!',
-                type: 'success',
-                timeout: 1000,
-                callbacks: CALLBACK_GO_BACK,
-            }).show();   
+            baseMessage('Customer deleted successfully!', 'success', 1000, goBack);
         });
     }; 
 });
 
 angApp.controller('customerFormCtrl', function($scope, $window, $routeParams) {
     $('#phone').mask('(000)000-0000');
-
+    $scope.customer = {}
+    $scope.customer.type = "Student";
     $scope.semester = Lockr.get('settings').semester;
     
     $scope.fetch = function(){
@@ -64,14 +60,7 @@ angApp.controller('customerFormCtrl', function($scope, $window, $routeParams) {
         transactionSQL(SQL, 
             [$scope.customer.name, $scope.customer.type, $scope.customer.phone, $scope.customer.email], 
             function(results){
-                new Noty({
-                    text: 'Customer data saved successfully!',
-                    type: 'success',
-                    timeout: 1000,
-                }).on('onClose', function() {
-                    $scope.fetch();
-                    goBack();
-            }).show(); 
+                baseMessage('Customer data saved successfully!', 'success', 1000, goBack);
         });
     };
 });

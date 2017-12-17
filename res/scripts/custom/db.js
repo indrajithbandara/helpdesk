@@ -1,3 +1,4 @@
+const db = openDatabase('helpDeskDB', '1.0', 'HelpDesk Database', 500 * 1024 * 1024); // 500 mb;
 Lockr.prefix = '';
 
 if(Lockr.get('settings') == undefined){
@@ -14,7 +15,7 @@ for(var i = 0; i < tables.length; i++){
     if(Lockr.get(tables[i]) === undefined)
         Lockr.set(tables[i],[]);
 }
-//
+
 function setLastSeq(){
     var index = Lockr.get('request') != undefined ? Lockr.get('request').length - 1 : -1;
     var input = index == -1 ? '1' : Lockr.get('request')[index];
@@ -51,53 +52,34 @@ function deleteSQL(table, index){
     }
     localStorage[table] = temp;    
 }
-//Consts:
-//const TECHNICIAN_KEY = "51A25649-5E6D-4CA2-BFD6-4A52DB6E4652"; //HOME
-var TECHNICIAN_KEY = Lockr.get('settings').key;
-var IP             = Lockr.get('settings').ip;
-var BASE_REQUEST   = "http://"+IP+"/sdpapi/request"; //HOME
-var BASE_REQUESTER = "http://"+IP+"/sdpapi/requester"; //HOME
 
-function changeSettings(){
-    TECHNICIAN_KEY = Lockr.get('settings').key;
-    IP             = Lockr.get('settings').ip;
-    BASE_REQUEST   = "http://"+IP+"/sdpapi/request"; //HOME
-    BASE_REQUESTER = "http://"+IP+"/sdpapi/requester"; //HOME    
-}
+//CREATE DB:
+db.transaction(function (tx) {
+    tx.executeSql('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT UNIQUE, code TEXT, password TEXT, role TEXT)');
+    tx.executeSql('CREATE TABLE IF NOT EXISTS customers ('+
+        'id INTEGER PRIMARY KEY, name TEXT NOT NULL, type TEXT, phone TEXT NOT NULL, email TEXT)');
+});
 
-changeSettings();
-//
-const OPERATIONS = ["ADD_REQUEST", "EDIT_REQUEST", "CLOSE_REQUEST", "GET_REQUESTS", "GET_ALL"];
-const FORMAT = "json";
+db.transaction(function (tx) {
+    tx.executeSql('SELECT * FROM users WHERE username = ?', ["admin"], function (tx, results) {
+        const len = results.rows.length;
+        console.log(len);
+        if(len == 0){
+            //tx.executeSql('DELETE FROM users WHERE');
+            tx.executeSql('INSERT INTO users (id, username, code, password, role) VALUES (?,?,?,?,?)', [1,"admin", "admin", md5("admin"), "admin"]);
+        }
+    });
+});
 
-const BASE_GET = {
-    "operation": {
-        "details": {
-            "from": "0",
-            "limit": "0",
-            "filterby": "All_Requests",
-            "name": "GET_REQUESTS",
-            "OPERATION_NAME" : "GET_REQUESTS",
-        },
-        "name": "GET_REQUESTS",
-        "OPERATION_NAME" : "GET_REQUESTS",
+function transactionSQL(sql, jsonOBJ, callBack){
+    //
+    function errorHandler(tx, error){
+        console.log("Error : " + error.message);
     }
-};
 
-const INPUT_INTAKE = {
-    "operation": {
-        "details" : {
-            "requester" : "administrator",
-            "requesttemplate" : "Default Request",
-            "priority": "Low",
-            "level": "Tier 1",
-            "status": "open",
-        },
-    },
-};
-
-const INPUT_REQUESTERS = {
-    "operation": {
-        "details": {}
-    }
+    db.transaction(function (tx) {
+        tx.executeSql(sql, jsonOBJ, function (tx, results) {
+            callBack(results);
+        }, errorHandler);
+    });
 }

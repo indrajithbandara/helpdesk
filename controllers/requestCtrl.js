@@ -1,14 +1,15 @@
-angApp.service('requestUtils', function() {
-    this.getCustomers = function (x) {
-        return x.toString(16);
-    }
-});
-
-angApp.controller('intakeCtrl', function($scope, $window, $http) {
+angApp.controller('intakeCtrl', function($scope, $window, $http, requestUtils) {
     $('#ticketNumber').mask('000');
 	$scope.semester = Lockr.get('settings').semester;
     $scope.idVerified = "No";
     $scope.userAgreement = "No";
+    
+    $scope.intakeRequest = {};
+
+    $scope.intakeRequest.withWarranty = "No";    
+    $scope.intakeRequest.withCharger = "No";    
+    $scope.intakeRequest.wantOffice = "No";    
+    $scope.intakeRequest.wantAntivirus = "No";    
     //
     $scope.customers = [];
     $scope.categories = CATS;
@@ -16,20 +17,23 @@ angApp.controller('intakeCtrl', function($scope, $window, $http) {
     $scope.technicians = Lockr.get('technicians');
     $scope.requests    = Lockr.get('requests');    
     //
-    $scope.intakeRequest = {};
     $scope.intakeRequest.customer = {};
     $scope.intakeRequest.category = $scope.categories[0].value;
     $scope.intakeRequest.deviceType = $scope.deviceTypes[0].value;
-    $scope.intakeRequest.technician = $scope.technicians[0];
-    $scope.intakeRequest.request = $scope.requests[0];    
-    $scope.intakeRequest.withWarranty = "No";    
-    $scope.intakeRequest.withCharger = "No";    
-    $scope.intakeRequest.wantOffice = "No";    
-    $scope.intakeRequest.wantAntivirus = "No";    
+
+    if($scope.requests !== undefined){
+        $scope.intakeRequest.request = $scope.requests[0];    
+        //
+    }
+    
+    if($scope.technicians !== undefined)
+        $scope.intakeRequest.technician = $scope.technicians[0];
+    
     //Check customers:
     //Colocar Load bar
-    $scope.lastSeq      = getLastSequence($scope.requests);
-    $scope.ticketNumber = getNextSeq($scope.requests);
+    $scope.lastSeq      = requestUtils.getLastSeq($scope.requests);
+    $scope.ticketNumber = requestUtils.getNextSeq($scope.requests);
+    $scope.intakeRequest.ticketNumber = $scope.ticketNumber;
     
     transactionSQL('SELECT * FROM customers', [], function(results){
         if(results.rows.length > 0){                
@@ -49,44 +53,25 @@ angApp.controller('intakeCtrl', function($scope, $window, $http) {
     }
     
     $scope.save = function() {
-        console.log($scope.intakeRequest);
-        console.log("After Filter");
-        console.log($scope.filterIntake($scope.intakeRequest));
-        /*
-        let filteredData = filterOnly(data);
-        console.log(filteredData);
-        
-        addRequest(JSON.stringify(filteredData), function(response, error, body){    
-            if(response && response.statusCode == 200){
-                let status = $.parseJSON(body).operation.result.status, message = $.parseJSON(body).operation.result.message;
-                new Noty({
-                    text: status + ": " + message,
-                    type: 'success',
-                    timeout: 1000,
-                    callbacks: CALLBACK_GO_BACK,
-                }).show(); 
-            }else{
-                new Noty({
-                    text: "Error: " + error,
-                    type: 'error',
-                    timeout: 1000,
-                    callbacks: CALLBACK_GO_BACK,
-                }).show(); 
-                code = error.statusCode ? error.statusCode : -1;
-                Lockr.sadd('storedRequests', {input: JSON.stringify(filteredData), code: code});
-            }
-        });
-        */
+        var input = $scope.filterIntake($scope.intakeRequest);
+        console.log(input);
+
+        basicPostRequest(getBaseRequest(), input, OPERATIONS[0], function(requests){
+            baseMessage('G151 Request saved succesfully!', 'success', 2000, goToMain);
+        }, function(error){
+            baseMessage(error.message, 'error', 3000, goToMain);
+            Lockr.sadd('storedRequests', {input: JSON.stringify(input), code: code});
+        });        
     };
 
     $scope.filterIntake = function(data){
         return {
             "operation": {
                 "details" : {
-                    "requesttemplate" : "Only G113 Support/Service Provided",
+                    "requesttemplate" : "Default Request",
                     "priority": "Low",
                     "level": "Tier 1",
-                    "status": "closed",
+                    "status": "open",
                     "semester": $scope.semester,
                     "location": "C151 – Computer Support Center",
                     "category": data.category,
@@ -121,7 +106,7 @@ angApp.controller('intakeCtrl', function($scope, $window, $http) {
     };
 });
 
-angApp.controller('onlyCtrl', function($scope, $window, $http) {
+angApp.controller('onlyCtrl', function($scope, $window, $http, requestUtils) {
     $('#ticketNumber').mask('000');
     //Init Form:
     $scope.onlyRequest = {};
@@ -137,14 +122,21 @@ angApp.controller('onlyCtrl', function($scope, $window, $http) {
     //Check customers:
     //Colocar Load bar
     $scope.onlyRequest.customer = {};
+    $scope.onlyRequest.wereSolved = "Resolved";
+
     $scope.onlyRequest.category = $scope.categories[0].value;
     $scope.onlyRequest.deviceType = $scope.deviceTypes[0].value;
-    $scope.onlyRequest.technician = $scope.technicians[0];
-    $scope.onlyRequest.request = $scope.requests[0];    
-    $scope.onlyRequest.wereSolved = "Resolved";    
+    
+    if($scope.requests.length > 0)
+        $scope.onlyRequest.request = $scope.requests[0];    
+    
+    if($scope.technicians.length > 0)
+        $scope.onlyRequest.technician = $scope.technicians[0];
+
     //
-    $scope.lastSeq      = getLastSequence($scope.requests);
-    $scope.ticketNumber = getNextSeq($scope.requests);
+    $scope.lastSeq      = requestUtils.getLastSeq($scope.requests);
+    $scope.ticketNumber = requestUtils.getNextSeq($scope.requests);
+    $scope.onlyRequest.ticketNumber = $scope.ticketNumber;
     
     transactionSQL('SELECT * FROM customers', [], function(results){
         if(results.rows.length > 0){                
@@ -164,34 +156,15 @@ angApp.controller('onlyCtrl', function($scope, $window, $http) {
     }
     
     $scope.save = function() {
-        console.log($scope.onlyRequest);
-        console.log("After Filter");
-        console.log($scope.filterOnly($scope.onlyRequest));
-        /*
-        let filteredData = filterOnly(data);
-        console.log(filteredData);
+        var input = $scope.filterOnly($scope.onlyRequest);
+        console.log(input);
         
-        addRequest(JSON.stringify(filteredData), function(response, error, body){    
-            if(response && response.statusCode == 200){
-                let status = $.parseJSON(body).operation.result.status, message = $.parseJSON(body).operation.result.message;
-                new Noty({
-                    text: status + ": " + message,
-                    type: 'success',
-                    timeout: 1000,
-                    callbacks: CALLBACK_GO_BACK,
-                }).show(); 
-            }else{
-                new Noty({
-                    text: "Error: " + error,
-                    type: 'error',
-                    timeout: 1000,
-                    callbacks: CALLBACK_GO_BACK,
-                }).show(); 
-                code = error.statusCode ? error.statusCode : -1;
-                Lockr.sadd('storedRequests', {input: JSON.stringify(filteredData), code: code});
-            }
+        basicPostRequest(getBaseRequest(), input, OPERATIONS[0], function(requests){
+            baseMessage('G113 Request saved succesfully!', 'success', 2000, goToMain);
+        }, function(error){
+            baseMessage(error.message, 'error', 3000, goToMain);
+            Lockr.sadd('storedRequests', {input: JSON.stringify(input), code: code});
         });
-        */
     };
 
     $scope.filterOnly = function(data){
