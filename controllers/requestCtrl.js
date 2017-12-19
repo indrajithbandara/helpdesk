@@ -15,25 +15,19 @@ angApp.controller('intakeCtrl', function($scope, $window, $http, requestUtils) {
     $scope.customers = [];
     $scope.categories = CATS;
     $scope.deviceTypes = DEVICE_TYPES;
-    $scope.technicians = Lockr.get('technicians');
-    $scope.requests    = Lockr.get('requests');    
+    $scope.technicians = Lockr.get('technicians');    
     //
     $scope.intakeRequest.customer = {};
     $scope.intakeRequest.category = $scope.categories[0].value;
     $scope.intakeRequest.deviceType = $scope.deviceTypes[0].value;
-
-    if($scope.requests !== undefined){
-        $scope.intakeRequest.request = $scope.requests[0];    
-        //
-    }
     
-    if($scope.technicians !== undefined)
+    if($scope.technicians !== undefined && $scope.technicians.length > 0)
         $scope.intakeRequest.technician = $scope.technicians[0];
     
     //Check customers:
     //Colocar Load bar
-    $scope.lastSeq      = requestUtils.getLastSeq($scope.requests);
-    $scope.ticketNumber = requestUtils.getNextSeq($scope.requests);
+    $scope.lastSeq      = requestUtils.getLastSeq(Lockr.get('requests'));
+    $scope.ticketNumber = requestUtils.getNextSeq(Lockr.get('requests'));
     $scope.intakeRequest.ticketNumber = $scope.ticketNumber;
     
     transactionSQL('SELECT * FROM customers', [], function(results){
@@ -48,10 +42,6 @@ angApp.controller('intakeCtrl', function($scope, $window, $http, requestUtils) {
             $scope.$apply();
         }
     });
-    //
-    $scope.isSameTicket = function(ticket){
-        return $scope.tickets.includes(ticket);
-    }
     
     $scope.save = function() {
         var input = $scope.filterIntake($scope.intakeRequest);
@@ -124,7 +114,6 @@ angApp.controller('onlyCtrl', function($scope, $window, $http, requestUtils) {
     $scope.categories = CATS;
     $scope.deviceTypes = DEVICE_TYPES;
     $scope.technicians = Lockr.get('technicians');
-    $scope.requests    = Lockr.get('requests');    
     //Check customers:
     //Colocar Load bar
     $scope.onlyRequest.customer = {};
@@ -133,15 +122,12 @@ angApp.controller('onlyCtrl', function($scope, $window, $http, requestUtils) {
     $scope.onlyRequest.category = $scope.categories[0].value;
     $scope.onlyRequest.deviceType = $scope.deviceTypes[0].value;
     
-    if($scope.requests.length > 0)
-        $scope.onlyRequest.request = $scope.requests[0];    
-    
     if($scope.technicians.length > 0)
         $scope.onlyRequest.technician = $scope.technicians[0];
 
     //
-    $scope.lastSeq      = requestUtils.getLastSeq($scope.requests);
-    $scope.ticketNumber = requestUtils.getNextSeq($scope.requests);
+    $scope.lastSeq      = requestUtils.getLastSeq(Lockr.get('requests'));
+    $scope.ticketNumber = requestUtils.getNextSeq(Lockr.get('requests'));
     $scope.onlyRequest.ticketNumber = $scope.ticketNumber;
     
     transactionSQL('SELECT * FROM customers', [], function(results){
