@@ -45,12 +45,16 @@
 
             <div class="field">
                 <label for="password">Password <span class="req">*</span></label>
-                <input type="password" class="form-control" id="password" name="password" ng-model="user.password" required>
-            </div>
+                <input type="password" pattern=".*[0-9]+.*" ng-minlength="6" class="form-control" id="password" name="password" ng-model="user.password" required>
+
+                <div class="req" ng-if="data.password.$dirty && !data.password.$valid">Password must have 6 digits and at least one number</div>
+            </div> 
 
             <div class="field">
                 <label for="confirm_password">Confirm password <span class="req">*</span></label>
                 <input type="password" class="form-control" id="confirm_password" name="confirm_password" ng-model="user.confirm_password" required>
+
+                <div class="req" ng-if="data.confirm_password.$dirty && data.password.$viewValue != data.confirm_password.$viewValue">Confirmation must match to the password</div>
             </div>
 
             <div class="ui center aligned container">

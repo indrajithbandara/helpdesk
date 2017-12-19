@@ -6,7 +6,7 @@
         </div>
         
         <div class="grouped fields">
-            <label for="idVerified">ID Verified? <span class="req">*</span></label>
+            <label for="idVerified">ID Verified <span class="req">*</span></label>
             
             <div class="field">
                 <div class="ui radio checkbox">
@@ -25,7 +25,7 @@
 
         <br>
         
-        <form class="ui form" name="data" ng-submit="save()" ng-show="idVerified == 'Yes'" novalidate>
+        <form class="ui {{state}} form" name="data" ng-submit="save()" ng-show="idVerified == 'Yes'" novalidate>
             <h4>Previous Ticket Number: <span class="text-info">{{ lastSeq }}</span></h4>
             
             <div class="field" ng-class="{'has-error' : !checkTicket(onlyRequest.ticketNumber.$viewValue) || (onlyRequest.ticketNumber.$invalid && !onlyRequest.ticketNumber.$pristine), 'form-group': true}">
@@ -34,7 +34,7 @@
             </div>
 
             <div class="field">
-                <label for="technician">Technician <span class="req">*</span></label>
+                <label for="technician">Requester <span class="req">*</span></label>
                 <select name="technician" ng-model="onlyRequest.technician" ng-options="technician as technician.username for technician in technicians" id="technician">
                 </select>
             </div>
@@ -92,7 +92,7 @@
             </div>
 
             <div class="ui center aligned container">
-                <button class="ui primary button" type="submit" ng-disabled="data.$invalid">Submit</button>
+                <button class="ui submit button" type="submit" ng-disabled="data.$invalid">Submit</button>
                 <a class="ui button" ng-click="goBack()" href="#">Go Back</a>
             </div>
         </form>

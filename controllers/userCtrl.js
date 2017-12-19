@@ -20,13 +20,12 @@ angApp.controller('userCtrl', function($scope, $window){
         let SQL = "DELETE FROM users WHERE id = ? AND username != 'admin'";
 
         transactionSQL(SQL, [id], function(results){
-            baseMessage('User data deleted successfully!', 'success', 2000, goBack);
+            baseMessage('User data deleted successfully!', 'success', 2000, refresh);
         });
     };
 });
 
 angApp.controller('userFormCtrl', function($scope, $window, $routeParams){
-    //
     $scope.semester = Lockr.get('settings').semester;
     $scope.session = Lockr.get('session');
     $scope.usernames = []

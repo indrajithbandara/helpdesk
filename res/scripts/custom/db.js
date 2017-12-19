@@ -1,5 +1,5 @@
-const db = openDatabase('helpDeskDB', '1.0', 'HelpDesk Database', 500 * 1024 * 1024); // 500 mb;
 Lockr.prefix = '';
+const db = openDatabase('helpDeskDB', '1.0', 'HelpDesk Database', 500 * 1024 * 1024); // 500 mb;
 
 if(Lockr.get('settings') == undefined){
     Lockr.set('settings', {semester: 'Spring 2017', ip: 'localhost:8080', key: '51A25649-5E6D-4CA2-BFD6-4A52DB6E4652'});
@@ -9,18 +9,24 @@ if(Lockr.get('lastSeq') == undefined){
     Lockr.set('lastSeq', 1);
 }
 
-const tables = ['requests', 'storedRequests', 'session', 'technicians', 'releases'];
-
-for(var i = 0; i < tables.length; i++){
-    if(Lockr.get(tables[i]) === undefined)
-        Lockr.set(tables[i],[]);
+if(Lockr.get('requests') == undefined){
+    Lockr.set('requests', []);
 }
 
+if(Lockr.get('session') == undefined){
+    Lockr.set('session', {});
+}
+
+if(Lockr.get('technicians') == undefined){
+    Lockr.set('technicians', []);
+}
+/*
 function setLastSeq(){
     var index = Lockr.get('request') != undefined ? Lockr.get('request').length - 1 : -1;
     var input = index == -1 ? '1' : Lockr.get('request')[index];
     Lockr.set('request', input); 
 }
+*/
 //########################################################SQL
 //Users and Customers and Requests:
 function insertSQL(table, data){
@@ -63,7 +69,7 @@ db.transaction(function (tx) {
 db.transaction(function (tx) {
     tx.executeSql('SELECT * FROM users WHERE username = ?', ["admin"], function (tx, results) {
         const len = results.rows.length;
-        console.log(len);
+        //console.log(len);
         if(len == 0){
             //tx.executeSql('DELETE FROM users WHERE');
             tx.executeSql('INSERT INTO users (id, username, code, password, role) VALUES (?,?,?,?,?)', [1,"admin", "admin", md5("admin"), "admin"]);

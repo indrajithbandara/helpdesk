@@ -44,7 +44,7 @@ angApp.config(function($routeProvider) {
 });
 
 angApp.service('requestUtils', function() {
-	this.checkTechnicians = function(flag){
+	this.checkTechnicians = function(){
 	    const INPUT_REQUESTERS = {
             "operation": {
                 "details": {}
@@ -54,19 +54,19 @@ angApp.service('requestUtils', function() {
         //Show loading thing:
         basicPostRequest(getBaseRequester(), INPUT_REQUESTERS, OPERATIONS[4], function(technicians){
             Lockr.set('technicians', technicians.operation.details);
-            baseMessage("List of technicians syncronized with Mannage Engine", 'success', 2000, function(){});
+            baseMessage("Requesters syncronized with ManageEngine", 'success', 2000, function(){});
         }, function(error){
             //Show error
             baseMessage(error.message, 'error', 2000, function(){  });
         });
 	}
 
-	this.checkRequests = function(flag){
+	this.checkRequests = function(){
         const BASE_GET = {
             "operation": {
                 "details": {
                     "from": "0",
-                    "limit": "0",
+                    "limit": "1",
                     "filterby": "All_Requests",
                     "name": "GET_REQUESTS",
                     "OPERATION_NAME" : "GET_REQUESTS",
@@ -79,7 +79,7 @@ angApp.service('requestUtils', function() {
         //Show loading thing:
         basicPostRequest(getBaseRequest(), BASE_GET, OPERATIONS[3], function(requests){
             Lockr.set('requests', requests.operation.details);
-            baseMessage("List of requests syncronized with Mannage Engine", 'success', 2000, function(){});
+            baseMessage("Requests syncronized with ManageEngine", 'success', 2000, function(){});
         }, function(error){
             console.log(error);
             baseMessage(error.message, 'error', 2000, function(){});
@@ -88,8 +88,17 @@ angApp.service('requestUtils', function() {
 	
     this.getLastSeq = function(list){
         var output = "000";
-        if(!(list == undefined || list == null || list.length == 0 || list[0].SUBJECT === undefined)){
-            let last = list[0].SUBJECT;
+        if(!(list == undefined || list == null || list.length == 0)){
+            let last = output;
+
+            if(!(list[0].SUBJECT === undefined)){
+                last = list[0].SUBJECT;
+            }else if(!(list[0].subject === undefined)){
+                last = list[0].subject;
+            }else if(!(list[0]['ticket number'] === undefined)){
+                last = list[0]['ticket number'];
+            }
+            
             
             if(parseInt(last) !== undefined){
                 var next = parseInt(last);
@@ -118,21 +127,15 @@ angApp.filter('capitalize', function() {
     };
 });
 
-angApp.controller('menuCtrl', function($scope, $window, $http) {
-	$scope.logout = function(){
-		Lockr.set('session', {});
-		window.location.href = '../index.html';
-	};
-	
-	$scope.about = function(){
-		$('#about').modal('show');
-	};
-});
-
 angApp.controller('mainCtrl', function($scope, $window, requestUtils) {
 	$scope.semester = Lockr.get('settings').semester;
-	requestUtils.checkTechnicians($scope.loadedTechnicians);
-	requestUtils.checkRequests($scope.loadedRequests);
+    //
+    if(Lockr.get('technicians') == false || Lockr.get('technicians') == undefined || Lockr.get('technicians').length == 0 || Lockr.get('technicians') == {}){
+        requestUtils.checkTechnicians();
+    }else{
+        console.log(Lockr.get('technicians'));
+    }
+    //requestUtils.checkRequests();
 });
 
 function basicPostRequest(URL, input, operation_name, callBackOk, callBackError){
@@ -175,22 +178,23 @@ function goBack(){
     window.history.back();
 }
 
+function refresh(){
+    window.location.reload(true);
+}
+
 function goToMain(){
     window.location.href = "#!/";
 }
 
-// basemessage('Customer deleted successfully!', 'success', 1000, goBack);
 function baseMessage(text, type, time, callBack){
-    //
     new Noty({
         text: text,
         type: type,
         timeout: time,
         callbacks: {
             onClose: function() {
-                    callBack();
+                callBack();
             }
         },
     }).show();   
-    //
 }

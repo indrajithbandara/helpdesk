@@ -1,6 +1,7 @@
 angApp.controller('intakeCtrl', function($scope, $window, $http, requestUtils) {
     $('#ticketNumber').mask('000');
 	$scope.semester = Lockr.get('settings').semester;
+    $scope.state = "";
     $scope.idVerified = "No";
     $scope.userAgreement = "No";
     
@@ -55,12 +56,16 @@ angApp.controller('intakeCtrl', function($scope, $window, $http, requestUtils) {
     $scope.save = function() {
         var input = $scope.filterIntake($scope.intakeRequest);
         console.log(input);
+        $scope.state = "loading";
 
         basicPostRequest(getBaseRequest(), input, OPERATIONS[0], function(requests){
             baseMessage('G151 Request saved succesfully!', 'success', 2000, goToMain);
+            requestUtils.checkRequests();
+            $scope.state = "";
         }, function(error){
             baseMessage(error.message, 'error', 3000, goToMain);
             Lockr.sadd('storedRequests', {input: JSON.stringify(input), code: code});
+            $scope.state = "";
         });        
     };
 
@@ -113,6 +118,7 @@ angApp.controller('onlyCtrl', function($scope, $window, $http, requestUtils) {
     //
     $scope.semester = Lockr.get('settings').semester;
     $scope.idVerified = "No";
+    $scope.state = "";
     //
     $scope.customers = [];
     $scope.categories = CATS;
@@ -156,14 +162,18 @@ angApp.controller('onlyCtrl', function($scope, $window, $http, requestUtils) {
     }
     
     $scope.save = function() {
+        $scope.state = "loading";
         var input = $scope.filterOnly($scope.onlyRequest);
         console.log(input);
         
         basicPostRequest(getBaseRequest(), input, OPERATIONS[0], function(requests){
             baseMessage('G113 Request saved succesfully!', 'success', 2000, goToMain);
+            requestUtils.checkRequests();
+            $scope.state = "";
         }, function(error){
             baseMessage(error.message, 'error', 3000, goToMain);
-            Lockr.sadd('storedRequests', {input: JSON.stringify(input), code: code});
+            $scope.state = "";
+            Lockr.sadd('storedRequests', {input: JSON.stringify(input), code: error.message});
         });
     };
 

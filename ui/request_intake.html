@@ -28,7 +28,7 @@
         </div>
 
         <div class="grouped fields">
-            <label for="idVerified">ID Verified? <span class="req">*</span></label>
+            <label for="idVerified">ID Verified <span class="req">*</span></label>
             
             <div class="field">
                 <div class="ui radio checkbox">
@@ -56,7 +56,7 @@
             </div>
 
             <div class="field">
-                <label for="technician">Technician <span class="req">*</span></label>
+                <label for="technician">Requester <span class="req">*</span></label>
                 <select name="technician" ng-model="intakeRequest.technician" ng-options="technician as technician.username for technician in technicians" id="technician">
                 </select>
             </div>

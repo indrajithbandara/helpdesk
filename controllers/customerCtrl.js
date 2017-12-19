@@ -19,7 +19,7 @@ angApp.controller('customerCtrl', function($scope, $window) {
     $scope.delete = function(id){
         let SQL = "DELETE FROM customers WHERE id = ?";
         transactionSQL(SQL, [id], function(results){
-            baseMessage('Customer deleted successfully!', 'success', 1000, goBack);
+            baseMessage('Customer deleted successfully!', 'success', 1000, refresh);
         });
     }; 
 });

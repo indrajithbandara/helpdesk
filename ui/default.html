@@ -32,6 +32,7 @@
       <script type="text/javascript" src="../controllers/customerCtrl.js"></script>
       <script type="text/javascript" src="../controllers/requestCtrl.js"></script>
       <script type="text/javascript" src="../controllers/settingCtrl.js"></script>
+      <script type="text/javascript" src="../controllers/menuCtrl.js"></script>
       <script type="text/javascript" src="../controllers/userCtrl.js"></script>
       <!-- Insert this line after script imports -->
       <script type="text/javascript">if (window.module) module = window.module;</script>
@@ -53,14 +54,16 @@
             <i class="mail icon"></i> Stored Requests
           </a>-->
           <a class="item" href="#!/user">
-            <i class="user icon"></i> Users
+            <i class="pencil icon"></i> Users
           </a>
           <div class="ui simple dropdown item">
             Requests
             <i class="dropdown icon"></i>
             <div class="menu">
-              <a class="item" href="#!/intake"><i class="edit icon"></i> Device Intake Form</a>
-              <a class="item" href="#!/only"><i class="globe icon"></i> Only G113 Support/Service Form</a>
+              <a class="item" href="#!/intake"><i class="edit icon"></i> Device intake form</a>
+              <a class="item" href="#!/only"><i class="globe icon"></i> Only G113 support/service form</a>
+              <a class="item" href="#" ng-click="refreshRequesters()"><i class="refresh icon"></i> Syncronize requesters list</a>
+              <a class="item" href="#" ng-click="refreshRequests()"><i class="refresh icon"></i> Syncronize requests list</a>
               <!--<a class="item" href="#!/release"><i class="settings icon"></i> Device Release Form</a>-->
             </div>
           </div>
@@ -73,9 +76,15 @@
               <a class="item" ng-click="about()"><i class="globe icon"></i> About</a>
             </div>
           </div>
-        <a class="ui right aligned category  item" ng-click="logout()">
-          <i class="user icon"></i> Logout
-        </a>
+
+          <div class="ui simple dropdown right aligned category item">
+            <i class="user icon"></i>&nbsp;{{ username }}
+            <i class="dropdown icon"></i>
+            
+            <div class="menu">
+              <a class="item" href="#" ng-click="logout()"><i class="log out icon"></i> Logout</a>
+            </div>
+          </div>
       </div>
       <!--CONTENT-->
       <!--Modal about-->
@@ -86,7 +95,7 @@
           <p>
             <ul>
               <li><a href="mailto:ddanielsilva661@email.com">Daniel Farias</a></li>
-              <li><a href="mailto:moline@fvtc.edu">Erik Moline</a>,</li>
+              <li><a href="mailto:moline@fvtc.edu">Erik Moline</a></li>
               <li><a href="mailto:nkululekomasombuka@gmail.com ">Nkululeko Massombuka</a></li>
             </ul>
           </p>
