@@ -60,7 +60,7 @@ angApp.service('requestUtils', function() {
                 Lockr.set('technicians', ['administrator']);
             }
             
-            baseMessage("Requesters syncronized with ManageEngine", 'success', 2000, function(){});
+            baseMessage("Technicians syncronized with ManageEngine", 'success', 2000, function(){});
         }, function(error){
             //Show error
             baseMessage(error.message, 'error', 2000, function(){  });
