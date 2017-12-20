@@ -34,8 +34,8 @@
             </div>
 
             <div class="field">
-                <label for="technician">Requester <span class="req">*</span></label>
-                <select name="technician" ng-model="onlyRequest.technician" ng-options="technician as technician.username for technician in technicians" id="technician">
+                <label for="technician">Technician <span class="req">*</span></label>
+                <select name="technician" ng-model="onlyRequest.technician" ng-options="technician as technician for technician in technicians" id="technician">
                 </select>
             </div>
 
@@ -44,11 +44,11 @@
                 <select name="customer" ng-model="onlyRequest.customer" ng-options="customer as customer.name for customer in customers" id="customer" required>
                 </select>
                 
-                <br>
+                <!--<br>
 
                 <div>
                     <a href="#!/add_customer" class="ui primary button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Add customer</a> 
-                </div>
+                </div>-->
             </div>
 
             <div class="field">

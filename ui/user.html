@@ -9,6 +9,7 @@
               <tr>
                   <td>Id</td>    
                   <td>Username</td>    
+                  <td>Technician</td>    
                   <td>Role</td>    
                   <td>Actions</td>    
               </tr>
@@ -20,6 +21,7 @@
               <tr ng-if="x" ng-repeat="x in users">
                   <td>{{ x.id }}</td>
                   <td>{{ x.username }}</td>
+                  <td>{{ x.technician }}</td>
                   <td>{{ x.role | capitalize}}</td>
                   <td>
                       <a class="ui primary button" ng-show="(session.id == x.id && session.role != 'admin') || (session.role == 'admin')" href="#!/edit_user/{{ x.id }}">&nbsp;Edit</a>

@@ -21,13 +21,15 @@ angApp.controller('intakeCtrl', function($scope, $window, $http, requestUtils) {
     $scope.intakeRequest.category = $scope.categories[0].value;
     $scope.intakeRequest.deviceType = $scope.deviceTypes[0].value;
     
+    console.log(Lockr.get('session').technician);
+    
     if($scope.technicians !== undefined && $scope.technicians.length > 0)
-        $scope.intakeRequest.technician = $scope.technicians[0];
+        $scope.intakeRequest.technician = Lockr.get('session').technician;
     
     //Check customers:
     //Colocar Load bar
-    $scope.lastSeq      = requestUtils.getLastSeq(Lockr.get('requests'));
-    $scope.ticketNumber = requestUtils.getNextSeq(Lockr.get('requests'));
+    $scope.lastSeq      = Lockr.get('lastSeq');
+    $scope.ticketNumber = requestUtils.getNextSeq();
     $scope.intakeRequest.ticketNumber = $scope.ticketNumber;
     
     transactionSQL('SELECT * FROM customers', [], function(results){
@@ -71,15 +73,15 @@ angApp.controller('intakeCtrl', function($scope, $window, $http, requestUtils) {
                     "location": "C151 – Computer Support Center",
                     "category": data.category,
                     "description": data.description,
-                    "technician": data.technician.username,
-                    "requester": data.technician.username,
+                    "technician": data.technician,
+                    "requester": data.technician,
                     "subject": data.ticketNumber,
                     "ticket number": data.ticketNumber,
-                    "student or faculty": data.customer.type,
+                    "Student or Faculty?": data.customer.type,
                     "customer name": data.customer.name,
                     //
                     "device type": data.deviceType,
-                    "customer id verified": $scope.idVerified,
+                    "Customer ID Verified?": $scope.idVerified,
                     "Is the charger included with the device?": data.withCharger,
                     "Color of the Device" : data.colorDevice,
                     "phone number" : data.customer.phone,
@@ -123,11 +125,12 @@ angApp.controller('onlyCtrl', function($scope, $window, $http, requestUtils) {
     $scope.onlyRequest.deviceType = $scope.deviceTypes[0].value;
     
     if($scope.technicians.length > 0)
-        $scope.onlyRequest.technician = $scope.technicians[0];
+        $scope.onlyRequest.technician = Lockr.get('session').technician;
+        //$scope.onlyRequest.technician = $scope.technicians[0];
 
     //
-    $scope.lastSeq      = requestUtils.getLastSeq(Lockr.get('requests'));
-    $scope.ticketNumber = requestUtils.getNextSeq(Lockr.get('requests'));
+    $scope.lastSeq      = Lockr.get('lastSeq'); //requestUtils.getLastSeq(Lockr.get('requests'));
+    $scope.ticketNumber = requestUtils.getNextSeq();
     $scope.onlyRequest.ticketNumber = $scope.ticketNumber;
     
     transactionSQL('SELECT * FROM customers', [], function(results){
@@ -177,12 +180,12 @@ angApp.controller('onlyCtrl', function($scope, $window, $http, requestUtils) {
                     "device type": data.deviceType,
                     "category": data.category,
                     "description": data.description,
-                    "technician": data.technician.username,
-                    "requester": data.technician.username,
+                    "technician": data.technician,
+                    "requester": data.technician,
                     "subject": data.ticketNumber,
-                    "student of faculty": data.customer.type,
+                    "Student or Faculty?": data.customer.type,
                     "customer name": data.customer.name,
-                    "customer id verified": $scope.idVerified,
+                    "Customer ID Verified?": $scope.idVerified,
                 },
             },
         };

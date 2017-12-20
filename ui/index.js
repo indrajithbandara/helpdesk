@@ -53,7 +53,13 @@ angApp.service('requestUtils', function() {
 
         //Show loading thing:
         basicPostRequest(getBaseRequester(), INPUT_REQUESTERS, OPERATIONS[4], function(technicians){
-            Lockr.set('technicians', technicians.operation.details);
+            if(technicians.operation.details && technicians.operation.details.length > 0){
+                //
+                Lockr.set('technicians', technicians.operation.details.map(user => user.username));    
+            }else{
+                Lockr.set('technicians', ['administrator']);
+            }
+            
             baseMessage("Requesters syncronized with ManageEngine", 'success', 2000, function(){});
         }, function(error){
             //Show error
@@ -78,38 +84,30 @@ angApp.service('requestUtils', function() {
 
         //Show loading thing:
         basicPostRequest(getBaseRequest(), BASE_GET, OPERATIONS[3], function(requests){
-            Lockr.set('requests', requests.operation.details);
+            if(requests.operation.details && requests.operation.details.length > 0){
+                var list = requests.operation.details[0];
+                //
+                if(!(list.SUBJECT === undefined)){
+                    last = list.SUBJECT;
+                }else if(!(list.subject === undefined)){
+                    last = list.subject;
+                }else if(!(list['ticket number'] === undefined)){
+                    last = list['ticket number'];
+                }
+                //
+                Lockr.set('lastSeq', PRINTJ.sprintf("%03d", last));
+            }else{
+                Lockr.set('lastSeq', "000");
+            }
             baseMessage("Requests syncronized with ManageEngine", 'success', 2000, function(){});
         }, function(error){
             console.log(error);
             baseMessage(error.message, 'error', 2000, function(){});
         });
 	}
-	
-    this.getLastSeq = function(list){
-        var output = "000";
-        if(!(list == undefined || list == null || list.length == 0)){
-            let last = output;
-
-            if(!(list[0].SUBJECT === undefined)){
-                last = list[0].SUBJECT;
-            }else if(!(list[0].subject === undefined)){
-                last = list[0].subject;
-            }else if(!(list[0]['ticket number'] === undefined)){
-                last = list[0]['ticket number'];
-            }
-            
-            
-            if(parseInt(last) !== undefined){
-                var next = parseInt(last);
-                output = PRINTJ.sprintf("%03d", next);
-            }
-        }
-
-        return output;
-    }
-    this.getNextSeq = function(list){
-        var last = this.getLastSeq(list);
+    
+    this.getNextSeq = function(){
+        var last = Lockr.get('lastSeq');
         var output = "001";
 
         if(parseInt(last) != undefined){

@@ -10,6 +10,12 @@ angApp.controller('menuCtrl', function($scope, $window, requestUtils) {
 		window.location.href = '../index.html';
 	};
 
+    $scope.reset = function(){
+        resetDB();
+        //Lockr.set('session', {});
+        //window.location.href = '../index.html';
+    };
+
     $scope.refreshRequests = function(){
         requestUtils.checkRequests();
     }

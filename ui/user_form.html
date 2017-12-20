@@ -14,13 +14,14 @@
                     <label for="username">Username <span class="req">*</span></label>
                     <input type="text" class="form-control" id="username" name="username" ng-model="user.username" required>
                     
-                    <div class="ui red message" ng-show="user.username.$invalid || isSameUsername(user.username)">
-                        <ul>
-                            <li>The username given is already taken</li>
-                        </ul>
-                        
-                    </div>
+                    <div class="req" ng-if="user.username.$invalid || isSameUsername(user.username)">The given username is already taken</div>
                 </div>
+            </div>
+
+            <div class="field">
+                <label for="technician">Technician <span class="req">*</span></label>
+                <select name="technician" ng-model="user.technician" ng-options="technician as technician for technician in technicians" id="technician">
+                </select>
             </div>
             
             <div ng-show="session.role == 'admin' && oldName != 'admin'">
