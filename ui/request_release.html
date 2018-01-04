@@ -1,96 +1,63 @@
 <div class="ui text container">
     <div ng-controller="releaseCtrl">
         <div class="ui center aligned container">
-            <h3>Device Release Form - {{ semester }}</h3>
-        </div>
-
-        <div class="ui segment" role="alert">
-            I HEREBY authorize work to be performed upon my device. FVTC and its students may perform work on the listed device for the purposes of testing or inspection, at my risk. It is also understood that other adjustments or checks can be made to my device, while it is in the FVTC Student IT-Computer Support Center, in order to aid the students in their educational process. FVTC will not be held responsible for loss or damage to devices, software, hardware, or personal data; in case of fire, theft, accident, or any other cause beyond our control. I understand that the work will be performed by students in a learning environment and that there is NO WARRANTY expressed or implied on this device. If after ten forms of contact (email or phone messages), from the FVTC Student IT-Computer Support Center to you regarding your device being ready ready for pick up, and you have not contacted us; or if the device has been deemed abandoned after one month of no responses or contact from the owner, the device will be forfeited over to the FVTC lost and found department.
-        </div>
-
-        <div class="row">
+            <h3>Device Release Form - {{ semester }}<span class="title"></span></h3>
             <span class="req">*</span> Required
         </div>
 
-        <form class="ui form" name="release" ng-submit="save(release)" novalidate>
-            <h4>Previous Ticket Number: <span class="text-info">{{ lastSeq }}</span></h4>
-            
-            <div class="field" ng-class="{'has-error' : !checkTicket(only.ticketNumber.$viewValue) || (only.ticketNumber.$invalid && !only.ticketNumber.$pristine), 'form-group': true}">
-                <label for="agree">I have read and agree to the above statement. Clicking this box is the same as signing the document (Digital Signature).<span class="asp"> *</span></label>
-                <select ng-model="agree" name="agree" id="agree" class="form-control">
-                    <option value="yes">Yes</option>
-                    <option value="no" selected>No</option>
+        <form class="ui {{state}} form" name="data" ng-submit="save()">
+            <div class="grouped fields">
+                <div class="ui segment">
+                    I HEREBY authorize work to be performed upon my device. FVTC and its students may perform work on the listed device for the purposes of testing or inspection, at my risk. It is also understood that other adjustments or checks can be made to my device, while it is in the FVTC Student IT-Computer Support Center, in order to aid the students in their educational process. FVTC will not be held responsible for loss or damage to devices, software, hardware, or personal data; in case of fire, theft, accident, or any other cause beyond our control. I understand that the work will be performed by students in a learning environment and that there is NO WARRANTY expressed or implied on this device. If after ten forms of contact (email or phone messages), from the FVTC Student IT-Computer Support Center to you regarding your device being ready ready for pick up, and you have not contacted us; or if the device has been deemed abandoned after one month of no responses or contact from the owner, the device will be forfeited over to the FVTC lost and found department.
+                </div>
+
+                <label for="userAgreement">I have read and agree to the above statement. Clicking this box is the same as signing the document (Digital Signature). <span class="req">*</span></label>
+                
+                <div class="field">
+                    <div class="ui radio checkbox">
+                    <input type="radio" name="userAgreement" ng-model="releaseRequest.userAgreement" value="Yes" id="userAgreementYes">
+                    <label>Yes</label>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <div class="ui radio checkbox">
+                    <input type="radio" name="userAgreement" ng-model="releaseRequest.userAgreement" value="No" id="userAgreementNo"> 
+                    <label>No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grouped fields">
+                <label for="idVerified">Request status <span class="req">*</span></label>
+                
+                <div class="field">
+                    <div class="ui radio checkbox">
+                    <input type="radio" name="status" ng-model="releaseRequest.status" value="Resolved" id="statusResolved">
+                    <label>Resolved</label>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <div class="ui radio checkbox">
+                    <input type="radio" name="status" ng-model="releaseRequest.status" value="Unresolved" id="statusUnresolved"> 
+                    <label>Unresolved</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="request" >Request <span class="req">*</span></label>
+                <select name="request" ng-model="releaseRequest.request" ng-options="request as request.SUBJECT for request in requests" id="request" required>
                 </select>
-            </div>
-            
-            <div class="field">
-                    <label for="technicianName">Technician Name <span class="asp"> *</span></label>
-                    <input ng-model="technicianName" type="text" class="form-control" name="technicianName" id="technicianName"  required>
-                    <div class="text-danger" ng-show="release.technicianName.$invalid && !release.technicianName.$pristine">Technician Name is required.</div>
-            </div>
-            
-            <div class="field">
-                    <label for="ticketNumber">Ticket Number <span class="asp"> *</span></label>
-                    <select name="ticketNumber" id="ticketNumber" class="form-control" required>
-                    </select>
-            </div>
-            
-            <div class="field">
-                    <label for="customerName">Customer Name <span class="asp"> *</span></label>
-                    <input ng-model="customerName" type="text" class="form-control" id="customerName" name="customerName" required>
-                    <div class="text-danger" ng-show="release.customerName.$invalid && !release.customerName.$pristine">Customer Name is required.</div>
-            </div>
-            
-            <div class="field">
-                    <label for="satisfaction">Please rate your overall satisfaction level. <span class="asp"> *</span></label>
-                    <select ng-model="satisfaction" name="satisfaction" id="satisfaction" class="form-control" required>
-                        <option value="Very Satisfied">Very Satisfied</option>
-                        <option value="Satisfied" selected>Satisfied</option>
-                        <option value="Unsatisfied">Unsatisfied</option>
-                        <option value="Very Unsatisfied">Very Unsatisfied</option>
-                    </select>
-            </div>
-            
-            <div class="field">
-                    <label for="improvement">What can we do to improve our service?</label>
-                    <textarea ng-model="improvement" class="form-control" name="improvement" id="improvement" rows="5"></textarea>
-            </div>
-            
-            <div class="field">
-                <label for="recomend">Would you recommend our service to others? <span class="asp"> *</span></label>
-                <select ng-model="recomend" class="form-control" id="recomend" name="recomend" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-            
-            <div class="field">
-                    <label for="moreHelp">Is there anything else that we can help you out with today?</label>
-                    <textarea ng-model="moreHelp" class="form-control" id="moreHelp" name="moreHelp" rows="5"></textarea>
-            </div>
-            
-            <div class="field">
-                    <label for="verified">FVTC Student/Employee ID Verified? <span class="asp"> *</span></label>
-                    <select ng-model="verified" class="form-control" name="verified" id="verified" required>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                    </select>
-                    <div class="text-danger" ng-show="verified == 'no' && !release.verified.$pristine">FVTC Student/Employee ID MUST be Verified</div>
             </div>
             
             <div class="ui center aligned container">
-                <button class="ui primary button" type="submit" ng-disabled="verified == 'no' || release.$invalid">Submit</button>
-                <a class="ui danger button" href="#" onclick="goBack()">Go Back</a>
+                <button class="ui primary button" type="submit" ng-disabled="data.$invalid || releaseRequest.userAgreement == 'No'">Submit</button>
+                <a class="ui button" ng-click="goBack()" href="#">Go Back</a>
             </div>
+
         </form>
-        <!---->
+
     </div>
-    <!--Modal no requests-->
-    <div class="ui modal" id="no_requests">
-      <div class="header">No open requests</div>
-      <div class="content">
-        <p>No open requests</p>
-      </div>
-    </div>
-    <!--END-->
 </div>

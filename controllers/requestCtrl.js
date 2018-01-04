@@ -83,7 +83,7 @@ angApp.controller('intakeCtrl', function($scope, $window, $http, requestUtils) {
                     "device type": data.deviceType,
                     "Customer ID Verified?": $scope.idVerified,
                     "Is the charger included with the device?": data.withCharger,
-                    "Color of the Device" : data.colorDevice,
+                    "Color of Device" : data.colorDevice,
                     "phone number" : data.customer.phone,
                     "Device Manufacturer Brand Name" : data.brandName,
                     "email address" : data.customer.email,
@@ -107,11 +107,10 @@ angApp.controller('onlyCtrl', function($scope, $window, $http, requestUtils) {
     $('#ticketNumber').mask('000');
     //Init Form:
     $scope.onlyRequest = {};
-    //
     $scope.semester = Lockr.get('settings').semester;
     $scope.idVerified = "No";
     $scope.state = "";
-    //
+    
     $scope.customers = [];
     $scope.categories = CATS;
     $scope.deviceTypes = DEVICE_TYPES;
@@ -126,9 +125,7 @@ angApp.controller('onlyCtrl', function($scope, $window, $http, requestUtils) {
     
     if($scope.technicians.length > 0)
         $scope.onlyRequest.technician = Lockr.get('session').technician;
-        //$scope.onlyRequest.technician = $scope.technicians[0];
 
-    //
     $scope.lastSeq      = Lockr.get('lastSeq'); //requestUtils.getLastSeq(Lockr.get('requests'));
     $scope.ticketNumber = requestUtils.getNextSeq();
     $scope.onlyRequest.ticketNumber = $scope.ticketNumber;
@@ -184,6 +181,7 @@ angApp.controller('onlyCtrl', function($scope, $window, $http, requestUtils) {
                     "requester": data.technician,
                     "subject": data.ticketNumber,
                     "Student or Faculty?": data.customer.type,
+                    "resolution": data.solution,
                     "customer name": data.customer.name,
                     "Customer ID Verified?": $scope.idVerified,
                 },
@@ -220,3 +218,116 @@ const DEVICE_TYPES = [
         { value: 'Mobile Device' }, 
         { value: 'Other' },
 ];
+
+angApp.controller('releaseCtrl', function($scope, $window, $http, requestUtils) {
+    $scope.semester = Lockr.get('settings').semester;
+    $scope.state = "";
+    $scope.releaseRequest = {};
+
+    $scope.releaseRequest.status = "Resolved";
+    $scope.releaseRequest.userAgreement = "No";
+
+    if(Lockr.get('requests') && Lockr.get('requests').length > 0){
+        $scope.requests = Lockr.get('requests');
+        $scope.requests = $scope.requests.filter(x => x.STATUS != 'Closed');
+
+        //No Open requests:
+        if($scope.requests && $scope.requests.length > 0){
+            $scope.releaseRequest.request = $scope.requests[0];
+        }else{
+            //Go Back / Show Message:
+            goToMain();
+            $('#open_requests').modal('show');
+        }
+    }
+
+    $scope.save = function(){
+        $scope.state = "loading";
+        var input = $scope.filterRelease($scope.releaseRequest);
+        var id = $scope.releaseRequest.request.WORKORDERID;
+        console.log(input);
+        const url = getBaseRequest() + '/' + id;
+        
+        //Saving Stuffs Here:
+        basicPostRequest(url, input, OPERATIONS[1], function(requests){
+            baseMessage('Request updated succesfully!', 'success', 2000, goToMain);
+            requestUtils.checkRequests();
+            $scope.state = "";
+        }, function(error){
+            baseMessage(error.message, 'error', 3000, goToMain);
+            $scope.state = "";
+            //Lockr.sadd('storedRequests', {input: JSON.stringify(input), code: error.message});
+        });
+    }
+
+    $scope.filterRelease = function(data){
+        return {
+            "operation": {
+                "details" : {
+                    "status": "closed",
+                    "ticket status": data.status,
+                },
+            },
+        };
+        //
+    };
+});
+
+
+angApp.controller('requestCtrl', function($scope, $window, $http, requestUtils) {
+    $scope.semester = Lockr.get('settings').semester;
+    $scope.session = Lockr.get('session');
+    $scope.state = "";
+
+    if(Lockr.get('storedRequests') && Lockr.get('storedRequests').length > 0){
+        $scope.requests = Lockr.get('storedRequests');
+        const size = $scope.requests.length;
+        
+        for(var i = 0; i < size; i++){
+            var current = $scope.requests[i];
+            $scope.requests[i].parsed = JSON.parse($scope.requests[i].input);
+        }
+    }else{
+        //Go Back / Show Message:
+        goToMain();
+        $('#stored_requests').modal('show');
+    }
+
+    $scope.sendAgain = function(id, body){
+        console.log(id);
+        console.log(body);
+        $scope.state = "loading";
+
+        basicPostRequest(getBaseRequest(), body, OPERATIONS[0], function(requests){
+            baseMessage('Request sent succesfully!', 'success', 2000, refresh);
+            //Call Delete:
+            $scope.deleteData(id);
+            $scope.state = "";
+        }, function(error){
+            baseMessage(error.message, 'error', 3000, function(){});
+            $scope.state = "";
+        });
+
+
+    }
+
+    $scope.delete = function(id){
+        console.log(id);
+        $scope.deleteData(id);
+        //Show message:
+        baseMessage('Request deleted succesfully!', 'success', 2000, refresh);
+    };
+
+    $scope.deleteData = function(id){
+        var current = [];
+        var temp = Lockr.get('storedRequests');
+
+        for (var i = 0; i < temp.length; i++) {
+            if(i != id){
+                current.push(temp[i]);
+            }
+        }
+
+        Lockr.set('storedRequests', current);
+    }
+});

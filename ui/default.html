@@ -6,6 +6,7 @@
       <title>Help Desk Forms</title>
       
       <link rel="stylesheet" type="text/css" href="../res/scripts/semantic.min.css">
+      <!--<link rel="stylesheet" type="text/css" href="../res/scripts/jquery.modal.min.css">-->
       <link rel="stylesheet" type="text/css" href="../res/scripts/noty.css">
       <link rel="stylesheet" type="text/css" href="../res/scripts/custom/app.css">
 
@@ -17,6 +18,7 @@
       <script type="text/javascript" src="../res/scripts/printj.min.js"></script>
       <script type="text/javascript" src="../res/scripts/jquery.min.js"></script>
       <script type="text/javascript" src="../res/scripts/jquery.mask.min.js"></script>
+      <!--<script type="text/javascript" src="../res/scripts/jquery.modal.min.js"></script>-->
       <script type="text/javascript" src="../res/scripts/angular.min.js"></script>
       <script type="text/javascript" src="../res/scripts/angular-route.min.js"></script>
       <script type="text/javascript" src="../res/scripts/noty.min.js"></script>
@@ -62,8 +64,13 @@
             <div class="menu">
               <a class="item" href="#!/intake"><i class="edit icon"></i> Device intake form</a>
               <a class="item" href="#!/only"><i class="globe icon"></i> Only G113 support/service form</a>
+              <a class="item" href="#!/release"><i class="checkmark box icon"></i> Release form</a>
+              <div class="ui divider"></div>
+              <a class="item" href="#!/request"><i class="checkmark box icon"></i> Stored requests</a>
+              <div class="ui divider"></div>
               <a class="item" href="#" ng-click="refreshRequesters()"><i class="refresh icon"></i> Syncronize technicians list</a>
               <a class="item" href="#" ng-click="refreshRequests()"><i class="refresh icon"></i> Syncronize requests list</a>
+              <div class="ui divider"></div>
               <a class="item" href="#" ng-click="reset()"><i class="history icon"></i> Reset all data</a>
               <!--<a class="item" href="#!/release"><i class="settings icon"></i> Device Release Form</a>-->
             </div>
@@ -88,6 +95,7 @@
           </div>
       </div>
       <!--CONTENT-->
+
       <!--Modal about-->
       <div class="ui modal" id="about">
         <div class="header">About</div>
@@ -102,6 +110,25 @@
           </p>
         </div>
       </div>
+      <!--End Modal About-->
+
+      <!--Modal no open requests-->
+      <div class="ui modal" id="open_requests">
+        <div class="header">Requests</div>
+        <div class="content">
+          <p>No open requests found</p>
+        </div>
+      </div>
+      <!--End Modal no open requests-->
+
+      <!--Modal no stored requests-->
+      <div class="ui modal" id="stored_requests">
+        <div class="header">Requests</div>
+        <div class="content">
+          <p>No stored requests found</p>
+        </div>
+      </div>
+      <!--End Modal no stored requests-->
 
       <!--MENU-->
       <div class="ui text container">

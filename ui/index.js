@@ -72,7 +72,7 @@ angApp.service('requestUtils', function() {
             "operation": {
                 "details": {
                     "from": "0",
-                    "limit": "1",
+                    "limit": "0",
                     "filterby": "All_Requests",
                     "name": "GET_REQUESTS",
                     "OPERATION_NAME" : "GET_REQUESTS",
@@ -96,9 +96,12 @@ angApp.service('requestUtils', function() {
                 }
                 //
                 Lockr.set('lastSeq', PRINTJ.sprintf("%03d", last));
+                //
+                Lockr.set('requests', requests.operation.details);
             }else{
                 Lockr.set('lastSeq', "000");
             }
+
             baseMessage("Requests syncronized with ManageEngine", 'success', 2000, function(){});
         }, function(error){
             console.log(error);
@@ -141,6 +144,7 @@ function basicPostRequest(URL, input, operation_name, callBackOk, callBackError)
         method: 'POST',
         uri: URL,
         timeout: 10000,
+        family: 4,
         form: {
             format: "json", 
             TECHNICIAN_KEY: Lockr.get('settings').key,

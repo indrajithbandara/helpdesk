@@ -40,6 +40,9 @@ if (shouldQuit) {
 
 app.on('ready', createWindow)
 
+//Nice:
+app.disableHardwareAcceleration()
+
 app.on('window-all-closed', function () {
     if (process.platform !== 'darwin')
         app.quit()

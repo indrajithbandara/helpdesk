@@ -1,4 +1,4 @@
-<div  class="ui column grid centered">
+<div  class="ui {{state}} column grid centered">
   <div ng-controller="requestCtrl">
       <div class="row">
             <h3>Stored Requests - {{ semester }}</h3>
@@ -13,15 +13,15 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-show="storedRequests.length == 0">
+            <tr ng-show="requests.length == 0">
               <td colspan="3" class="text-center">No requests</td>
             </tr>
-            <tr ng-repeat="x in storedRequests">
-              <td>{{ x.input }}</td>
+            <tr ng-repeat="x in requests track by $index">
+              <td>{{ x.parsed.operation.details.requesttemplate }} - {{ x.parsed.operation.details.subject }}</td>
               <td>{{ x.code }}</td>
               <td>
-                <a class="ui button" ng-click="resend(x.id, x.input)">Send</a>&nbsp;
-                <a class="ui button" ng-show="session.role == 'admin'" ng-click="delete(x.id)">Delete</a>
+                <a class="ui button" ng-click="sendAgain($index, x.parsed)">Send</a>&nbsp;
+                <a class="ui button" ng-show="session.role == 'admin'" ng-click="delete($index)">Delete</a>
               </td>
             </tr>
         </tbody>
@@ -30,14 +30,5 @@
       <div class="row">
           <a class="ui button" href="#" onclick="goBack()">&nbsp;Go Back</a>
       </div>
-
-      <!--Modal no requests-->
-      <div class="ui modal" id="no_requests">
-        <div class="header">No open requests</div>
-        <div class="content">
-          <p>No stored requests</p>
-        </div>
-      </div>
-      <!--END-->
   </div>
 </div>

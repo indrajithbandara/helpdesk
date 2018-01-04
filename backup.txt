@@ -1490,3 +1490,262 @@ function deleteSQL(table, index){
     }
     localStorage[table] = temp;    
 }
+
+/*
+    $scope.lastSeq      = Lockr.get('lastSeq'); //requestUtils.getLastSeq(Lockr.get('requests'));
+    $('#ticketNumber').mask('000');
+    //Init Form:
+    $scope.onlyRequest = {};
+    $scope.idVerified = "No";
+    
+    $scope.customers = [];
+    $scope.categories = CATS;
+    $scope.deviceTypes = DEVICE_TYPES;
+    $scope.technicians = Lockr.get('technicians');
+    //Check customers:
+    //Colocar Load bar
+    $scope.onlyRequest.customer = {};
+    $scope.onlyRequest.wereSolved = "Resolved";
+
+    $scope.onlyRequest.category = $scope.categories[0].value;
+    $scope.onlyRequest.deviceType = $scope.deviceTypes[0].value;
+    
+    if($scope.technicians.length > 0)
+        $scope.onlyRequest.technician = Lockr.get('session').technician;
+
+    $scope.ticketNumber = requestUtils.getNextSeq();
+    $scope.onlyRequest.ticketNumber = $scope.ticketNumber;
+    
+    transactionSQL('SELECT * FROM customers', [], function(results){
+        if(results.rows.length > 0){                
+            $scope.customers = [];
+            
+            for (var i = 0; i < results.rows.length; i++) {
+                $scope.customers.push(results.rows[i]);
+            }
+
+            $scope.onlyRequest.customer = $scope.customers[0];
+            $scope.$apply();
+        }
+    });
+    
+    $scope.isSameTicket = function(ticket){
+        return $scope.tickets.includes(ticket);
+    }
+    
+    $scope.save = function() {
+        $scope.state = "loading";
+        var input = $scope.filterOnly($scope.onlyRequest);
+        console.log(input);
+        
+        basicPostRequest(getBaseRequest(), input, OPERATIONS[0], function(requests){
+            baseMessage('G113 Request saved succesfully!', 'success', 2000, goToMain);
+            requestUtils.checkRequests();
+            $scope.state = "";
+        }, function(error){
+            baseMessage(error.message, 'error', 3000, goToMain);
+            $scope.state = "";
+            Lockr.sadd('storedRequests', {input: JSON.stringify(input), code: error.message});
+        });
+    };
+
+    $scope.filterOnly = function(data){
+        return {
+            "operation": {
+                "details" : {
+                    "requesttemplate" : "Only G113 Support/Service Provided",
+                    "priority": "Low",
+                    "level": "Tier 1",
+                    "status": "closed",
+                    "location": "G113 – Student Help Desk",
+                    "semester": $scope.semester, 
+                    "ticket status": data.wereSolved,
+                    "device type": data.deviceType,
+                    "category": data.category,
+                    "description": data.description,
+                    "technician": data.technician,
+                    "requester": data.technician,
+                    "subject": data.ticketNumber,
+                    "Student or Faculty?": data.customer.type,
+                    "resolution": data.solution,
+                    "customer name": data.customer.name,
+                    "Customer ID Verified?": $scope.idVerified,
+                },
+            },
+        };
+    };
+    */
+
+
+    <!--<br>
+        
+        <form class="ui {{state}} form" name="data" ng-submit="save()" ng-show="idVerified == 'Yes' && userAgreement == 'Yes'" novalidate>
+
+
+
+
+            <h4>Previous Ticket Number: <span class="text-info">{{ lastSeq }}</span></h4>
+            
+            <div class="field" ng-class="{'has-error' : !checkTicket(intakeRequest.ticketNumber.$viewValue) || (intakeRequest.ticketNumber.$invalid && !intakeRequest.ticketNumber.$pristine), 'form-group': true}">
+                <label for="ticketNumber">Ticket Number <span class="req">*</span></label>
+                <input class="form-control" type="text" id="ticketNumber" name="ticketNumber" ng-model="intakeRequest.ticketNumber" pattern="\d{3}" required>
+            </div>
+
+            <div class="field">
+                <label for="technician">Technician <span class="req">*</span></label>
+                <select name="technician" ng-model="intakeRequest.technician" ng-options="technician as technician for technician in technicians" id="technician">
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="customer" >Customer <span class="req">*</span></label>
+                <select name="customer" ng-model="intakeRequest.customer" ng-options="customer as customer.name for customer in customers" id="customer" required>
+                </select>
+                <!--<br>
+                <div>
+                    <a href="#""  ng-click="addCustomer(intakeRequest)" class="ui primary button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Add customer</a> 
+                </div>-->
+            </div>
+
+            <div class="field">
+                <label for="bestTime">When and how is the best way to contact you? <span class="req">*</span></label>
+                <input type="text" class="form-control" id="bestTime" name="bestTime" ng-model="intakeRequest.bestTime" required>
+            </div>
+
+            <!---->
+
+            <div class="field">
+                <label for="category">Select a category <span class="req">*</span></label>
+                <select name="category" ng-model="intakeRequest.category" ng-options="option.value as option.value for option in categories" id="category">
+                </select>
+            </div>
+
+            <div class="grouped fields">
+                <label for="withWarranty">Is the device under warranty? <span class="req">*</span></label>
+                
+                <div class="field">
+                    <div class="ui radio checkbox">
+                    <input type="radio" name="withWarranty" ng-model="intakeRequest.withWarranty" value="Yes" id="withWarrantyYes">
+                    <label>Yes</label>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <div class="ui radio checkbox">
+                    <input type="radio" name="withWarranty" ng-model="intakeRequest.withWarranty" value="No" id="withWarrantyNo"> 
+                    <label>No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="howOldIsDevice">How old is the device? <span class="req">*</span></label>
+                <input type="text" class="form-control" id="howOldIsDevice" name="howOldIsDevice" ng-model="intakeRequest.howOldIsDevice" required>
+            </div>
+
+            <div class="field">
+                <label for="lastTimeBackup">When is the last time you backed up all of your important files on the device? <span class="req">*</span></label>
+                <input type="text" class="form-control" id="lastTimeBackup" name="lastTimeBackup" ng-model="intakeRequest.lastTimeBackup" required>
+            </div>
+
+            <div class="field">
+                <label for="deviceType">Device Type <span class="req">*</span></label>
+                <select name="deviceType" ng-model="intakeRequest.deviceType" ng-options="deviceType.value as deviceType.value for deviceType in deviceTypes" id="deviceType" required>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="brandName">Device Manufacturer Brand Name <span class="req">*</span></label>
+                <input type="text" class="form-control" id="brandName" name="brandName" ng-model="intakeRequest.brandName" required>
+            </div>
+
+            <div class="field">
+                <label for="modelNumber">Model Number <span class="req">*</span></label>
+                <input type="text" class="form-control" id="modelNumber" name="modelNumber" ng-model="intakeRequest.modelNumber" required>
+            </div>
+
+            <div class="field">
+                <label for="operatingSystem">Operating System <span class="req">*</span></label>
+                <input type="text" class="form-control" id="operatingSystem" name="operatingSystem" ng-model="intakeRequest.operatingSystem" required>
+            </div>
+
+            <div class="field">
+                <label for="colorDevice">Color of Device <span class="req">*</span></label>
+                <input type="text" class="form-control" id="colorDevice" name="colorDevice" ng-model="intakeRequest.colorDevice" required>
+            </div>
+
+            <div class="grouped fields">
+                <label for="withCharger">Is the charger included with the device? <span class="req">*</span></label>
+                
+                <div class="field">
+                    <div class="ui radio checkbox">
+                    <input type="radio" name="withCharger" ng-model="intakeRequest.withCharger" value="Yes" id="withChargerYes">
+                    <label>Yes</label>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <div class="ui radio checkbox">
+                    <input type="radio" name="withCharger" ng-model="intakeRequest.withCharger" value="No" id="withChargerNo"> 
+                    <label>No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="passwordDevice">Device's Password</label>
+                <input type="text" class="form-control" id="passwordDevice" name="passwordDevice" ng-model="intakeRequest.passwordDevice">
+            </div>
+
+            <!---->
+            <div class="field">
+                <label for="moreHelp">Is there anything you would like to be educated or trained on related to the device? <span class="req">*</span></label>
+                <textarea class="form-control" id="moreHelp" name="moreHelp" ng-model="intakeRequest.moreHelp" rows="5" required></textarea>
+            </div>
+
+            <div class="grouped fields">
+                <label for="wantOffice">Would you like Microsoft Office 365 installed on the device? <span class="req">*</span></label>
+                
+                <div class="field">
+                    <div class="ui radio checkbox">
+                    <input type="radio" name="wantOffice" ng-model="intakeRequest.wantOffice" value="Yes" id="wantOfficeYes">
+                    <label>Yes</label>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <div class="ui radio checkbox">
+                    <input type="radio" name="wantOffice" ng-model="intakeRequest.wantOffice" value="No" id="wantOfficeNo"> 
+                    <label>No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grouped fields">
+                <label for="wantAntivirus">Would you like a free antivirus program installed on the device? <span class="req">*</span></label>
+                
+                <div class="field">
+                    <div class="ui radio checkbox">
+                    <input type="radio" name="wantAntivirus" ng-model="intakeRequest.wantAntivirus" value="Yes" id="wantAntivirusYes">
+                    <label>Yes</label>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <div class="ui radio checkbox">
+                    <input type="radio" name="wantAntivirus" ng-model="intakeRequest.wantAntivirus" value="No" id="wantAntivirusNo"> 
+                    <label>No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="description">Description of the Device Problem(s) or General Question(s) <span class="req">*</span></label>
+                <textarea class="form-control" id="description" name="description" ng-model="intakeRequest.description" rows="5" required></textarea>
+            </div>
+           
+            <div class="ui center aligned container">
+                <button class="ui primary button" type="submit" ng-disabled="data.$invalid">Submit</button>
+                <a class="ui button" ng-click="goBack()" href="#">Go Back</a>
+            </div>
+        </form>-->
