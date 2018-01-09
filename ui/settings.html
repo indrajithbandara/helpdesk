@@ -2,7 +2,13 @@
     <div ng-controller="settingsCtrl">
         <div class="ui center aligned container">
             <h3>Settings - {{ semester }}</h3>
+            
+            <br>
+
+            <button class="ui primary button" type="button" ng-click="reset()"><i class="history icon"></i> Reset all data</button>
         </div>
+
+
         <br>
         <!--FORM-->
         <form class="ui form" name="data" ng-submit="save()" novalidate>
@@ -11,16 +17,22 @@
             <div class="field">
                 <label for="semester">Semester / Year&nbsp;<span class="req">*</span></label>
                 <input ng-model="settings.semester" type="text" class="form-control" name="semester" id="semester" pattern="([a-zA-Z]*\s\d{4})" required>
+
+                <div class="req" ng-if="data.semester.$dirty && !data.semester.$valid">This field is required in the following format "Season 9999"</div>
             </div>
 
             <div class="field">
                 <label for="semester">Ip&nbsp;<span class="req">*</span></label>
                 <input ng-model="settings.ip" type="text" class="form-control" name="ip" id="ip" pattern="" required>
+
+                <div class="req" ng-if="data.ip.$dirty && !data.ip.$valid">This field is required</div>
             </div>
 
             <div class="field">
                 <label for="semester">API Key&nbsp;<span class="req">*</span></label>
                 <input ng-model="settings.key" type="text" class="form-control" name="key" id="key" pattern="" required>
+
+                <div class="req" ng-if="data.key.$dirty && !data.key.$valid">This field is required</div>
             </div>
 
             <div class="ui center aligned container">

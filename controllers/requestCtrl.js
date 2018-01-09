@@ -44,6 +44,23 @@ angApp.controller('intakeCtrl', function($scope, $window, $http, requestUtils) {
             $scope.$apply();
         }
     });
+
+    $scope.addCustomer = function(){
+        //const old = window; // Nice Job Daniel!!!
+        const openWindow = $window.open("#!/add_customer");
+        
+        let pollTimer = $window.setInterval(function() {
+            if (openWindow.closed !== false) { // !== is required for compatibility with Opera
+                $window.clearInterval(pollTimer);
+                alert("Ronaldo");
+                //old.close();
+                //Update Customers
+            }else{
+                //Keep the focus
+                openWindow.focus();   
+            }
+        }, 100);
+    }
     
     $scope.save = function() {
         var input = $scope.filterIntake($scope.intakeRequest);

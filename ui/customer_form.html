@@ -12,6 +12,8 @@
             <div class="field">
                 <label for="name">Customer Name <span class="req">*</span></label>
                 <input type="text" class="form-control" id="name" name="name" ng-model="customer.name" required>
+
+                <div class="req" ng-if="data.name.$dirty && !data.name.$valid">This field is required</div>
             </div>
             
             <div class="grouped fields">
@@ -30,16 +32,22 @@
                     <label>Student</label>
                     </div>
                 </div>
+
+                <div class="req" ng-if="data.type.$dirty && !data.type.$valid">This field is required</div>
             </div>
 
             <div class="field">
                 <label for="phone">Phone number <span class="req">*</span></label>
                 <input type="text" class="form-control" pattern="\([0-9]{3}\)[0-9]{3}-[0-9]{4}" id="phone" name="phone" ng-model="customer.phone" required>
+
+                <div class="req" ng-if="data.phone.$dirty && !data.phone.$valid">This field is required in the following format (999)999-9999</div>
             </div>
             
             <div class="field">
                 <label for="email">Email address <span class="req">*</span></label>
                 <input type="email" class="form-control" id="email" name="email" ng-model="customer.email" required>
+
+                <div class="req" ng-if="data.email.$dirty && !data.email.$valid">This field is required as a valid email</div>
             </div>
 
             <div class="ui center aligned container">

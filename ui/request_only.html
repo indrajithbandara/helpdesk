@@ -31,6 +31,8 @@
             <div class="field" ng-class="{'has-error' : !checkTicket(onlyRequest.ticketNumber.$viewValue) || (onlyRequest.ticketNumber.$invalid && !onlyRequest.ticketNumber.$pristine), 'form-group': true}">
                 <label for="ticketNumber">Ticket Number <span class="req">*</span></label>
                 <input class="form-control" type="text" id="ticketNumber" name="ticketNumber" ng-model="onlyRequest.ticketNumber" pattern="\d{3}" required>
+
+                <div class="req" ng-if="data.ticketNumber.$dirty && !data.ticketNumber.$valid">This field is required in the following format "999"</div>
             </div>
 
             <div class="field">
@@ -66,6 +68,8 @@
             <div class="field">
                 <label for="description">Description of the Device Problem(s) or General Question(s) <span class="req">*</span></label>
                 <textarea class="form-control" id="description" name="description" ng-model="onlyRequest.description" rows="5" required></textarea>
+
+                <div class="req" ng-if="data.description.$dirty && !data.description.$valid">This field is required</div>
             </div>
 
             <div class="grouped fields">

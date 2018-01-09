@@ -1,4 +1,7 @@
 
+Send All button: 
+Change Code => 'No connection to Mannage Engine'
+
 DOING:
 
 Regra para Email:
@@ -58,6 +61,10 @@ $scope.save = function() {
         }
     });
 };
+
+<!--<a class="item" ng-click="feedback()"><i class="edit icon"></i> Bugs / Suggestions</a>-->
+
+<!--<a class="item" href="#" ng-click="reset()"><i class="history icon"></i> Reset all data</a>-->
 
 $('#ticketNumber').mask('000-S');
 
@@ -1749,3 +1756,5 @@ function deleteSQL(table, index){
                 <a class="ui button" ng-click="goBack()" href="#">Go Back</a>
             </div>
         </form>-->
+
+

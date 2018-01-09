@@ -53,6 +53,8 @@
             <div class="field" ng-class="{'has-error' : !checkTicket(intakeRequest.ticketNumber.$viewValue) || (intakeRequest.ticketNumber.$invalid && !intakeRequest.ticketNumber.$pristine), 'form-group': true}">
                 <label for="ticketNumber">Ticket Number <span class="req">*</span></label>
                 <input class="form-control" type="text" id="ticketNumber" name="ticketNumber" ng-model="intakeRequest.ticketNumber" pattern="\d{3}" required>
+
+                <div class="req" ng-if="data.ticketNumber.$dirty && !data.ticketNumber.$valid">This field is required</div>
             </div>
 
             <div class="field">
@@ -65,15 +67,17 @@
                 <label for="customer" >Customer <span class="req">*</span></label>
                 <select name="customer" ng-model="intakeRequest.customer" ng-options="customer as customer.name for customer in customers" id="customer" required>
                 </select>
-                <!--<br>
+                <br>
                 <div>
-                    <a href="#""  ng-click="addCustomer(intakeRequest)" class="ui primary button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Add customer</a> 
-                </div>-->
+                    <button type="button" ng-click="addCustomer()" class="ui primary button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Add customer</button> 
+                </div>
             </div>
 
             <div class="field">
                 <label for="bestTime">When and how is the best way to contact you? <span class="req">*</span></label>
                 <input type="text" class="form-control" id="bestTime" name="bestTime" ng-model="intakeRequest.bestTime" required>
+
+                <div class="req" ng-if="data.bestTime.$dirty && !data.bestTime.$valid">This field is required</div>
             </div>
 
             <!---->
@@ -105,11 +109,15 @@
             <div class="field">
                 <label for="howOldIsDevice">How old is the device? <span class="req">*</span></label>
                 <input type="text" class="form-control" id="howOldIsDevice" name="howOldIsDevice" ng-model="intakeRequest.howOldIsDevice" required>
+
+                <div class="req" ng-if="data.howOldIsDevice.$dirty && !data.howOldIsDevice.$valid">This field is required</div>
             </div>
 
             <div class="field">
                 <label for="lastTimeBackup">When is the last time you backed up all of your important files on the device? <span class="req">*</span></label>
                 <input type="text" class="form-control" id="lastTimeBackup" name="lastTimeBackup" ng-model="intakeRequest.lastTimeBackup" required>
+
+                <div class="req" ng-if="data.lastTimeBackup.$dirty && !data.lastTimeBackup.$valid">This field is required</div>
             </div>
 
             <div class="field">
@@ -121,21 +129,29 @@
             <div class="field">
                 <label for="brandName">Device Manufacturer Brand Name <span class="req">*</span></label>
                 <input type="text" class="form-control" id="brandName" name="brandName" ng-model="intakeRequest.brandName" required>
+
+                <div class="req" ng-if="data.brandName.$dirty && !data.brandName.$valid">This field is required</div>
             </div>
 
             <div class="field">
                 <label for="modelNumber">Model Number <span class="req">*</span></label>
                 <input type="text" class="form-control" id="modelNumber" name="modelNumber" ng-model="intakeRequest.modelNumber" required>
+
+                <div class="req" ng-if="data.modelNumber.$dirty && !data.modelNumber.$valid">This field is required</div>
             </div>
 
             <div class="field">
                 <label for="operatingSystem">Operating System <span class="req">*</span></label>
                 <input type="text" class="form-control" id="operatingSystem" name="operatingSystem" ng-model="intakeRequest.operatingSystem" required>
+
+                <div class="req" ng-if="data.operatingSystem.$dirty && !data.operatingSystem.$valid">This field is required</div>
             </div>
 
             <div class="field">
                 <label for="colorDevice">Color of Device <span class="req">*</span></label>
                 <input type="text" class="form-control" id="colorDevice" name="colorDevice" ng-model="intakeRequest.colorDevice" required>
+
+                <div class="req" ng-if="data.colorDevice.$dirty && !data.colorDevice.$valid">This field is required</div>
             </div>
 
             <div class="grouped fields">
@@ -165,6 +181,8 @@
             <div class="field">
                 <label for="moreHelp">Is there anything you would like to be educated or trained on related to the device? <span class="req">*</span></label>
                 <textarea class="form-control" id="moreHelp" name="moreHelp" ng-model="intakeRequest.moreHelp" rows="5" required></textarea>
+
+                <div class="req" ng-if="data.moreHelp.$dirty && !data.moreHelp.$valid">This field is required</div>
             </div>
 
             <div class="grouped fields">
@@ -206,6 +224,8 @@
             <div class="field">
                 <label for="description">Description of the Device Problem(s) or General Question(s) <span class="req">*</span></label>
                 <textarea class="form-control" id="description" name="description" ng-model="intakeRequest.description" rows="5" required></textarea>
+
+                <div class="req" ng-if="data.description.$dirty && !data.description.$valid">This field is required</div>
             </div>
            
             <div class="ui center aligned container">

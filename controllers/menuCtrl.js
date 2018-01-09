@@ -1,6 +1,7 @@
 angApp.controller('menuCtrl', function($scope, $window, requestUtils) {
-    $scope.username = Lockr.get('session').username;
-    
+    //$scope.username = Lockr.get('session').username;
+    $scope.session  = Lockr.get('session');
+
     $scope.about = function(){
         $('#about').modal('show');
     };
@@ -9,12 +10,6 @@ angApp.controller('menuCtrl', function($scope, $window, requestUtils) {
         Lockr.set('session', {});
 		window.location.href = '../index.html';
 	};
-
-    $scope.reset = function(){
-        resetDB();
-        //Lockr.set('session', {});
-        //window.location.href = '../index.html';
-    };
 
     $scope.refreshRequests = function(){
         requestUtils.checkRequests();

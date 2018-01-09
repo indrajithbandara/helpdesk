@@ -52,41 +52,42 @@
           <a class="item" href="#!/customer">
             <i class="grid layout icon"></i> Customers
           </a>
-          <!--<a class="item" href="#!/request">
-            <i class="mail icon"></i> Stored Requests
-          </a>-->
+
           <a class="item" href="#!/user">
             <i class="pencil icon"></i> Users
           </a>
+
           <div class="ui simple dropdown item">
             Requests
             <i class="dropdown icon"></i>
             <div class="menu">
-              <a class="item" href="#!/intake"><i class="edit icon"></i> Device intake form</a>
-              <a class="item" href="#!/only"><i class="globe icon"></i> Only G113 support/service form</a>
-              <a class="item" href="#!/release"><i class="checkmark box icon"></i> Release form</a>
+              <a class="item" href="#!/only"><i class="globe icon"></i> G113 Support/Service</a>
+              <a class="item" href="#!/intake"><i class="edit icon"></i> Device Intake</a>
+              <a class="item" href="#!/release"><i class="checkmark box icon"></i> Device Release</a>
               <div class="ui divider"></div>
               <a class="item" href="#!/request"><i class="checkmark box icon"></i> Stored requests</a>
-              <div class="ui divider"></div>
-              <a class="item" href="#" ng-click="refreshRequesters()"><i class="refresh icon"></i> Syncronize technicians list</a>
-              <a class="item" href="#" ng-click="refreshRequests()"><i class="refresh icon"></i> Syncronize requests list</a>
-              <div class="ui divider"></div>
-              <a class="item" href="#" ng-click="reset()"><i class="history icon"></i> Reset all data</a>
-              <!--<a class="item" href="#!/release"><i class="settings icon"></i> Device Release Form</a>-->
-            </div>
-          </div>
-          <div class="ui simple dropdown item">
-              About
-            <i class="dropdown icon"></i>
-            <div class="menu">
-              <a class="item" href="#!/settings"><i class="settings icon"></i> Settings</a>
-              <!--<a class="item" ng-click="feedback()"><i class="edit icon"></i> Bugs / Suggestions</a>-->
-              <a class="item" ng-click="about()"><i class="globe icon"></i> About</a>
             </div>
           </div>
 
+          <div class="ui simple dropdown item">
+              Settings
+            <i class="dropdown icon"></i>
+
+            <div class="menu">
+              <a class="item" href="#!/settings" ng-if="session.role == 'admin'"><i class="settings icon"></i> Settings</a>
+              <div class="ui divider"></div>
+              <a class="item" href="#" ng-click="refreshRequesters()"><i class="refresh icon"></i> Syncronize technicians list</a>
+              <a class="item" href="#" ng-click="refreshRequests()"><i class="refresh icon"></i> Syncronize requests list</a>
+              
+              <div class="ui divider"></div>
+
+              <a class="item" ng-click="about()"><i class="globe icon"></i> About</a>
+            </div>
+
+          </div>
+
           <div class="ui simple dropdown right aligned category item">
-            <i class="user icon"></i>&nbsp;{{ username }}
+            <i class="user icon"></i>&nbsp;{{ session.username }}
             <i class="dropdown icon"></i>
             
             <div class="menu">
