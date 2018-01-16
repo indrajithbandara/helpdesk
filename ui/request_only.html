@@ -46,11 +46,11 @@
                 <select name="customer" ng-model="onlyRequest.customer" ng-options="customer as customer.name for customer in customers" id="customer" required>
                 </select>
                 
-                <!--<br>
-
+                <br>
+                
                 <div>
-                    <a href="#!/add_customer" class="ui primary button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Add customer</a> 
-                </div>-->
+                    <button type="button" ng-click="addCustomer()" class="ui primary button"><i class="add user icon"></i>&nbsp;Add customer</button> 
+                </div>
             </div>
 
             <div class="field">
@@ -96,11 +96,11 @@
             </div>
 
             <div class="ui center aligned container">
-                <button class="ui primary button" type="submit" ng-disabled="data.$invalid">Submit</button>
-                <a class="ui button" ng-click="goBack()" href="#">Go Back</a>
+                <button class="ui primary button" type="submit" ng-disabled="data.$invalid"><i class="add circle icon"></i>&nbsp;Submit</button>
+                <a class="ui button" ng-click="goBack()" href="#"><i class="arrow left icon"></i>&nbsp;Go Back</a>
             </div>
         </form>
         <!---->
-        <a class="ui button" ng-click="goBack()" ng-show="idVerified == 'No'" href="#">Go Back</a>
+        <a class="ui button" ng-click="goBack()" ng-show="idVerified == 'No'" href="#"><i class="arrow left icon"></i>&nbsp;Go Back</a>
     </div>
 </div>

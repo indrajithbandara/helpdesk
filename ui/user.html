@@ -4,37 +4,55 @@
           <h3>Users - {{ semester }}</h3>
       </div>
 
-      <table class="ui celled table bordered">
-          <thead>
-              <tr>
-                  <td>Id</td>    
-                  <td>Username</td>    
-                  <td>Technician</td>    
-                  <td>Role</td>    
-                  <td>Actions</td>    
-              </tr>
-          </thead>
-          <tbody>
-              <tr ng-show="users.length == 0">
-                  <td colspan="4" class="text-center">No customers</td>
-              </tr>
-              <tr ng-if="x" ng-repeat="x in users">
-                  <td>{{ x.id }}</td>
-                  <td>{{ x.username }}</td>
-                  <td>{{ x.technician }}</td>
-                  <td>{{ x.role | capitalize}}</td>
-                  <td>
-                      <a class="ui primary button" ng-show="(session.id == x.id && session.role != 'admin') || (session.role == 'admin')" href="#!/edit_user/{{ x.id }}">&nbsp;Edit</a>
-                      &nbsp;
-                      <a class="ui primary button" ng-show="session.id != x.id && x.name != 'admin' && session.role == 'admin'" ng-click="delete(x.id)" ></span>&nbsp;Delete</a>
-                  </td>
-              </tr>
-          </tbody>
+      <h2 ng-if="users.length == 0" class="req">No users stored.</h2>
+
+      <table ng-if="users.length > 0" class="ui compact celled definition table">
+        <thead>
+          <tr>
+              <td></td>
+              <td>Username</td>    
+              <td>Technician</td>    
+              <td>Role</td>    
+              <td>Actions</td>     
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-if="x" ng-repeat="x in users">
+              <td class="collapsing">
+                  <div class="ui fitted slider checkbox item-check">
+                    <input type="checkbox" name="select_{{x.id}}" ng-click="select(x.id)" ng-if="session.id != x.id && x.name != 'admin' && session.role == 'admin'"><label></label>
+                  </div>
+              </td>
+
+              <td>{{ x.username }}</td>
+              <td>{{ x.technician }}</td>
+              <td>{{ x.role | capitalize}}</td>
+              <td>
+                  <a class="ui orange button" ng-if="(session.id == x.id && session.role != 'admin') || (session.role == 'admin')" href="#!/edit_user/{{ x.id }}"><i class="edit icon"></i>&nbsp;Edit</a>
+                  &nbsp;
+                  <a class="ui red button" ng-if="session.id != x.id && x.name != 'admin' && session.role == 'admin'" ng-click="actionDelete(x.id)" ></span><i class="remove icon"></i>&nbsp;Delete</a>
+              </td>
+          </tr>
+        </tbody>
+        <tfoot class="full-width">
+          <tr>
+            <th></th>
+            <th colspan="5">
+              <button type="button" ng-if="session.role == 'admin'" class="ui small button" ng-disabled="selected.length == 0" ng-click="actionDeleteSelected()">
+                <i class="remove circle icon"></i>&nbsp;Delete selected
+              </button>
+
+              <button type="button" ng-if="session.role == 'admin'" class="ui small button" ng-disabled="users.length == 1" ng-click="actionDeleteAll()">
+                <i class="remove circle outline icon"></i>&nbsp;Delete all
+              </button>
+            </th>
+          </tr>
+        </tfoot>
       </table>
 
       <div class="row">
-          <a class="ui primary button" ng-show="session.role == 'admin'" href="#!/add_user">&nbsp;Add new user</a>
-          <a class="ui button" onclick="goBack()">&nbsp;Go back</a>
+          <a class="ui primary button" ng-show="session.role == 'admin'" href="#!/add_user"><i class="add user icon"></i>&nbsp;Add user</a>
+          <a class="ui button" onclick="goBack()"><i class="arrow left icon"></i>&nbsp;Go back</a>
       </div>
   </div>
 </div>

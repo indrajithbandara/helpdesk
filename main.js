@@ -19,10 +19,10 @@ function createWindow() {
     mainWindow.on('close', function () {mainWindow = null})
 
     //Comment:
-    mainWindow.webContents.openDevTools()
+    //mainWindow.webContents.openDevTools()
     
     //Uncomment:
-    //mainWindow.setMenu(null)
+    mainWindow.setMenu(null)
 }
 
 const shouldQuit = app.makeSingleInstance((commandLine, workingDirectory) => {

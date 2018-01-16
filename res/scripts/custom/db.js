@@ -1,18 +1,18 @@
 const db = openDatabase('helpDeskDB', '1.0', 'HelpDesk Database', 500 * 1024 * 1024); // 500 mb;
 Lockr.prefix = '';
+Lockr.set('customer_added', false);
 
 //Users and Customers and Requests:
 function resetDB(){
-    //
     Lockr.flush();
     //CREATE DB:
     db.transaction(function (tx) {
         tx.executeSql('DROP TABLE IF EXISTS users');
         tx.executeSql('DROP TABLE IF EXISTS customers');
     });
-    //
+
     checkDB();
-    //Lockr.set('session', {});
+
     window.location.href = '../index.html';
 }
 
@@ -29,7 +29,10 @@ function transactionSQL(sql, jsonOBJ, callBack){
 } 
 
 function checkDB(){
-    //
+    if(Lockr.get('customer_added') == undefined){
+        Lockr.set('customer_added', false);
+    }
+
     if(Lockr.get('settings') == undefined){
         Lockr.set('settings', {semester: 'Spring 2017', ip: 'localhost:8080', key: '51A25649-5E6D-4CA2-BFD6-4A52DB6E4652'});
     }
@@ -43,7 +46,7 @@ function checkDB(){
     }
 
     if(Lockr.get('technicians') == undefined){
-        Lockr.set('technicians', ['administrator']);
+        Lockr.set('technicians', []);
     }
     //CREATE DB:
     db.transaction(function (tx) {

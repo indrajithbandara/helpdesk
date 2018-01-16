@@ -26,34 +26,47 @@ angApp.controller('intakeCtrl', function($scope, $window, $http, requestUtils) {
     if($scope.technicians !== undefined && $scope.technicians.length > 0)
         $scope.intakeRequest.technician = Lockr.get('session').technician;
     
-    //Check customers:
-    //Colocar Load bar
     $scope.lastSeq      = Lockr.get('lastSeq');
     $scope.ticketNumber = requestUtils.getNextSeq();
     $scope.intakeRequest.ticketNumber = $scope.ticketNumber;
-    
-    transactionSQL('SELECT * FROM customers', [], function(results){
-        if(results.rows.length > 0){                
-            $scope.customers = [];
-            
-            for (var i = 0; i < results.rows.length; i++) {
-                $scope.customers.push(results.rows[i]);
-            }
 
+    requestUtils.fetchCustomers(function(customers){
+        $scope.customers = customers;
+        var size = customers.length;
+        
+        if(size > 0){
             $scope.intakeRequest.customer = $scope.customers[0];
-            $scope.$apply();
-        }
+        } 
+
+        $scope.$apply();
     });
 
     $scope.addCustomer = function(){
-        //const old = window; // Nice Job Daniel!!!
-        const openWindow = $window.open("#!/add_customer");
+        // Nice Job Daniel!!!
+        let openWindow = $window.open("../ui/popup_customer.html");
         
         let pollTimer = $window.setInterval(function() {
             if (openWindow.closed !== false) { // !== is required for compatibility with Opera
                 $window.clearInterval(pollTimer);
-                alert("Ronaldo");
-                //old.close();
+                
+                if(Lockr.get('customer_added') === true){
+                    Lockr.set('customer_added', false);
+
+                    requestUtils.fetchCustomers(function(customers){
+                        $scope.customers = customers;
+                        
+                        var size = customers.length;
+
+                        if(size > 0){
+                            $scope.intakeRequest.customer = $scope.customers[size-1];
+                        } 
+
+                        $scope.$apply();
+                    });
+                }
+                else{
+                    console.log('Canceled');
+                }
                 //Update Customers
             }else{
                 //Keep the focus
@@ -66,16 +79,17 @@ angApp.controller('intakeCtrl', function($scope, $window, $http, requestUtils) {
         var input = $scope.filterIntake($scope.intakeRequest);
         console.log(input);
         $scope.state = "loading";
+        scroll(0,0);
 
         basicPostRequest(getBaseRequest(), input, OPERATIONS[0], function(requests){
             baseMessage('G151 Request saved succesfully!', 'success', 2000, goToMain);
             requestUtils.checkRequests();
-            $scope.state = "";
+            //$scope.state = "";
         }, function(error){
-            baseMessage(error.message, 'error', 3000, goToMain);
-            Lockr.sadd('storedRequests', {input: JSON.stringify(input), code: code});
-            $scope.state = "";
-        });        
+            saveError(error, input);
+        });
+
+        $scope.state = "";
     };
 
     $scope.filterIntake = function(data){
@@ -146,38 +160,71 @@ angApp.controller('onlyCtrl', function($scope, $window, $http, requestUtils) {
     $scope.lastSeq      = Lockr.get('lastSeq'); //requestUtils.getLastSeq(Lockr.get('requests'));
     $scope.ticketNumber = requestUtils.getNextSeq();
     $scope.onlyRequest.ticketNumber = $scope.ticketNumber;
-    
-    transactionSQL('SELECT * FROM customers', [], function(results){
-        if(results.rows.length > 0){                
-            $scope.customers = [];
-            
-            for (var i = 0; i < results.rows.length; i++) {
-                $scope.customers.push(results.rows[i]);
-            }
 
+    requestUtils.fetchCustomers(function(customers){
+        $scope.customers = customers;
+        var size = customers.length;
+
+        if(size > 0){
             $scope.onlyRequest.customer = $scope.customers[0];
-            $scope.$apply();
-        }
+        } 
+
+        $scope.$apply();
     });
     
     $scope.isSameTicket = function(ticket){
         return $scope.tickets.includes(ticket);
+    }
+
+    $scope.addCustomer = function(){
+        // Nice Job Daniel!!!
+        let openWindow = $window.open("../ui/popup_customer.html");
+        
+        let pollTimer = $window.setInterval(function() {
+            if (openWindow.closed !== false) { // !== is required for compatibility with Opera
+                $window.clearInterval(pollTimer);
+
+                if(Lockr.get('customer_added') === true){
+                    Lockr.set('customer_added', false);
+                    
+                    requestUtils.fetchCustomers(function(customers){
+                        $scope.customers = customers;
+                        
+                        var size = customers.length;
+
+                        if(size > 0){
+                            $scope.onlyRequest.customer = $scope.customers[size-1];
+                        } 
+
+                        $scope.$apply();
+                    });
+                }
+                else{
+                    console.log('Canceled');
+                }
+                //Update Customers
+            }else{
+                //Keep the focus
+                openWindow.focus();   
+            }
+        }, 100);
     }
     
     $scope.save = function() {
         $scope.state = "loading";
         var input = $scope.filterOnly($scope.onlyRequest);
         console.log(input);
+        scroll(0,0);
         
         basicPostRequest(getBaseRequest(), input, OPERATIONS[0], function(requests){
             baseMessage('G113 Request saved succesfully!', 'success', 2000, goToMain);
             requestUtils.checkRequests();
-            $scope.state = "";
+            //$scope.state = "";
         }, function(error){
-            baseMessage(error.message, 'error', 3000, goToMain);
-            $scope.state = "";
-            Lockr.sadd('storedRequests', {input: JSON.stringify(input), code: error.message});
+            saveError(error, input);
         });
+        
+        $scope.state = "";
     };
 
     $scope.filterOnly = function(data){
@@ -260,6 +307,7 @@ angApp.controller('releaseCtrl', function($scope, $window, $http, requestUtils) 
 
     $scope.save = function(){
         $scope.state = "loading";
+        scroll(0,0);
         var input = $scope.filterRelease($scope.releaseRequest);
         var id = $scope.releaseRequest.request.WORKORDERID;
         console.log(input);
@@ -269,12 +317,12 @@ angApp.controller('releaseCtrl', function($scope, $window, $http, requestUtils) 
         basicPostRequest(url, input, OPERATIONS[1], function(requests){
             baseMessage('Request updated succesfully!', 'success', 2000, goToMain);
             requestUtils.checkRequests();
-            $scope.state = "";
+            //$scope.state = "";
         }, function(error){
-            baseMessage(error.message, 'error', 3000, goToMain);
-            $scope.state = "";
-            //Lockr.sadd('storedRequests', {input: JSON.stringify(input), code: error.message});
+            baseMessage(getErrorMessage(error), 'error', 3000, goToMain);
         });
+
+        $scope.state = "";
     }
 
     $scope.filterRelease = function(data){
@@ -295,6 +343,7 @@ angApp.controller('requestCtrl', function($scope, $window, $http, requestUtils) 
     $scope.semester = Lockr.get('settings').semester;
     $scope.session = Lockr.get('session');
     $scope.state = "";
+    $scope.selected = [];
 
     if(Lockr.get('storedRequests') && Lockr.get('storedRequests').length > 0){
         $scope.requests = Lockr.get('storedRequests');
@@ -310,7 +359,17 @@ angApp.controller('requestCtrl', function($scope, $window, $http, requestUtils) 
         $('#stored_requests').modal('show');
     }
 
-    $scope.sendAgain = function(id, body){
+    $scope.select = function(id){
+        if($scope.selected.indexOf(id) == -1){
+            $scope.selected.push(id);
+        }else{
+            $scope.selected =  $scope.selected.filter(e => e !== id);
+        }
+
+        console.log($scope.selected);
+    }
+
+    $scope.send = function(id, body){
         console.log(id);
         console.log(body);
         $scope.state = "loading";
@@ -321,19 +380,84 @@ angApp.controller('requestCtrl', function($scope, $window, $http, requestUtils) 
             $scope.deleteData(id);
             $scope.state = "";
         }, function(error){
-            baseMessage(error.message, 'error', 3000, function(){});
+            baseMessage(getErrorMessage(error), 'error', 3000, function(){});
             $scope.state = "";
         });
+    }
 
+    $scope.sendCascade = function(list, terminator){
+        //console.log(list);
+        if(terminator >= 1){
+            $scope.state = "loading";
+            //console.log(terminator);
+            //console.log(list[terminator-1][1]);
 
+            basicPostRequest(getBaseRequest(), list[terminator-1][1], OPERATIONS[0], function(requests){
+                baseMessage('Request sent succesfully!', 'success', 2000, function(){
+                    
+                    $scope.deleteData(list[terminator-1][0]);
+
+                    $scope.sendCascade(list, terminator - 1);    
+                });
+                //Call Delete:
+            }, function(error){
+                baseMessage(getErrorMessage(error), 'error', 3000, function(){
+                    $scope.sendCascade(list, terminator - 1);
+                });
+            });
+
+        }else{
+            $scope.state = "";    
+            refresh();
+        }
+    }
+
+    $scope.sendSelected = function(){
+        var selecteds = $scope.selected;
+        var newArray = [];
+
+        for (var i = 0; i < selecteds.length; i++) {
+            newArray[i] = [selecteds[i], $scope.requests[selecteds[i]].parsed];
+        }
+
+        $scope.sendCascade(newArray, newArray.length);
+    }
+
+    $scope.sendAll = function(){
+        var requests = $scope.requests;
+        var newArray = [];
+        
+        for (var i = 0; i < requests.length; i++) {
+            newArray[i] = [i, requests[i].parsed];
+        }
+
+        $scope.sendCascade(newArray, newArray.length);
     }
 
     $scope.delete = function(id){
-        console.log(id);
         $scope.deleteData(id);
         //Show message:
         baseMessage('Request deleted succesfully!', 'success', 2000, refresh);
     };
+
+    $scope.deleteAll = function(){
+        Lockr.set('storedRequests', []);
+        baseMessage('Requests deleted succesfully!', 'success', 2000, refresh);
+    }
+
+    $scope.deleteSelected = function(){
+        var current = [];
+        var temp = Lockr.get('storedRequests');
+
+        for (var i = 0; i < temp.length; i++) {
+            if($scope.selected.indexOf(i) === -1){
+                current.push(temp[i]);
+            }
+        }
+
+        Lockr.set('storedRequests', current);
+        baseMessage('Requests deleted succesfully!', 'success', 2000, refresh);
+    }
 
     $scope.deleteData = function(id){
         var current = [];

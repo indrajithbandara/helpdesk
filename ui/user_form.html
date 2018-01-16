@@ -19,7 +19,7 @@
             </div>
 
             <div class="field">
-                <label for="technician">Technician <span class="req">*</span></label>
+                <label for="technician">Technician</label>
                 <select name="technician" ng-model="user.technician" ng-options="technician as technician for technician in technicians" id="technician">
                 </select>
             </div>
@@ -59,8 +59,8 @@
             </div>
 
             <div class="ui center aligned container">
-                <button class="ui primary button" type="submit" ng-disabled="areDiferent(user.password, user.confirm_password) || isSameUsername(user.username) || data.$invalid">Submit</button>
-                <a class="ui danger button" onclick="goBack()">Go Back</a>    
+                <button class="ui primary button" type="submit" ng-disabled="areDiferent(user.password, user.confirm_password) || isSameUsername(user.username) || data.$invalid"><i class="add circle icon"></i>&nbsp;Submit</button>
+                <a class="ui danger button" onclick="goBack()"><i class="arrow left icon"></i>&nbsp;Go Back</a>    
             </div>        
         </form>
     </div>

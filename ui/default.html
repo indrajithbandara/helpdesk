@@ -6,8 +6,8 @@
       <title>Help Desk Forms</title>
       
       <link rel="stylesheet" type="text/css" href="../res/scripts/semantic.min.css">
-      <!--<link rel="stylesheet" type="text/css" href="../res/scripts/jquery.modal.min.css">-->
-      <link rel="stylesheet" type="text/css" href="../res/scripts/noty.css">
+      <link rel="stylesheet" type="text/css" href="../res/scripts/spop.min.css">
+      <link rel="stylesheet" type="text/css" href="../res/scripts/jquery-confirm.min.css">
       <link rel="stylesheet" type="text/css" href="../res/scripts/custom/app.css">
 
       <!-- Insert this line above script imports  -->
@@ -18,14 +18,12 @@
       <script type="text/javascript" src="../res/scripts/printj.min.js"></script>
       <script type="text/javascript" src="../res/scripts/jquery.min.js"></script>
       <script type="text/javascript" src="../res/scripts/jquery.mask.min.js"></script>
-      <!--<script type="text/javascript" src="../res/scripts/jquery.modal.min.js"></script>-->
+      <script type="text/javascript" src="../res/scripts/jquery-confirm.min.js"></script>
       <script type="text/javascript" src="../res/scripts/angular.min.js"></script>
       <script type="text/javascript" src="../res/scripts/angular-route.min.js"></script>
-      <script type="text/javascript" src="../res/scripts/noty.min.js"></script>
+      <script type="text/javascript" src="../res/scripts/spop.min.js"></script>
       <script type="text/javascript" src="../res/scripts/semantic.min.js"></script>
       
-      <!--<script type="text/javascript" src="../res/scripts/custom/dbSQL.js"></script>
-      <script type="text/javascript" src="../res/scripts/custom/app.js"></script>-->
       <script type="text/javascript" src="../res/scripts/custom/db.js"></script>
       <script type="text/javascript" src="../res/scripts/bundle.js"></script>
       <script type="text/javascript" src="../res/scripts/defiant.min.js"></script>
@@ -53,7 +51,7 @@
             <i class="grid layout icon"></i> Customers
           </a>
 
-          <a class="item" href="#!/user">
+          <a class="item" ng-if="session.role == 'admin'" href="#!/user">
             <i class="pencil icon"></i> Users
           </a>
 
@@ -65,22 +63,18 @@
               <a class="item" href="#!/intake"><i class="edit icon"></i> Device Intake</a>
               <a class="item" href="#!/release"><i class="checkmark box icon"></i> Device Release</a>
               <div class="ui divider"></div>
-              <a class="item" href="#!/request"><i class="checkmark box icon"></i> Stored requests</a>
+              <a class="item" href="#!/request"><i class="archive icon"></i> Stored requests</a>
             </div>
           </div>
 
           <div class="ui simple dropdown item">
               Settings
             <i class="dropdown icon"></i>
-
             <div class="menu">
+              <div class="item" ng-click="refreshRequesters()"><i class="refresh icon"></i> Syncronize technicians list</div>
+              <div class="item" ng-click="refreshRequests()"><i class="refresh icon"></i> Syncronize requests list</div>
+              <div class="ui divider"></div>
               <a class="item" href="#!/settings" ng-if="session.role == 'admin'"><i class="settings icon"></i> Settings</a>
-              <div class="ui divider"></div>
-              <a class="item" href="#" ng-click="refreshRequesters()"><i class="refresh icon"></i> Syncronize technicians list</a>
-              <a class="item" href="#" ng-click="refreshRequests()"><i class="refresh icon"></i> Syncronize requests list</a>
-              
-              <div class="ui divider"></div>
-
               <a class="item" ng-click="about()"><i class="globe icon"></i> About</a>
             </div>
 
@@ -91,6 +85,7 @@
             <i class="dropdown icon"></i>
             
             <div class="menu">
+              <a class="item" href="#!/edit_user/{{session.id}}"><i class="pencil icon"></i> User data</a>
               <a class="item" href="#" ng-click="logout()"><i class="log out icon"></i> Logout</a>
             </div>
           </div>

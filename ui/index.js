@@ -1,6 +1,7 @@
 const angApp = angular.module('angApp', ['ngRoute']);
 let rp = require('request-promise');
 const OPERATIONS = ["ADD_REQUEST", "EDIT_REQUEST", "CLOSE_REQUEST", "GET_REQUESTS", "GET_ALL"];
+
 // configure our routes
 angApp.config(function($routeProvider) {
 	$routeProvider
@@ -44,6 +45,22 @@ angApp.config(function($routeProvider) {
 });
 
 angApp.service('requestUtils', function() {
+    this.fetchCustomers = function(callBack){
+        transactionSQL('SELECT * FROM customers', [], function(results){
+            if(results.rows.length > 0){                
+                var customers = [];
+
+                for (var i = 0; i < results.rows.length; i++) {
+                    customers.push(results.rows[i]);
+                }
+
+                if(callBack){
+                    callBack(customers);
+                }
+            }
+        });
+    }
+
 	this.checkTechnicians = function(){
 	    const INPUT_REQUESTERS = {
             "operation": {
@@ -63,7 +80,7 @@ angApp.service('requestUtils', function() {
             baseMessage("Technicians syncronized with ManageEngine", 'success', 2000, function(){});
         }, function(error){
             //Show error
-            baseMessage(error.message, 'error', 2000, function(){  });
+            baseMessage(getErrorMessage(error), 'error', 2000, function(){  });
         });
 	}
 
@@ -104,8 +121,7 @@ angApp.service('requestUtils', function() {
 
             baseMessage("Requests syncronized with ManageEngine", 'success', 2000, function(){});
         }, function(error){
-            console.log(error);
-            baseMessage(error.message, 'error', 2000, function(){});
+            baseMessage(getErrorMessage(error), 'error', 2000, function(){});
         });
 	}
     
@@ -130,14 +146,80 @@ angApp.filter('capitalize', function() {
 
 angApp.controller('mainCtrl', function($scope, $window, requestUtils) {
 	$scope.semester = Lockr.get('settings').semester;
-    //
+    /*
     if(Lockr.get('technicians') == false || Lockr.get('technicians') == undefined || Lockr.get('technicians').length == 0 || Lockr.get('technicians') == {}){
         requestUtils.checkTechnicians();
     }else{
         console.log(Lockr.get('technicians'));
     }
-    //requestUtils.checkRequests();
+    */
 });
+
+jconfirm.defaults = {
+    useBootstrap: false,
+    boxWidth: "50%",
+};
+
+function getErrorMessage(error){
+    var message = "Invalid request";
+
+    if(error.error.code == "ESOCKETTIMEDOUT"){
+        message = "Connection timeout";
+    }else if(error.error.code == "ECONNREFUSED"){
+        message = "No connection to ManageEngine";
+    }
+
+    return message;
+}
+
+function saveError(error, input){
+    baseMessage(getErrorMessage(error), 'error', 3000, goToMain);
+    Lockr.sadd('storedRequests', {input: JSON.stringify(input), code: message});
+}
+
+function checkAuthority(text, callBack){
+    $.confirm({
+        title: 'Confirm your identity',
+        content: '<form action="" class="ui form formPassword">' +
+            '<div class="field">' +
+                '<label>'+ text + "<br/>If so, type your account's password."+ '</label>' +
+                '<input type="password" placeholder="password" class="password form-control" required/>' +
+            '</div>' +
+        '</form>',
+        buttons: {
+            formSubmit: {
+                text: 'Submit',
+                btnClass: 'btn-blue',
+                action: function () {
+                    const password = this.$content.find('.password').val();
+                    
+                    if(!password){
+                        $.confirm({title: 'Warning', content: 'Provide a valid password'});
+                        return false;
+                    }else if(md5(password) != Lockr.get('session')['password']){
+                        $.confirm({title: 'Warning', content: 'Wrong password'});
+                        return false;
+                    }
+
+                    callBack();
+                }
+            },
+            cancel: function () {
+                //close
+                console.log('canceled');
+            },
+        },
+        onContentReady: function () {
+            // bind to events
+            var jc = this;
+            this.$content.find('form').on('submit', function (e) {
+                // if the user submits the form by pressing enter in the field.
+                e.preventDefault();
+                jc.$$formSubmit.trigger('click'); // reference the button and click it
+            });
+        }
+    });
+}
 
 function basicPostRequest(URL, input, operation_name, callBackOk, callBackError){
     let options = {
@@ -189,14 +271,12 @@ function goToMain(){
 }
 
 function baseMessage(text, type, time, callBack){
-    new Noty({
-        text: text,
-        type: type,
-        timeout: time,
-        callbacks: {
-            onClose: function() {
-                callBack();
-            }
-        },
-    }).show();   
+    spop({
+        template: text,
+        style: type,
+        autoclose: time,
+        onClose: function() {
+            callBack();
+        }
+    });
 }

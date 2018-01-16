@@ -5,7 +5,7 @@
             
             <br>
 
-            <button class="ui primary button" type="button" ng-click="reset()"><i class="history icon"></i> Reset all data</button>
+            <button class="ui primary button" type="button" ng-click="actionReset()"><i class="history icon"></i> Reset all data</button>
         </div>
 
 
@@ -36,8 +36,8 @@
             </div>
 
             <div class="ui center aligned container">
-                <button class="ui primary button" type="submit" ng-disabled="data.$invalid"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;Save</button>
-                <a class="ui danger button" onclick="goBack()">Go Back</a>
+                <button class="ui primary button" type="submit" ng-disabled="data.$invalid"><i class="add circle icon"></i>&nbsp;Submit</button>
+                <a class="ui danger button" onclick="goBack()"><i class="arrow left icon"></i>&nbsp;Go Back</a>
             </div>
         </form>
     </div>

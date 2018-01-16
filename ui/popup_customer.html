@@ -1,1 +1,122 @@
-Pop Up for customers
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Customer ADD</title>
+
+	<link rel="stylesheet" type="text/css" href="../res/scripts/semantic.min.css">
+	<link rel="stylesheet" type="text/css" href="../res/scripts/jquery-confirm.min.css">
+	<link rel="stylesheet" type="text/css" href="../res/scripts/spop.min.css">
+	<link rel="stylesheet" type="text/css" href="../res/scripts/custom/app.css">
+	<!-- Insert this line above script imports  -->
+	<script type="text/javascript">if(typeof module === 'object') {window.module = module; module = undefined;}</script>
+  	<!--LIBRARIES-->
+  	<script type="text/javascript" src="../res/scripts/jquery.min.js"></script>
+    <script type="text/javascript" src="../res/scripts/jquery.mask.min.js"></script>
+    <script type="text/javascript" src="../res/scripts/jquery-confirm.min.js"></script>
+	<script type="text/javascript" src="../res/scripts/spop.min.js"></script>
+	<script type="text/javascript" src="../res/scripts/semantic.min.js"></script>
+
+	<script type="text/javascript" src="../res/scripts/angular.min.js"></script>
+	<script type="text/javascript" src="../res/scripts/lockr.min.js"></script>
+	<script type="text/javascript" src="../res/scripts/custom/db.js"></script>
+
+    <script type="text/javascript" src="../res/scripts/bundle.js"></script>
+    <script type="text/javascript" src="../res/scripts/defiant.min.js"></script>
+
+	<script type="text/javascript" src="index.js"></script>
+	<script type="text/javascript">
+		// create the module and name it angApp
+		const popupApp = angular.module('popupApp', []);
+
+		popupApp.controller('customerFormCtrl', function($scope, $window) {
+		    $('#phone').mask('(000)000-0000');
+		    $scope.customer = {}
+		    $scope.customer.type = "Student";
+		    $scope.semester = Lockr.get('settings').semester;
+		    
+		    $scope.save = function(){
+		        let SQL = "INSERT INTO customers (name, type, phone, email) VALUES (?,?,?,?)";
+		        //alert(SQL);
+		        const old = window;
+		        
+		        //IF saved:
+		        // Store
+		        transactionSQL(SQL, 
+		            [$scope.customer.name, $scope.customer.type, $scope.customer.phone, $scope.customer.email], 
+		            function(results){
+		            	Lockr.set('customer_added', true);
+		                baseMessage('Customer data saved successfully!', 'success', 1000, function(){ old.close(); });
+		        });
+		    };
+		    
+		});
+	</script>
+	<!-- Insert this line after script imports -->
+	<script type="text/javascript">if (window.module) module = window.module;</script>
+	<!--END SCRIPTS-->
+</head>
+<body ng-app="popupApp">
+	<div class="ui text container" style="margin-top: 5%">
+	    <div ng-controller="customerFormCtrl">
+	        <div class="ui center aligned container">
+	            <h3>Customers - {{ semester }}</h3>
+	            <span class="req">*</span> Required    
+	        </div>
+	        <br>
+	        <!--FORM-->
+	        <form class="ui form" name="data" ng-submit="save()" novalidate>
+	            <h4 class="ui dividing header">Add a new customer</h4>
+
+	            <div class="field">
+	                <label for="name">Customer Name <span class="req">*</span></label>
+	                <input type="text" class="form-control" id="name" name="name" ng-model="customer.name" required>
+
+	                <div class="req" ng-if="data.name.$dirty && !data.name.$valid">This field is required</div>
+	            </div>
+	            
+	            <div class="grouped fields">
+	                <label for="studentType">Student or Faculty <span class="req">*</span></label>
+	                
+	                <div class="field">
+	                    <div class="ui radio checkbox">
+	                    <input type="radio" name="type" ng-model="customer.type" value="Faculty" id="typeFaculty">
+	                    <label>Faculty</label>
+	                    </div>
+	                </div>
+	                
+	                <div class="field">
+	                    <div class="ui radio checkbox">
+	                    <input type="radio" name="type" ng-model="customer.type" value="Student" id="typeStudent"> 
+	                    <label>Student</label>
+	                    </div>
+	                </div>
+
+	                <div class="req" ng-if="data.type.$dirty && !data.type.$valid">This field is required</div>
+	            </div>
+
+	            <div class="field">
+	                <label for="phone">Phone number <span class="req">*</span></label>
+	                <input type="text" class="form-control" pattern="\([0-9]{3}\)[0-9]{3}-[0-9]{4}" id="phone" name="phone" ng-model="customer.phone" required>
+
+	                <div class="req" ng-if="data.phone.$dirty && !data.phone.$valid">This field is required in the following format (999)999-9999</div>
+	            </div>
+	            
+	            <div class="field">
+	                <label for="email">Email address <span class="req">*</span></label>
+	                <input type="email" class="form-control" id="email" name="email" ng-model="customer.email" required>
+
+	                <div class="req" ng-if="data.email.$dirty && !data.email.$valid">This field is required as a valid email</div>
+	            </div>
+
+	            <div class="ui center aligned container">
+	                <button class="ui primary button" type="submit" ng-disabled="data.$invalid || !customer.type"><i class="add circle icon"></i>&nbsp;Submit</button>
+	            </div>        
+	        </form>
+	    </div>
+	</div>
+</body>
+</html>
+
+
