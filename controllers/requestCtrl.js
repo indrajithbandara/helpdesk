@@ -21,7 +21,7 @@ angApp.controller('intakeCtrl', function($scope, $window, $http, requestUtils) {
     $scope.intakeRequest.category = $scope.categories[0].value;
     $scope.intakeRequest.deviceType = $scope.deviceTypes[0].value;
     
-    console.log(Lockr.get('session').technician);
+    //console.log(Lockr.get('session').technician);
     
     if($scope.technicians !== undefined && $scope.technicians.length > 0)
         $scope.intakeRequest.technician = Lockr.get('session').technician;
@@ -43,6 +43,7 @@ angApp.controller('intakeCtrl', function($scope, $window, $http, requestUtils) {
 
     $scope.addCustomer = function(){
         // Nice Job Daniel!!!
+        let currentWindow = $window;
         let openWindow = $window.open("../ui/popup_customer.html");
         
         let pollTimer = $window.setInterval(function() {
@@ -64,13 +65,7 @@ angApp.controller('intakeCtrl', function($scope, $window, $http, requestUtils) {
                         $scope.$apply();
                     });
                 }
-                else{
-                    console.log('Canceled');
-                }
                 //Update Customers
-            }else{
-                //Keep the focus
-                openWindow.focus();   
             }
         }, 100);
     }
@@ -100,7 +95,7 @@ angApp.controller('intakeCtrl', function($scope, $window, $http, requestUtils) {
                     "priority": "Low",
                     "level": "Tier 1",
                     "status": "open",
-                    "semester": $scope.semester,
+                    "semester": Lockr.get('settings')['semester'],
                     "location": "C151 – Computer Support Center",
                     "category": data.category,
                     "description": data.description,
@@ -236,7 +231,7 @@ angApp.controller('onlyCtrl', function($scope, $window, $http, requestUtils) {
                     "level": "Tier 1",
                     "status": "closed",
                     "location": "G113 – Student Help Desk",
-                    "semester": $scope.semester, 
+                    "semester": Lockr.get('settings')['semester'], 
                     "ticket status": data.wereSolved,
                     "device type": data.deviceType,
                     "category": data.category,
@@ -331,6 +326,7 @@ angApp.controller('releaseCtrl', function($scope, $window, $http, requestUtils) 
                 "details" : {
                     "status": "closed",
                     "ticket status": data.status,
+                    "resolution": data.solution,
                 },
             },
         };

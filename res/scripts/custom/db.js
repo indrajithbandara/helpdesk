@@ -48,6 +48,11 @@ function checkDB(){
     if(Lockr.get('technicians') == undefined){
         Lockr.set('technicians', []);
     }
+
+    if(Lockr.get('storedRequests') == undefined){
+        Lockr.set('storedRequests', []);
+    }
+    
     //CREATE DB:
     db.transaction(function (tx) {
         tx.executeSql('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT UNIQUE, code TEXT, password TEXT, role TEXT, technician TEXT)');
@@ -64,6 +69,14 @@ function checkDB(){
             }
         });
     });      
+}
+
+function getCleaned(string){
+    if(string == "undefined" || string == "" || string === undefined){
+        return "";
+    }
+    
+    return string;
 }
 
 checkDB();

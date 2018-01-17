@@ -5,6 +5,14 @@ Change Code => 'No connection to Mannage Engine'
 
 DOING:
 
+//else{
+//    console.log('Canceled');
+//}
+
+//currentWindow.close();
+//console.log(currentWindow.hasFocus == true);
+//console.log(openWindow.hasFocus == true);
+
 Regra para Email:
     - Feedback:
     - Recover password:
@@ -47,7 +55,13 @@ Regra para Usuario:
     - Se for administrador pode deletar apenas outros
 
 /*
-    
+
+
+            /*else{
+                //Keep the focus
+                openWindow.focus();   
+            }*/
+
 $scope.save = function() {
     var selectedRequest = $("#ticketNumber").val();
 

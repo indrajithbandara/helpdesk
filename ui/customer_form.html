@@ -1,4 +1,4 @@
-<div class="ui text container">
+<div class="ui text container dist-bottom">
     <div ng-controller="customerFormCtrl">
         <div class="ui center aligned container">
             <h3>Customers - {{ semester }}</h3>
@@ -7,7 +7,7 @@
         <br>
         <!--FORM-->
         <form class="ui form" name="data" ng-submit="save()" novalidate>
-            <h4 class="ui dividing header">Add a new customer</h4>
+            <h4 class="ui dividing header">{{ customer.id ? 'Edit customer data' :'Add a new customer'}}</h4>
 
             <div class="field">
                 <label for="name">Customer Name <span class="req">*</span></label>
@@ -37,15 +37,15 @@
             </div>
 
             <div class="field">
-                <label for="phone">Phone number <span class="req">*</span></label>
-                <input type="text" class="form-control" pattern="\([0-9]{3}\)[0-9]{3}-[0-9]{4}" id="phone" name="phone" ng-model="customer.phone" required>
+                <label for="phone">Phone number </label>
+                <input type="text" class="form-control" pattern="\([0-9]{3}\)[0-9]{3}-[0-9]{4}" id="phone" name="phone" ng-model="customer.phone">
 
                 <div class="req" ng-if="data.phone.$dirty && !data.phone.$valid">This field is required in the following format (999)999-9999</div>
             </div>
             
             <div class="field">
-                <label for="email">Email address <span class="req">*</span></label>
-                <input type="email" class="form-control" id="email" name="email" ng-model="customer.email" required>
+                <label for="email">Email address </label>
+                <input type="email" class="form-control" id="email" name="email" ng-model="customer.email">
 
                 <div class="req" ng-if="data.email.$dirty && !data.email.$valid">This field is required as a valid email</div>
             </div>

@@ -1,4 +1,4 @@
-<div class="ui text container">
+<div class="ui text container dist-bottom">
     <div ng-controller="releaseCtrl">
         <div class="ui center aligned container">
             <h3>Device Release Form - {{ semester }}<span class="title"></span></h3>
@@ -8,7 +8,7 @@
         <form class="ui {{state}} form" name="data" ng-submit="save()">
             <div class="grouped fields">
                 <div class="ui segment">
-                    I HEREBY authorize work to be performed upon my device. FVTC and its students may perform work on the listed device for the purposes of testing or inspection, at my risk. It is also understood that other adjustments or checks can be made to my device, while it is in the FVTC Student IT-Computer Support Center, in order to aid the students in their educational process. FVTC will not be held responsible for loss or damage to devices, software, hardware, or personal data; in case of fire, theft, accident, or any other cause beyond our control. I understand that the work will be performed by students in a learning environment and that there is NO WARRANTY expressed or implied on this device. If after ten forms of contact (email or phone messages), from the FVTC Student IT-Computer Support Center to you regarding your device being ready ready for pick up, and you have not contacted us; or if the device has been deemed abandoned after one month of no responses or contact from the owner, the device will be forfeited over to the FVTC lost and found department.
+                    I HEREBY acknowledge that the work performed upon my device by the FVTC Student IT-Computer Support Center is complete and that I have received my device in satisfactory condition. I understand that the work performed was under NO WARRANTY and therefore do not hold the FVTC Student IT-Computer Support Center liable for any damages or conditions performed on the device below. By signing this release form, I acknowledge that I have presented sufficient identification, to demonstrate my ownership of the device being returned to me, at this time and date. I ACKNOWLEDGE that the device is being returned to the rightful owner.
                 </div>
 
                 <label for="userAgreement">I have read and agree to the above statement. Clicking this box is the same as signing the document (Digital Signature). <span class="req">*</span></label>
@@ -48,8 +48,13 @@
 
             <div class="field">
                 <label for="request" >Request <span class="req">*</span></label>
-                <select name="request" ng-model="releaseRequest.request" ng-options="request as request.SUBJECT for request in requests" id="request" required>
+                <select name="request" ng-model="releaseRequest.request" ng-options="request as request.SUBJECT for request in requests" id="request" required="required">
                 </select>
+            </div>
+
+            <div class="field">
+                <label for="solution">How were the device problem(s) or general question(s) resolved? <span class="req">*</span></label>
+                <textarea class="form-control" id="solution" name="solution" rows="5" ng-model="releaseRequest.solution" required="required"></textarea>
             </div>
             
             <div class="ui center aligned container">

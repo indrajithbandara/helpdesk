@@ -113,7 +113,7 @@ angApp.controller('customerFormCtrl', function($scope, $window, $routeParams) {
         }
 
         transactionSQL(SQL, 
-            [$scope.customer.name, $scope.customer.type, $scope.customer.phone, $scope.customer.email], 
+            [$scope.customer.name, $scope.customer.type, getCleaned($scope.customer.phone), getCleaned($scope.customer.email)], 
             function(results){
                 baseMessage('Customer data saved successfully!', 'success', 1000, goBack);
         });

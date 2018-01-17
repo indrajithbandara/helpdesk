@@ -20,13 +20,13 @@
           <tr ng-if="x" ng-repeat="x in users">
               <td class="collapsing">
                   <div class="ui fitted slider checkbox item-check">
-                    <input type="checkbox" name="select_{{x.id}}" ng-click="select(x.id)" ng-if="session.id != x.id && x.name != 'admin' && session.role == 'admin'"><label></label>
+                    <input type="checkbox" name="select_{{x.id}}" ng-click="select(x.id)" ng-if="session.id != x.id && x.username != 'admin' && session.role == 'admin'"><label></label>
                   </div>
               </td>
 
               <td>{{ x.username }}</td>
-              <td>{{ x.technician }}</td>
-              <td>{{ x.role | capitalize}}</td>
+              <td>{{ x.technician | isnull}}</td>
+              <td>{{ x.role       | capitalize}}</td>
               <td>
                   <a class="ui orange button" ng-if="(session.id == x.id && session.role != 'admin') || (session.role == 'admin')" href="#!/edit_user/{{ x.id }}"><i class="edit icon"></i>&nbsp;Edit</a>
                   &nbsp;

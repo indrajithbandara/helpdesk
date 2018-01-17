@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Customer ADD</title>
+	<title>Add a new customer</title>
 
 	<link rel="stylesheet" type="text/css" href="../res/scripts/semantic.min.css">
 	<link rel="stylesheet" type="text/css" href="../res/scripts/jquery-confirm.min.css">
@@ -44,7 +44,7 @@
 		        //IF saved:
 		        // Store
 		        transactionSQL(SQL, 
-		            [$scope.customer.name, $scope.customer.type, $scope.customer.phone, $scope.customer.email], 
+		            [$scope.customer.name, $scope.customer.type, getCleaned($scope.customer.phone), getCleaned($scope.customer.email)], 
 		            function(results){
 		            	Lockr.set('customer_added', true);
 		                baseMessage('Customer data saved successfully!', 'success', 1000, function(){ old.close(); });
@@ -58,7 +58,7 @@
 	<!--END SCRIPTS-->
 </head>
 <body ng-app="popupApp">
-	<div class="ui text container" style="margin-top: 5%">
+	<div class="ui text container" style="margin-top: 5%; margin-bottom: 3%;">
 	    <div ng-controller="customerFormCtrl">
 	        <div class="ui center aligned container">
 	            <h3>Customers - {{ semester }}</h3>
@@ -97,15 +97,15 @@
 	            </div>
 
 	            <div class="field">
-	                <label for="phone">Phone number <span class="req">*</span></label>
-	                <input type="text" class="form-control" pattern="\([0-9]{3}\)[0-9]{3}-[0-9]{4}" id="phone" name="phone" ng-model="customer.phone" required>
+	                <label for="phone">Phone number</label>
+	                <input type="text" class="form-control" pattern="\([0-9]{3}\)[0-9]{3}-[0-9]{4}" id="phone" name="phone" ng-model="customer.phone">
 
 	                <div class="req" ng-if="data.phone.$dirty && !data.phone.$valid">This field is required in the following format (999)999-9999</div>
 	            </div>
 	            
 	            <div class="field">
-	                <label for="email">Email address <span class="req">*</span></label>
-	                <input type="email" class="form-control" id="email" name="email" ng-model="customer.email" required>
+	                <label for="email">Email address</label>
+	                <input type="email" class="form-control" id="email" name="email" ng-model="customer.email">
 
 	                <div class="req" ng-if="data.email.$dirty && !data.email.$valid">This field is required as a valid email</div>
 	            </div>

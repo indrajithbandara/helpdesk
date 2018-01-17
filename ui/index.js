@@ -144,6 +144,16 @@ angApp.filter('capitalize', function() {
     };
 });
 
+angApp.filter('isnull', function() {
+    return function(string) {
+        if(string == "" || string == "undefined" || string == undefined){
+            return "-";
+        }
+
+        return string;
+    };
+});
+
 angApp.controller('mainCtrl', function($scope, $window, requestUtils) {
 	$scope.semester = Lockr.get('settings').semester;
     /*
@@ -174,7 +184,7 @@ function getErrorMessage(error){
 
 function saveError(error, input){
     baseMessage(getErrorMessage(error), 'error', 3000, goToMain);
-    Lockr.sadd('storedRequests', {input: JSON.stringify(input), code: message});
+    Lockr.sadd('storedRequests', {input: JSON.stringify(input), code: getErrorMessage(error)});
 }
 
 function checkAuthority(text, callBack){
@@ -219,6 +229,11 @@ function checkAuthority(text, callBack){
             });
         }
     });
+}
+
+function loadingEffect(){
+    scroll(0,0);
+
 }
 
 function basicPostRequest(URL, input, operation_name, callBackOk, callBackError){

@@ -75,8 +75,6 @@ angApp.controller('userCtrl', function($scope, $window){
 
         SQL += str_query;
 
-        alert(SQL);
-
         transactionSQL(SQL, [currentID], function(results){
             baseMessage('Users deleted successfully!', 'success', 1000, refresh);
         });
@@ -87,6 +85,7 @@ angApp.controller('userFormCtrl', function($scope, $window, $routeParams){
     $scope.semester = Lockr.get('settings').semester;
     $scope.session = Lockr.get('session');
     $scope.usernames = []
+    $scope.usedTechnicians = []
     $scope.oldName = '';
     $scope.user = {};
     $scope.user.role = "user";
@@ -105,34 +104,28 @@ angApp.controller('userFormCtrl', function($scope, $window, $routeParams){
                 $scope.users.push(results.rows[i]);
             }
 
-            console.log($scope.users);
-
             if($routeParams.id != undefined){
-                console.log($routeParams.id);
                 $scope.user = $scope.users.filter(user => user.id == $routeParams.id)[0];
                 $scope.user.password = $scope.user.confirm_password = $scope.user.code;
+                
                 $scope.oldName = $scope.users.filter(user => user.id == $routeParams.id)[0].username;
             }
 
             $scope.usernames = $scope.users.filter(user => user.id != $routeParams.id).map(user => user.username);
-            console.log($scope.usernames);
+            $scope.usedTechnicians = $scope.users.filter(user => user.id != $routeParams.id).map(user => user.technician);
             
             $scope.$apply();
         }
     });
     
     $scope.save = function(){
-        console.log($scope.user);
-        //
         let SQL = "INSERT INTO users (username, technician, role, password, code) VALUES (?,?,?,?,?)";
         if($routeParams.id != undefined){
             SQL = "UPDATE users SET username = ?, technician = ?, role = ?, password = ?, code = ? WHERE id = " + $routeParams.id;    
         }
         
-        console.log($scope.user.technician);
-
         transactionSQL(SQL, 
-            [$scope.user.username, $scope.user.technician, $scope.user.role, md5($scope.user.password), $scope.user.password], 
+            [$scope.user.username, getCleaned($scope.user.technician), $scope.user.role, md5($scope.user.password), $scope.user.password], 
             function(results){
                 if($routeParams.id == Lockr.get('session').id){
                     //
@@ -145,6 +138,10 @@ angApp.controller('userFormCtrl', function($scope, $window, $routeParams){
 
     $scope.isSameUsername = function(username){
         return $scope.usernames.includes(username);
+    }
+
+    $scope.isSameTechnician = function(technician){
+        return $scope.usedTechnicians.includes(technician);
     }
 
     $scope.areDiferent = function(password, confirmation){

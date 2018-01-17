@@ -1,4 +1,4 @@
-<div class="ui text container">
+<div class="ui text container dist-bottom">
     <div ng-controller="userFormCtrl">
         <div class="ui center aligned container">
             <h3>Users - {{ semester }}</h3>
@@ -7,7 +7,7 @@
         <br>
         <!--FORM-->
         <form class="ui form" name="data" ng-submit="save()" novalidate>
-            <h4 class="ui dividing header">Add a new user</h4>
+            <h4 class="ui dividing header">{{ user.id ? 'Edit user data' :'Add a new user'}}</h4>
 
             <div ng-show="oldName != 'admin'">
                 <div class="field">
@@ -20,8 +20,11 @@
 
             <div class="field">
                 <label for="technician">Technician</label>
+                
                 <select name="technician" ng-model="user.technician" ng-options="technician as technician for technician in technicians" id="technician">
                 </select>
+
+                <div class="req" ng-if="user.technician.$invalid || isSameTechnician(user.technician)">The selected technician is already been used</div>
             </div>
             
             <div ng-show="session.role == 'admin' && oldName != 'admin'">
@@ -59,7 +62,7 @@
             </div>
 
             <div class="ui center aligned container">
-                <button class="ui primary button" type="submit" ng-disabled="areDiferent(user.password, user.confirm_password) || isSameUsername(user.username) || data.$invalid"><i class="add circle icon"></i>&nbsp;Submit</button>
+                <button class="ui primary button" type="submit" ng-disabled="areDiferent(user.password, user.confirm_password) || isSameUsername(user.username)|| isSameTechnician(user.technician) || data.$invalid"><i class="add circle icon"></i>&nbsp;Submit</button>
                 <a class="ui danger button" onclick="goBack()"><i class="arrow left icon"></i>&nbsp;Go Back</a>    
             </div>        
         </form>
