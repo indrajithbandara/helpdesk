@@ -80,14 +80,6 @@
                 <div class="req" ng-if="data.bestTime.$dirty && !data.bestTime.$valid">This field is required</div>
             </div>
 
-            <!---->
-
-            <div class="field">
-                <label for="category">Select a category <span class="req">*</span></label>
-                <select name="category" ng-model="intakeRequest.category" ng-options="option.value as option.value for option in categories" id="category">
-                </select>
-            </div>
-
             <div class="grouped fields">
                 <label for="withWarranty">Is the device under warranty? <span class="req">*</span></label>
                 
@@ -176,8 +168,7 @@
                 <label for="passwordDevice">Device's Password</label>
                 <input type="text" class="form-control" id="passwordDevice" name="passwordDevice" ng-model="intakeRequest.passwordDevice">
             </div>
-
-            <!---->
+            
             <div class="field">
                 <label for="moreHelp">Is there anything you would like to be educated or trained on related to the device? <span class="req">*</span></label>
                 <textarea class="form-control" id="moreHelp" name="moreHelp" ng-model="intakeRequest.moreHelp" rows="5" required></textarea>
@@ -226,6 +217,12 @@
                 <textarea class="form-control" id="description" name="description" ng-model="intakeRequest.description" rows="5" required></textarea>
 
                 <div class="req" ng-if="data.description.$dirty && !data.description.$valid">This field is required</div>
+            </div>
+
+            <div class="field">
+                <label for="category">Select a category <span class="req">*</span></label>
+                <select name="category" ng-model="intakeRequest.category" ng-options="option.value as option.value for option in categories" id="category">
+                </select>
             </div>
            
             <div class="ui center aligned container">

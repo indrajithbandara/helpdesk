@@ -21,7 +21,7 @@
             <div class="field">
                 <label for="technician">Technician</label>
                 
-                <select name="technician" ng-model="user.technician" ng-options="technician as technician for technician in technicians" id="technician">
+                <select ng-readonly="session.role != 'admin'" name="technician" ng-model="user.technician" ng-options="technician as technician for technician in technicians" id="technician">
                 </select>
 
                 <div class="req" ng-if="user.technician.$invalid || isSameTechnician(user.technician)">The selected technician is already been used</div>

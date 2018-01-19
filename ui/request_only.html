@@ -41,7 +41,36 @@
                 </select>
             </div>
 
+            <!--CUSTOMER-->
             <div class="field">
+                <label for="name">Customer Name <span class="req">*</span></label>
+                <input type="text" class="form-control" id="name" name="name" ng-model="onlyRequest.customer.name" required>
+
+                <div class="req" ng-if="data.name.$dirty && !data.name.$valid">This field is required</div>
+            </div>
+            
+            <div class="grouped fields">
+                <label for="studentType">Student or Faculty <span class="req">*</span></label>
+                
+                <div class="field">
+                    <div class="ui radio checkbox">
+                    <input type="radio" name="type" ng-model="onlyRequest.customer.type" value="Faculty" id="typeFaculty">
+                    <label>Faculty</label>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <div class="ui radio checkbox">
+                    <input type="radio" name="type" ng-model="onlyRequest.customer.type" value="Student" id="typeStudent"> 
+                    <label>Student</label>
+                    </div>
+                </div>
+
+                <div class="req" ng-if="data.type.$dirty && !data.type.$valid">This field is required</div>
+            </div>
+            <!--CUSTOMER-->
+
+            <!--<div class="field">
                 <label for="customer" >Customer <span class="req">*</span></label>
                 <select name="customer" ng-model="onlyRequest.customer" ng-options="customer as customer.name for customer in customers" id="customer" required>
                 </select>
@@ -51,13 +80,7 @@
                 <div>
                     <button type="button" ng-click="addCustomer()" class="ui primary button"><i class="add user icon"></i>&nbsp;Add customer</button> 
                 </div>
-            </div>
-
-            <div class="field">
-                <label for="category">Select a category <span class="req">*</span></label>
-                <select name="category" ng-model="onlyRequest.category" ng-options="option.value as option.value for option in categories" id="category">
-                </select>
-            </div>
+            </div>-->
 
             <div class="field">
                 <label for="deviceType">Device Type <span class="req">*</span></label>
@@ -70,6 +93,12 @@
                 <textarea class="form-control" id="description" name="description" ng-model="onlyRequest.description" rows="5" required></textarea>
 
                 <div class="req" ng-if="data.description.$dirty && !data.description.$valid">This field is required</div>
+            </div>
+
+            <div class="field">
+                <label for="category">Select a category <span class="req">*</span></label>
+                <select name="category" ng-model="onlyRequest.category" ng-options="option.value as option.value for option in categories" id="category">
+                </select>
             </div>
 
             <div class="grouped fields">

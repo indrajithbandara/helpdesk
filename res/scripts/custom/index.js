@@ -71,7 +71,6 @@ angApp.service('requestUtils', function() {
         //Show loading thing:
         basicPostRequest(getBaseRequester(), INPUT_REQUESTERS, OPERATIONS[4], function(technicians){
             if(technicians.operation.details && technicians.operation.details.length > 0){
-                //
                 Lockr.set('technicians', technicians.operation.details.map(user => user.username));    
             }else{
                 Lockr.set('technicians', ['administrator']);
@@ -111,9 +110,8 @@ angApp.service('requestUtils', function() {
                 }else if(!(list['ticket number'] === undefined)){
                     last = list['ticket number'];
                 }
-                //
+                
                 Lockr.set('lastSeq', PRINTJ.sprintf("%03d", last));
-                //
                 Lockr.set('requests', requests.operation.details);
             }else{
                 Lockr.set('lastSeq', "000");
@@ -156,13 +154,6 @@ angApp.filter('isnull', function() {
 
 angApp.controller('mainCtrl', function($scope, $window, requestUtils) {
 	$scope.semester = Lockr.get('settings').semester;
-    /*
-    if(Lockr.get('technicians') == false || Lockr.get('technicians') == undefined || Lockr.get('technicians').length == 0 || Lockr.get('technicians') == {}){
-        requestUtils.checkTechnicians();
-    }else{
-        console.log(Lockr.get('technicians'));
-    }
-    */
 });
 
 jconfirm.defaults = {
@@ -171,7 +162,7 @@ jconfirm.defaults = {
 };
 
 function getErrorMessage(error){
-    var message = "Invalid request";
+    var message = "ManageEngine Down";
 
     if(error.error.code == "ESOCKETTIMEDOUT"){
         message = "Connection timeout";
