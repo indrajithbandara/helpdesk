@@ -1,6 +1,37 @@
 const db = openDatabase('helpDeskDB', '1.0', 'HelpDesk Database', 500 * 1024 * 1024); // 500 mb;
+
 Lockr.prefix = '';
+
 Lockr.set('customer_added', false);
+
+const CATS = [
+    { value: 'Data Recovery' }, 
+    { value: 'Flash Drive' },
+    { value: 'Forgot Password' }, 
+    { value: 'Hardware' },
+    { value: 'Internet' }, 
+    { value: 'Keyboard' },
+    { value: 'Malware' }, 
+    { value: 'Monitor' },
+    { value: 'Network' }, 
+    { value: 'Operating System' },
+    { value: 'Power Supply' }, 
+    { value: 'Printer' },
+    { value: 'Slow Computer' }, 
+    { value: 'Smartphone' },
+    { value: 'Software' }, 
+    { value: 'Sound' },
+    { value: 'Touchpad' },
+    { value: 'Unbootable' },
+    { value: 'Wi-fi' }
+];
+
+const DEVICE_TYPES = [
+        { value: 'Desktop' }, 
+        { value: 'Laptop' },
+        { value: 'Mobile Device' }, 
+        { value: 'Other' },
+];
 
 //Users and Customers and Requests:
 function resetDB(){
@@ -37,16 +68,16 @@ function checkDB(){
         Lockr.set('settings', {semester: 'Spring 2017', ip: 'localhost:8080', key: '51A25649-5E6D-4CA2-BFD6-4A52DB6E4652'});
     }
 
-    if(Lockr.get('lastSeq') == undefined){
-        Lockr.set('lastSeq', "000");
-    }
-
     if(Lockr.get('session') == undefined){
         Lockr.set('session', {});
     }
-
+    
     if(Lockr.get('technicians') == undefined){
         Lockr.set('technicians', []);
+    }
+
+    if(Lockr.get('openRequests') == undefined){
+        Lockr.set('openRequests', []);
     }
 
     if(Lockr.get('storedRequests') == undefined){

@@ -84,8 +84,8 @@ angApp.controller('userCtrl', function($scope, $window){
 angApp.controller('userFormCtrl', function($scope, $window, $routeParams){
     $scope.semester = Lockr.get('settings').semester;
     $scope.session = Lockr.get('session');
-    $scope.usernames = []
-    $scope.usedTechnicians = []
+    $scope.usernames = [];
+    $scope.usedTechnicians = [];
     $scope.oldName = '';
     $scope.user = {};
     $scope.user.role = "user";

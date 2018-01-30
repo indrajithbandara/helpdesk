@@ -3,6 +3,40 @@ http://silvio-r.github.io/spop/#demo-options
 Send All button: 
 Change Code => 'No connection to Mannage Engine'
 
+//if(Lockr.get('lastSeq') == undefined){
+//    Lockr.set('lastSeq', "000");
+//}
+
+<h4>Previous Ticket Number: <span class="text-info">{{ lastSeq }}</span></h4>
+            
+            <div class="field" ng-class="{'has-error' : !checkTicket(intakeRequest.ticketNumber.$viewValue) || (intakeRequest.ticketNumber.$invalid && !intakeRequest.ticketNumber.$pristine), 'form-group': true}">
+                <label for="ticketNumber">Ticket Number <span class="req">*</span></label>
+                <input class="form-control" type="text" id="ticketNumber" name="ticketNumber" ng-model="intakeRequest.ticketNumber" pattern="\d{3}" required>
+
+                <div class="req" ng-if="data.ticketNumber.$dirty && !data.ticketNumber.$valid">This field is required</div>
+            </div>
+
+<!--<h4>Previous Ticket Number: <span class="text-info">{{ lastSeq }}</span></h4>
+            
+            <div class="field" ng-class="{'has-error' : !checkTicket(onlyRequest.ticketNumber.$viewValue) || (onlyRequest.ticketNumber.$invalid && !onlyRequest.ticketNumber.$pristine), 'form-group': true}">
+                <label for="ticketNumber">Ticket Number <span class="req">*</span></label>
+                <input class="form-control" type="text" id="ticketNumber" name="ticketNumber" ng-model="onlyRequest.ticketNumber" pattern="\d{3}" required>
+
+                <div class="req" ng-if="data.ticketNumber.$dirty && !data.ticketNumber.$valid">This field is required in the following format "999"</div>
+            </div>-->
+
+<!--<div class="field">
+                <label for="customer" >Customer <span class="req">*</span></label>
+                <select name="customer" ng-model="onlyRequest.customer" ng-options="customer as customer.name for customer in customers" id="customer" required>
+                </select>
+                
+                <br>
+                
+                <div>
+                    <button type="button" ng-click="addCustomer()" class="ui primary button"><i class="add user icon"></i>&nbsp;Add customer</button> 
+                </div>
+            </div>-->
+
 DOING:
 
 //else{

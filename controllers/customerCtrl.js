@@ -3,7 +3,7 @@ angApp.controller('customerCtrl', function($scope, $window) {
     $scope.semester = Lockr.get('settings').semester;
     $scope.session = Lockr.get('session');
     $scope.selected = [];
-
+    
     transactionSQL('SELECT * FROM customers', [], function(results){
         if(results.rows.length > 0){                
             $scope.customers = [];
@@ -56,22 +56,19 @@ angApp.controller('customerCtrl', function($scope, $window) {
     }
 
     $scope.deleteSelected = function(){
-        let SQL = "DELETE FROM customers WHERE ";
-
+        var SQL = "DELETE FROM customers WHERE ";
         var str_query = "";
         var size = $scope.selected.length;
 
         for (var i = 0; i < size; i++) {
-            if(i == size - 1){
-                str_query += "id = " + $scope.selected[i];
-            }else{
-                str_query += "id = " + $scope.selected[i] + " OR ";
+            str_query += "id = " + $scope.selected[i];
+
+            if(!(i == size - 1)){
+                str_query += " OR ";
             }
         }
 
         SQL += str_query;
-
-        ///alert(SQL);
 
         transactionSQL(SQL, [], function(results){
             baseMessage('Customers deleted successfully!', 'success', 1000, refresh);
@@ -80,7 +77,6 @@ angApp.controller('customerCtrl', function($scope, $window) {
 });
 
 angApp.controller('customerFormCtrl', function($scope, $window, $routeParams) {
-    $('#phone').mask('(000)000-0000');
     $scope.customer = {}
     $scope.customer.type = "Student";
     $scope.semester = Lockr.get('settings').semester;
@@ -89,10 +85,12 @@ angApp.controller('customerFormCtrl', function($scope, $window, $routeParams) {
         transactionSQL('SELECT * FROM customers', [], function(results){
             if(results.rows.length > 0){                
                 $scope.customers = [];
-                
-                for (var i = 0; i < results.rows.length; i++) {
+                const SIZE = results.rows.length;
+
+                for (var i = 0; i < SIZE; i++) {
                     $scope.customers.push(results.rows[i]);
                 }
+
 
                 if($routeParams.id != undefined){
                     $scope.customer = $scope.customers.filter(student => student.id == $routeParams.id)[0];
@@ -106,7 +104,7 @@ angApp.controller('customerFormCtrl', function($scope, $window, $routeParams) {
     $scope.fetch();
     
     $scope.save = function(){
-        let SQL = "INSERT INTO customers (name, type, phone, email) VALUES (?,?,?,?)";
+        var SQL = "INSERT INTO customers (name, type, phone, email) VALUES (?,?,?,?)";
 
         if($routeParams.id != undefined){
             SQL = "UPDATE customers SET name = ?, type = ?, phone = ?, email = ? WHERE id = " + $routeParams.id;

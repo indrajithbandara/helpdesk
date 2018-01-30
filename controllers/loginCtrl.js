@@ -1,6 +1,6 @@
-let loginApp = angular.module('app', []);
+const loginApp = angular.module('app', []);
 
-loginApp.controller('loginCtrl', function($scope, $window) {
+loginApp.controller('loginCtrl', function($scope, $window) {    
     document.getElementById("username").focus();
     
     $scope.tryLogin = function() {

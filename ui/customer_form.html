@@ -37,15 +37,15 @@
             </div>
 
             <div class="field">
-                <label for="phone">Phone number </label>
-                <input type="text" class="form-control" pattern="\([0-9]{3}\)[0-9]{3}-[0-9]{4}" id="phone" name="phone" ng-model="customer.phone">
+                <label for="phone">Phone number <span class="req">*</span></label>
+                <input type="text" class="form-control" pattern="\([0-9]{3}\)[0-9]{3}-[0-9]{4}" id="phone" name="phone" mask="(999)999-9999" ng-model="customer.phone" required="required">
 
                 <div class="req" ng-if="data.phone.$dirty && !data.phone.$valid">This field is required in the following format (999)999-9999</div>
             </div>
             
             <div class="field">
-                <label for="email">Email address </label>
-                <input type="email" class="form-control" id="email" name="email" ng-model="customer.email">
+                <label for="email">Email address <span class="req">*</span></label>
+                <input type="email" class="form-control" id="email" name="email" ng-model="customer.email" required="required">
 
                 <div class="req" ng-if="data.email.$dirty && !data.email.$valid">This field is required as a valid email</div>
             </div>

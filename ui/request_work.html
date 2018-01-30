@@ -1,0 +1,78 @@
+<div class="ui text container dist-bottom">
+    <div ng-controller="workCtrl">
+        <div class="ui center aligned container">
+            <h3>Device Work Order Form - {{ semester }}<span class="title"></span></h3>
+            <span class="req">*</span> Required
+        </div>
+
+        <form class="ui {{state}} form" name="data" ng-submit="save()">
+            <div class="grouped fields">
+                <div class="ui segment">
+                    I HEREBY acknowledge that the work performed upon my device by the FVTC Student IT-Computer Support Center is complete and that I have received my device in satisfactory condition. I understand that the work performed was under NO WARRANTY and therefore do not hold the FVTC Student IT-Computer Support Center liable for any damages or conditions performed on the device below. By signing this release form, I acknowledge that I have presented sufficient identification, to demonstrate my ownership of the device being returned to me, at this time and date. I ACKNOWLEDGE that the device is being returned to the rightful owner.
+                </div>
+
+                <label for="userAgreement">I have read and agree to the above statement. Clicking this box is the same as signing the document (Digital Signature). <span class="req">*</span></label>
+                
+                <div class="field">
+                    <div class="ui radio checkbox">
+                    <input type="radio" name="userAgreement" ng-model="workRequest.userAgreement" value="Yes" id="userAgreementYes">
+                    <label>Yes</label>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <div class="ui radio checkbox">
+                    <input type="radio" name="userAgreement" ng-model="workRequest.userAgreement" value="No" id="userAgreementNo"> 
+                    <label>No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grouped fields">
+                <label for="idVerified">Request status <span class="req">*</span></label>
+                
+                <div class="field">
+                    <div class="ui radio checkbox">
+                    <input type="radio" name="status" ng-model="workRequest.status" value="Progress" id="statusProgress">
+                    <label>In Progress</label>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="ui radio checkbox">
+                    <input type="radio" name="status" ng-model="workRequest.status" value="Resolved" id="statusResolved">
+                    <label>Resolved</label>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <div class="ui radio checkbox">
+                    <input type="radio" name="status" ng-model="workRequest.status" value="Unresolved" id="statusUnresolved"> 
+                    <label>Unresolved</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="request" >Request <span class="req">*</span></label>
+                <select name="request" ng-change="setRequest(workRequest.request)" ng-model="workRequest.request" ng-options="request as request.SUBJECT for request in requests" id="request" required="required">
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="solution">Previous resolution comment <span class="req">*</span></label>
+                <textarea class="form-control" ng-disabled="true" ng-value="request.solution" id="previousSolution" name="previousSolution" rows="5" ng-model="workRequest.previousSolution" required="required"></textarea>
+            </div>
+
+            <div class="field">
+                <label for="solution">How were the device problem(s) or general question(s) resolved? <span class="req">*</span></label>
+                <textarea class="form-control" id="solution" name="solution" rows="5" ng-model="workRequest.solution" required="required"></textarea>
+            </div>
+            
+            <div class="ui center aligned container">
+                <button class="ui primary button" type="submit" ng-disabled="data.$invalid || workRequest.userAgreement == 'No'"><i class="add circle icon"></i>&nbsp;Submit</button>
+                <a class="ui button" ng-click="goBack()" href="#"><i class="arrow left icon"></i>&nbsp;Go Back</a>
+            </div>
+        </form>
+    </div>
+</div>

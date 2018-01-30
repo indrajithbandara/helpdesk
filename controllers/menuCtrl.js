@@ -12,7 +12,7 @@ angApp.controller('menuCtrl', function($scope, $window, requestUtils) {
 	};
 
     $scope.refreshRequests = function(){
-        requestUtils.checkRequests();
+        requestUtils.checkOpenRequests();
     }
 
     $scope.refreshRequesters = function(){

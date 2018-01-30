@@ -5,8 +5,6 @@ angApp.controller('settingsCtrl', function($scope, $window) {
 	$scope.semester = Lockr.get('settings').semester;
 	
 	$scope.save = function(){
-		loadingEffect();
-		
 		Lockr.set('settings', $scope.settings);
 		baseMessage('Settings updated successfully!', 'success', 1000, refresh);
 	}

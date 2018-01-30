@@ -1,0 +1,154 @@
+//$scope.save = function() {
+        //};
+        //console.log(id);
+        //console.log(body);
+        /*
+        $scope.state = "loading";
+        this.basicPostRequest(getBaseRequest(), body, OPERATIONS[0], function(requests){
+            baseMessage('Request sent succesfully!', 'success', 2000, refresh);
+            //Call Delete:
+            
+            $scope.state = "";
+        }, function(error){
+            baseMessage(getErrorMessage(error), 'error', 3000, function(){});
+            $scope.state = "";
+        });
+        */
+
+//baseMessage('G113 Request saved succesfully!', 'success', 2000, goToMain);
+                //requestUtils.checkRequests();
+                //$scope.state = "";
+                //$scope.state = "";
+
+//baseMessage('G113 Request saved succesfully!', 'success', 2000, goToMain);
+                //requestUtils.checkRequests();
+                //$scope.state = "";
+                //$scope.state = "";
+
+//console.log(request);
+            /*
+            if(terminator > 0){
+                obj.checkRequest(list, terminator - 1);
+            }else{
+                
+            }
+            */
+    
+    /*
+    if(Lockr.get('requests') == undefined){
+        Lockr.set('requests', []);
+    }
+    */
+
+/*
+            if(terminator > 0){
+                obj.checkRequest(requests.operation.details, requests.operation.details.length - 1);
+            }else{    
+                baseMessage("Requests syncronized with ManageEngine", 'success', 2000, function(){});
+            }
+            */
+
+/*
+                var list = requests.operation.details[0];
+                //
+                if(!(list.SUBJECT === undefined)){
+                    last = list.SUBJECT;
+                }else if(!(list.subject === undefined)){
+                    last = list.subject;
+                }else if(!(list['ticket number'] === undefined)){
+                    last = list['ticket number'];
+                }
+                
+                Lockr.set('nextSeq', PRINTJ.sprintf("%03d", last));
+                Lockr.set('requests', requests.operation.details);
+                */
+
+//var terminator = requests.operation.details.length != undefined ? requests.operation.details.length : 0;
+            //if(terminator > 0){
+            //    this.checkRequest(requests.operation.details, requests.operation.details.length);
+            //}
+            /*
+            if(requests.operation.details && requests.operation.details.length > 0){
+                var list = requests.operation.details[0];
+                //
+                if(!(list.SUBJECT === undefined)){
+                    last = list.SUBJECT;
+                }else if(!(list.subject === undefined)){
+                    last = list.subject;
+                }else if(!(list['ticket number'] === undefined)){
+                    last = list['ticket number'];
+                }
+                
+                Lockr.set('lastSeq', PRINTJ.sprintf("%03d", last));
+                Lockr.set('requests', requests.operation.details);
+            }else{
+                Lockr.set('lastSeq', "000");
+            }
+            */
+
+//console.log(requests);
+            /*
+            var terminator = requests.operation.details.length != undefined ? requests.operation.details.length : 0;
+            
+            requests.operation.details = requests.operation.details.filter(x => x.STATUS != "Closed");
+            
+            if(terminator > 0){
+                obj.checkRequest(requests.operation.details, requests.operation.details.length-1);
+            }
+            
+            Lockr.set('requests', []);
+            */
+            /*
+            if(requests.operation.details && requests.operation.details.length > 0){
+                var list = requests.operation.details[0];
+                //
+                if(!(list.SUBJECT === undefined)){
+                    last = list.SUBJECT;
+                }else if(!(list.subject === undefined)){
+                    last = list.subject;
+                }else if(!(list['ticket number'] === undefined)){
+                    last = list['ticket number'];
+                }
+                
+                Lockr.set('lastSeq', PRINTJ.sprintf("%03d", last));
+                Lockr.set('requests', requests.operation.details);
+            }else{
+                Lockr.set('lastSeq', "000");
+            }
+            */
+
+/*
+        const BASE_GET = {
+            "operation": {
+                "details": {
+                    "from": "0",
+                    "limit": "0",
+                    "filterby": "All_Requests",
+                    "name": "GET_REQUESTS",
+                    "OPERATION_NAME" : "GET_REQUESTS",
+                },
+                "name": "GET_REQUESTS",
+                "OPERATION_NAME" : "GET_REQUESTS",
+            }
+        };
+        */
+
+
+            /*
+            if(requests.operation.details && requests.operation.details.length > 0){
+                var list = requests.operation.details[0];
+                //
+                if(!(list.SUBJECT === undefined)){
+                    last = list.SUBJECT;
+                }else if(!(list.subject === undefined)){
+                    last = list.subject;
+                }else if(!(list['ticket number'] === undefined)){
+                    last = list['ticket number'];
+                }
+                
+                Lockr.set('lastSeq', PRINTJ.sprintf("%03d", last));
+                Lockr.set('requests', requests.operation.details);
+            }else{
+                Lockr.set('lastSeq', "000");
+            }
+            */
